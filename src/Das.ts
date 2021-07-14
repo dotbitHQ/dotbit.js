@@ -106,7 +106,7 @@ export class Das extends NamingService {
     const records = await this.allRecords(account)
 
     return keys.reduce((returnee: Record<string, string>, key) => {
-      returnee[key] = records[key]
+      returnee[key] = records[key] || ''
       return returnee
     }, {})
   }
@@ -172,6 +172,13 @@ export class Das extends NamingService {
         account,
       ]
     }) as {data: AccountData}
+
+    if (!data.data) {
+      throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
+        domain: account,
+      });
+
+    }
 
     return data.data
   }
