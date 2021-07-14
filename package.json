@@ -1,11 +1,11 @@
 {
-  "name": "das.js",
+  "name": "das-sdk",
   "version": "0.0.1",
   "description": "A library to resolve DAS accounts",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/zgayjjf/das.js",
+  "repository": "https://github.com/DeAccountSystems/das-sdk",
   "license": "MIT",
   "keywords": [],
   "scripts": {
