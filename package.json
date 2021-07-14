@@ -1,6 +1,6 @@
 {
   "name": "das.js",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A library to resolve DAS accounts",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
