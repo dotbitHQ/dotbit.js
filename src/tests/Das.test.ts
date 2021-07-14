@@ -13,14 +13,14 @@ test.before(() => {
 
 test(
   'das.getAccountData()',
-  async (t, domain: string) => {
-    const accountData = await das.getAccountData(domain)
+  async (t, account: string) => {
+    const accountData = await das.getAccountData(account)
 
     console.log(accountData.account_data)
 
     t.not(accountData, null)
     t.not(accountData.account_data, null)
-    t.is(accountData.account_data.account, domain)
+    t.is(accountData.account_data.account, account)
     t.not(accountData.account_data.records.length, 0)
   },
   'jeffjing.bit',
@@ -28,12 +28,12 @@ test(
 
 test(
   'das.record()',
-  async (t, domain: string, address: string) => {
-    const error: ResolutionError = await t.throwsAsync(das.record(domain, 'eth'))
+  async (t, account: string, address: string) => {
+    const error: ResolutionError = await t.throwsAsync(das.record(account, 'eth'))
     t.true(error.code === ResolutionErrorCode.RecordNotFound)
 
-    const ethAddress = await das.record(domain, 'address.eth')
-    const ethAddressWithUpperCaseKey = await das.record(domain, 'address.ETH')
+    const ethAddress = await das.record(account, 'address.eth')
+    const ethAddressWithUpperCaseKey = await das.record(account, 'address.ETH')
 
     t.is(ethAddress, address)
     t.true(ethAddress === ethAddressWithUpperCaseKey)
@@ -44,8 +44,8 @@ test(
 
 test(
   'das.records()',
-  async (t, domain: string, keys: string[]) => {
-    const records = await das.records(domain, keys)
+  async (t, account: string, keys: string[]) => {
+    const records = await das.records(account, keys)
 
     console.log(records)
 

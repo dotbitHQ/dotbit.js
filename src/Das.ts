@@ -55,15 +55,15 @@ export class Das extends NamingService {
     return this.name
   }
 
-  isSupportedDomain (domain: string): boolean {
-    return /.+\.bit/.test(domain) && domain.split('.').every(v => Boolean(v.length))
+  isSupportedDomain (account: string): boolean {
+    return /.+\.bit/.test(account) && account.split('.').every(v => Boolean(v.length))
   }
 
   // todo: implement namehash
-  namehash (domain: string): string {
-    if (!this.isSupportedDomain(domain)) {
+  namehash (account: string): string {
+    if (!this.isSupportedDomain(account)) {
       throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
-        domain,
+        domain: account,
       })
     }
 
@@ -75,26 +75,26 @@ export class Das extends NamingService {
     return `${parentHash} ${label}`
   }
 
-  async owner (domain: string): Promise<string> {
-    const accountData = await this.getAccountData(domain)
+  async owner (account: string): Promise<string> {
+    const accountData = await this.getAccountData(account)
 
     return accountData.account_data.owner_lock_args_hex
   }
 
-  async resolver (domain: string): Promise<string> {
+  async resolver (account: string): Promise<string> {
     throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
-      domain,
+      domain: account,
       methodName: 'resolver',
     })
   }
 
-  async record(domain: string, key: string): Promise<string> {
+  async record(account: string, key: string): Promise<string> {
     key = key.toLowerCase()
-    const returnee = (await this.allRecords(domain))[key]
+    const returnee = (await this.allRecords(account))[key]
 
     if (!returnee) {
       throw new ResolutionError(ResolutionErrorCode.RecordNotFound, {
-        domain,
+        domain: account,
         recordName: key,
       })
     }
@@ -102,8 +102,8 @@ export class Das extends NamingService {
     return returnee
   }
 
-  async records (domain: string, keys: string[]): Promise<CryptoRecords> {
-    const records = await this.allRecords(domain)
+  async records (account: string, keys: string[]): Promise<CryptoRecords> {
+    const records = await this.allRecords(account)
 
     return keys.reduce((returnee: Record<string, string>, key) => {
       returnee[key] = records[key]
@@ -121,8 +121,8 @@ export class Das extends NamingService {
     return accounts[0]
   }
 
-  async isRegistered(domain: string): Promise<boolean> {
-    const accountData = await this.getAccountData(domain);
+  async isRegistered(account: string): Promise<boolean> {
+    const accountData = await this.getAccountData(account);
 
     return Boolean(accountData);
   }
@@ -138,15 +138,15 @@ export class Das extends NamingService {
     return accounts.map(account => account.account)
   }
 
-  twitter (domain: string): Promise<string> {
+  twitter (account: string): Promise<string> {
     throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
-      domain,
+      domain: account,
       methodName: 'twitter'
     })
   }
 
-  async allRecords (domain: string): Promise<Record<string, string>> {
-    const data = await this.getAccountData(domain)
+  async allRecords (account: string): Promise<Record<string, string>> {
+    const data = await this.getAccountData(account)
 
     if (data) {
       const records: {key: string, value: string}[] = data.account_data.records
@@ -165,11 +165,11 @@ export class Das extends NamingService {
     }
   }
 
-  async getAccountData(domain: string): Promise<AccountData> {
+  async getAccountData(account: string): Promise<AccountData> {
     const data = await this.provider.request({
       method: 'das_searchAccount',
       params: [
-        domain,
+        account,
       ]
     }) as {data: AccountData}
 
