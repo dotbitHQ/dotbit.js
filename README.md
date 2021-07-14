@@ -1,15 +1,15 @@
-# das.js
+# das-sdk
 
 A library to resolve DAS accounts
 
 ## Install
 ```shell
-npm install das.js
+npm install das-sdk
 ```
 
 ## Setup
 ```javascript
-import Das from 'das.js'
+import Das from 'das-sdk'
 
 const das = new Das()
 
@@ -43,7 +43,7 @@ abstract class Das {
 
 ## Examples
 ```javascript
-import Das from 'das.js'
+import Das from 'das-sdk'
 
 const das = new Das({
   network: 'aggron' // Use aggron testnet instead of default mainnet
