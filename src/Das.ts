@@ -2,9 +2,19 @@ import FetchProvider from './FetchProvider'
 import { NamingService } from './NamingService'
 import ConfigurationError, { ConfigurationErrorCode } from './errors/configurationError'
 import ResolutionError, { ResolutionErrorCode } from './errors/resolutionError'
-import { AccountData } from './types/AccountData'
+import {
+  AccountData,
+  AccountDataCell,
+  AccountRecord,
+} from './types/AccountData'
 import { BlockhanNetworkUrlMap, DasSupportedNetwork } from './types/index'
-import { CryptoRecords, DasSource, NamingServiceName, Provider, ResolutionMethod } from './types/publicTypes'
+import {
+  CryptoRecords,
+  DasSource,
+  NamingServiceName,
+  Provider,
+  ResolutionMethod,
+} from './types/publicTypes'
 
 export class Das extends NamingService {
   static readonly UrlMap: BlockhanNetworkUrlMap = {
@@ -78,7 +88,7 @@ export class Das extends NamingService {
   async owner (account: string): Promise<string> {
     const accountData = await this.getAccountData(account)
 
-    return accountData.account_data.owner_lock_args_hex
+    return accountData.owner_lock_args_hex
   }
 
   async resolver (account: string): Promise<string> {
@@ -111,6 +121,26 @@ export class Das extends NamingService {
     }, {})
   }
 
+  async allRecords (account: string): Promise<Record<string, string>> {
+    const data = await this.getAccountData(account)
+
+    if (data) {
+      const records: {key: string, value: string}[] = data.records
+
+      const returnee: CryptoRecords = {}
+
+      records.forEach(record => {
+        returnee[record.key.toLowerCase()] = record.value
+      })
+
+      return returnee
+    }
+    // no records
+    else {
+      return {}
+    }
+  }
+
   async reverse(address: string, currencyTicker: string): Promise<string | null> {
     if (!['ETH', 'CKB'].includes(currencyTicker)) {
       throw new Error('Das does not support any chain other than CKB and ETH')
@@ -127,6 +157,29 @@ export class Das extends NamingService {
     return Boolean(accountData);
   }
 
+  twitter (account: string): Promise<string> {
+    throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
+      domain: account,
+      methodName: 'twitter'
+    })
+  }
+  /* -------- custom methods --------- */
+
+  /**
+   * return all the records for the give key
+   * @param account
+   * @param key
+   */
+  async recordsByKey(account: string, key: string): Promise<AccountRecord[]> {
+    const accountData = await this.getAccountData(account)
+
+    return await accountData.records.filter(record => record.key === key)
+  }
+
+  async addr(account: string, ticker: string) {
+    return await this.record(account, `account.${ticker}`)
+  }
+
   async allReverse(address: string): Promise<string[]> {
     const data = await this.provider.request({
       method: 'das_getAddressAccount',
@@ -138,48 +191,25 @@ export class Das extends NamingService {
     return accounts.map(account => account.account)
   }
 
-  twitter (account: string): Promise<string> {
-    throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
-      domain: account,
-      methodName: 'twitter'
-    })
-  }
-
-  async allRecords (account: string): Promise<Record<string, string>> {
-    const data = await this.getAccountData(account)
-
-    if (data) {
-      const records: {key: string, value: string}[] = data.account_data.records
-
-      const returnee: CryptoRecords = {}
-
-      records.forEach(record => {
-        returnee[record.key.toLowerCase()] = record.value
-      })
-
-      return returnee
-    }
-    // no records
-    else {
-      return {}
-    }
-  }
-
   async getAccountData(account: string): Promise<AccountData> {
     const data = await this.provider.request({
       method: 'das_searchAccount',
       params: [
         account,
       ]
-    }) as {data: AccountData}
+    }) as {data: AccountDataCell}
 
     if (!data.data) {
       throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
         domain: account,
       });
-
     }
 
-    return data.data
+    data.data.account_data.records.forEach(record => {
+      // the raw data is string, '300'
+      record.ttl = Number(record.ttl)
+    })
+
+    return data.data.account_data
   }
 }
