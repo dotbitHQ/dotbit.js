@@ -29,37 +29,42 @@ export class Das extends NamingService {
   readonly url: string | undefined
   readonly provider: Provider // temporarily not in use todo:
 
-  constructor (source?: DasSource) {
+  constructor (source: DasSource = {}) {
     super();
 
-    if (!source) {
-      source = {
-        url: Das.UrlMap['mainnet'],
-        network: 'mainnet'
-      }
+    if (!(source.url || source.provider)) {
+      throw new ConfigurationError(ConfigurationErrorCode.UnspecifiedUrl, {
+        method: NamingServiceName.DAS
+      })
     }
 
-    if (!source.network || !DasSupportedNetwork.guard(source.network)) {
+    if (!source.network) {
+      source.network = 'mainnet'
+    }
+
+    if (!DasSupportedNetwork.guard(source.network)) {
       throw new ConfigurationError(ConfigurationErrorCode.UnsupportedNetwork, {
         method: NamingServiceName.DAS,
       })
     }
 
     this.network = source.network
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.url = source.url || Das.UrlMap[this.network]
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.provider = source.provider || new FetchProvider(this.name, this.url)
+    this.url = source.url
+    this.provider = source.provider || new FetchProvider(this.name, this.url as string)
   }
 
-  // todo: implement autonetwork
-  static async autonetwork(config: { url: string } | { provider: Provider }): Promise<Das> {
-    return new Das({
-      network: 'mainnet',
-      provider: (config as {provider: Provider}).provider,
-    })
+  static async autonetwork(source: DasSource): Promise<Das> {
+    if (!source) {
+      source = {
+        url: Das.UrlMap['mainnet'],
+        network: 'mainnet'
+      }
+    }
+    else if (source.network && !source.url) {
+      source.url = Das.UrlMap[source.network]
+    }
+
+    return new Das(source)
   }
 
   serviceName (): ResolutionMethod {
