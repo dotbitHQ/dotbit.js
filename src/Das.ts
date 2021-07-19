@@ -8,7 +8,7 @@ import {
   AccountRecord,
   AccountRecordType,
 } from './types/AccountData'
-import { BlockhanNetworkUrlMap, DasSupportedNetwork } from './types/index'
+import { BlockchainNetworkUrlMap, DasSupportedNetwork } from './types/index'
 import {
   CryptoRecords,
   DasSource,
@@ -18,7 +18,7 @@ import {
 } from './types/publicTypes'
 
 export class Das extends NamingService {
-  static readonly UrlMap: BlockhanNetworkUrlMap = {
+  static readonly UrlMap: BlockchainNetworkUrlMap = {
     'mainnet': '', // todo: fill
     'testnet': 'http://47.243.90.165:8223',
     'aggron': 'http://47.243.90.165:8223',
@@ -53,7 +53,7 @@ export class Das extends NamingService {
     this.provider = source.provider || new FetchProvider(this.name, this.url as string)
   }
 
-  static async autonetwork(source: DasSource): Promise<Das> {
+  static async autonetwork(source?: DasSource): Promise<Das> {
     if (!source) {
       source = {
         url: Das.UrlMap['mainnet'],

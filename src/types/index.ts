@@ -1,4 +1,4 @@
-export interface BlockhanNetworkUrlMap {
+export interface BlockchainNetworkUrlMap {
   [key: string]: string | undefined;
 }
 

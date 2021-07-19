@@ -7,6 +7,7 @@ let das: Das
 
 test.before(() => {
   das = new Das({
+    url: Das.UrlMap['aggron'],
     network: 'aggron'
   })
 })
@@ -64,4 +65,16 @@ test(
   },
   'jeffjing.bit',
   'address.eth',
+)
+
+test(
+  'das.autonetwork()',
+  async (t) => {
+    const das = await Das.autonetwork()
+
+    t.is(das.network, 'mainnet')
+    t.is(das.url, '')
+
+    console.log(das.network, das.url)
+  },
 )
