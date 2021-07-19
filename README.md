@@ -11,17 +11,34 @@ npm install das-sdk
 ```javascript
 import Das from 'das-sdk'
 
-const das = new Das()
+const das = new Das({
+  url: 'https://{{endpoint.to.das.account.indexer}}',
+  network: 'mainnet',
+})
 
 das.record('dasloveckb.bit', 'address.ckb').then(console.log) // 'ckb1q...sfl9k'
 ```
+
+## Configuration
+To set up das-sdk, you need to provide `url` and `network`.  
+
+- `url` is the JSON-RPC endpoint of [das_account_indexer](https://github.com/DeAccountSystems/das_account_indexer).
+- `network` indicate which CKB network the `url` belongs to. Currently, we have deployed [DAS contracts](https://github.com/DA-Services/das-contracts) on CKB mainnet and aggron testnet. You can also deploy the contracts on your own testnet.
+
+We suggest that developers run their own [das_account_indexer](https://github.com/DeAccountSystems/das_account_indexer).
+
+However, if you are new to DAS and want to test das-sdk, you can use the indexer below as a start:
+
+- mainnet: todo
+- aggron: 
+
 
 ## Interfaces
 
 ```typescript
 interface DasSource {
   url?: string, // The Das indexer url
-  network?: 'mainnet' | 'aggron' // Currently support 'mainnet' and 'aggron' testnet
+  network?: 'mainnet' | 'aggron' | 'testnet' // Currently support 'mainnet' and 'aggron' testnet
 }
 
 export type AccountRecordType = 'address' | 'profile' | 'dweb' | 'custom'

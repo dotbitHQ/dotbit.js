@@ -40,4 +40,4 @@ const StringUnion = <UnionType extends string>(...values: UnionType[]) => {
   );
 };
 
-export const DasSupportedNetwork = StringUnion('mainnet', 'aggron')
+export const DasSupportedNetwork = StringUnion('mainnet', 'aggron', 'testnet')

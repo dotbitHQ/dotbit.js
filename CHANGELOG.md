@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/DeAccountSystems/das-sdk/compare/v0.0.3...v0.1.1) (2021-07-19)
+
+
+### Features
+
+* add `recordsByKey()` method ([ffe5230](https://github.com/DeAccountSystems/das-sdk/commit/ffe523087bcd519741cf553447ca142627f1e6dc))
+* add test for `recordsByKey` ([bad1b93](https://github.com/DeAccountSystems/das-sdk/commit/bad1b9315bc2bbf539358db4718b7896407a8a06))
+* add test for autonetwork ([16fbd90](https://github.com/DeAccountSystems/das-sdk/commit/16fbd90f18fdd986f4e439f045920028008cee70))
+* implement autonetwork ([6925df6](https://github.com/DeAccountSystems/das-sdk/commit/6925df6a773743f21e9bdfb7ff2b73f09d23a356))
+
+
+### Bug Fixes
+
+* fix test ([20bc061](https://github.com/DeAccountSystems/das-sdk/commit/20bc0613fa14d321bba4c3361ba09766e2135935))
+
 ### 0.0.3 (2021-07-14)
 
 
