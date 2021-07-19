@@ -6,6 +6,7 @@ import {
   AccountData,
   AccountDataCell,
   AccountRecord,
+  AccountRecordType,
 } from './types/AccountData'
 import { BlockhanNetworkUrlMap, DasSupportedNetwork } from './types/index'
 import {
@@ -208,6 +209,7 @@ export class Das extends NamingService {
     data.data.account_data.records.forEach(record => {
       // the raw data is string, '300'
       record.ttl = Number(record.ttl)
+      record.type = record.key.split('.').shift() as AccountRecordType
     })
 
     return data.data.account_data

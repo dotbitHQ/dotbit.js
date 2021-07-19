@@ -16,8 +16,6 @@ test(
   async (t, account: string) => {
     const accountData = await das.getAccountData(account)
 
-    console.log(accountData)
-
     t.not(accountData, null)
     t.not(accountData, null)
     t.is(accountData.account, account)
@@ -47,11 +45,23 @@ test(
   async (t, account: string, keys: string[]) => {
     const records = await das.records(account, keys)
 
-    console.log(records)
-
     t.not(Object.keys(records).length, 0)
     t.is(records['address.eth'], '0x5fd1d0DAD20817951E40043fEE7655548838D82E')
   },
   'jeffjing.bit',
   ['address.eth', 'profile.phone', 'address.btc'],
+)
+
+test(
+  'das.recordsByKey()',
+  async (t, account: string, key: string) => {
+    const records = await das.recordsByKey(account, key)
+
+    t.true(Array.isArray(records))
+    t.truthy(records)
+
+    console.log(records)
+  },
+  'jeffjing.bit',
+  'address.eth',
 )
