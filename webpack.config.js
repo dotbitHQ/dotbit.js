@@ -17,7 +17,7 @@ module.exports = {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
   output: {
-    filename: 'bundle.js',
+    filename: 'das-sdk.js',
     path: path.resolve(__dirname, 'dist'),
   },
 };
