@@ -16,12 +16,12 @@ test(
   async (t, account: string) => {
     const accountData = await das.getAccountData(account)
 
-    console.log(accountData.account_data)
+    console.log(accountData)
 
     t.not(accountData, null)
-    t.not(accountData.account_data, null)
-    t.is(accountData.account_data.account, account)
-    t.not(accountData.account_data.records.length, 0)
+    t.not(accountData, null)
+    t.is(accountData.account, account)
+    t.not(accountData.records.length, 0)
   },
   'jeffjing.bit',
 );
