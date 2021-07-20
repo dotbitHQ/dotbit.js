@@ -65,8 +65,9 @@ abstract class Das {
   // returns the record list for the given keys of the DAS account
   recordsByKey (account: string, key: string): Promise<AccountRecord[]>;
   
-  // Returns a record value for the given key of the DAS account
-  record (account: string, key: string): Promise<string>;
+  // returns the address for the give chain of the DAS account.
+  // only one will be returned if there is multiple address for a chain
+  addr(account: string, chain: string): Promise<string>;
 
   // check if the account is registered
   isRegistered (account: string): Promise<boolean>;
@@ -99,4 +100,6 @@ das.recordsByKey('dasloveckb.bit', 'address.eth').then(console.log)
  */
 
 das.owner('dasloveckb.bit').then(console.log) // => '0x1234...6789'
+
+das.addr('dasloveckb.bit', 'eth').then(console.log) // '0x1234...6780' 
 ```
