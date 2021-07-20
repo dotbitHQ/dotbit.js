@@ -183,7 +183,7 @@ export class Das extends NamingService {
   }
 
   async addr(account: string, ticker: string) {
-    return await this.record(account, `account.${ticker}`)
+    return await this.record(account, `address.${ticker}`)
   }
 
   async allReverse(address: string): Promise<string[]> {
