@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/DeAccountSystems/das-sdk/compare/v0.1.3...v0.1.5) (2021-07-20)
+
+
+### Bug Fixes
+
+* fix `addr()` bug ([7f52461](https://github.com/DeAccountSystems/das-sdk/commit/7f5246169a78023d04e74c76210d930ddfc6976b))
+
 ### [0.1.3](https://github.com/DeAccountSystems/das-sdk/compare/v0.0.3...v0.1.3) (2021-07-20)
 
 
