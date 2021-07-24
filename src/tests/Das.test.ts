@@ -60,11 +60,27 @@ test(
 
     t.true(Array.isArray(records))
     t.truthy(records)
-
-    console.log(records)
   },
   'jeffjing.bit',
   'address.eth',
+)
+
+test(
+  'das.account()',
+  async (t, account) => {
+    const accountRes = await das.account(account)
+
+    t.is(accountRes.avatar, 'https://identicons.da.systems/identicon/jeffjing.bit')
+    t.is(accountRes.account, 'jeffjing.bit')
+
+    t.true(accountRes.records.length > 0)
+
+    t.true(Array.isArray(accountRes.profiles))
+
+    t.is(typeof accountRes.profile, 'object')
+    t.truthy(accountRes.address['eth'].value)
+  },
+  'jeffjing.bit',
 )
 
 test(
@@ -73,7 +89,7 @@ test(
     const das = await Das.autonetwork()
 
     t.is(das.network, 'mainnet')
-    t.is(das.url, '')
+    t.is(das.url, 'https://indexer.da.systems')
 
     console.log(das.network, das.url)
   },

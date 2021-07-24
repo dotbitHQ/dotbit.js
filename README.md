@@ -29,8 +29,8 @@ We suggest that developers run their own [das_account_indexer](https://github.co
 
 However, if you are new to DAS and want to test das-sdk, you can use the indexer below as a start:
 
-- mainnet: todo
-- aggron: 
+- mainnet: `https://indexer.da.systems`
+- aggron: [not available for now]
 
 
 ## Interfaces
@@ -56,13 +56,39 @@ interface AccountData {
   records: AccountRecord[]
 }
 
+export interface ConstructedAccount {
+  account: string,
+  avatar: string,
+
+  // as there may be multiple records with the same key, so we will return all the records for a type.
+  profiles: AccountRecord[],
+  addresses: AccountRecord[],
+  dwebs: AccountRecord[],
+  customs: AccountRecord[],
+  
+  // Unlike fields with plural, sdk will choose a record randomly if there are multiple records with the same `key`, 
+  // and fill into corresponding fields withour plural, like `profile` versus `profiles`.
+  // you can see a example below.
+  profile: Record<string, AccountRecord>,
+  address: Record<string, AccountRecord>,
+  dweb: Record<string, AccountRecord>,
+  custom: Record<string, AccountRecord>,
+
+  records: AccountRecord[],
+}
+
+// Main API
 abstract class Das {
   constructor (source?: DasSource);
 
   // Returns the owner address of the DAS account
   owner (account: string): Promise<string>;
 
+  // Returns contructed account data, 
+  account(account: string): Promise<ConstructedAccount>
+  
   // returns the record list for the given keys of the DAS account
+  // see [Examples](#Examples) below for defail
   recordsByKey (account: string, key: string): Promise<AccountRecord[]>;
   
   // returns the address for the give chain of the DAS account.
@@ -101,5 +127,86 @@ das.recordsByKey('dasloveckb.bit', 'address.eth').then(console.log)
 
 das.owner('dasloveckb.bit').then(console.log) // => '0x1234...6789'
 
-das.addr('dasloveckb.bit', 'eth').then(console.log) // '0x1234...6780' 
+das.addr('dasloveckb.bit', 'eth').then(console.log) // '0x1234...6780'
+
+das.account('dasloveckb.bit').then(console.log)
+/** ==>
+ {
+  account: 'jeffjing.bit',
+  avatar: 'https://identicons.da.systems/identicon/jeffjing.bit',
+
+  profile: {
+    email: {
+      key: 'profile.email',
+      label: 'personal email',
+      value: 'das@google.com',
+      ttl: 300,
+      type: 'profile',
+    }
+  },
+  address: {
+    eth: {
+      key: 'address.eth',
+      label: '',
+      value: '0x1234...5678',
+      ttl: 300,
+      type: 'address',
+    }
+  },
+  dweb: {},
+  custom: {},
+
+  profiles: [
+    {
+      key: 'profile.email',
+      label: 'personal email',
+      value: 'das@google.com',
+      ttl: 300,
+      type: 'profile',
+    },
+    {
+      key: 'profile.email',
+      label: 'business email',
+      value: 'das@da.systems',
+      ttl: 300,
+      type: 'profile',
+    }
+  ],
+  addresses: [
+    {
+      key: 'address.eth',
+      label: '',
+      value: '0x1234...5678',
+      ttl: 300,
+      type: 'address',
+    }
+  ],
+  dwebs: [],
+  customs: [],
+
+  records: [
+    {
+      key: 'address.eth',
+      label: '',
+      value: '0x1234...5678',
+      ttl: 300,
+      type: 'address',
+    },
+    {
+      key: 'profile.email',
+      label: 'personal email',
+      value: 'das@google.com',
+      ttl: 300,
+      type: 'profile',
+    },
+    {
+      key: 'profile.email',
+      label: 'business email',
+      value: 'das@da.systems',
+      ttl: 300,
+      type: 'profile',
+    }
+  ]
+}
+ */
 ```

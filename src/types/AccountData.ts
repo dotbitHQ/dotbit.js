@@ -1,7 +1,14 @@
 export type AccountRecordType = 'address' | 'profile' | 'dweb' | 'custom'
+export enum AccountRecordTypes {
+  address = 'address',
+  profile = 'profile',
+  dweb = 'dweb',
+  custom = 'custom',
+}
 
 export interface AccountRecord {
   key: string,
+  strippedKey: string,
   type: AccountRecordType,
   label: string,
   value: string, // 'abc_xyz123'

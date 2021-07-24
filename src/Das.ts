@@ -6,7 +6,7 @@ import {
   AccountData,
   AccountDataCell,
   AccountRecord,
-  AccountRecordType,
+  AccountRecordType, AccountRecordTypes,
 } from './types/AccountData'
 import { BlockchainNetworkUrlMap, DasSupportedNetwork } from './types/index'
 import {
@@ -17,9 +17,26 @@ import {
   ResolutionMethod,
 } from './types/publicTypes'
 
+export interface ConstructedAccount {
+  account: string,
+  avatar: string,
+
+  profile: Record<string, AccountRecord>,
+  address: Record<string, AccountRecord>,
+  dweb: Record<string, AccountRecord>,
+  custom: Record<string, AccountRecord>,
+
+  profiles: AccountRecord[],
+  addresses: AccountRecord[],
+  dwebs: AccountRecord[],
+  customs: AccountRecord[],
+
+  records: AccountRecord[],
+}
+
 export class Das extends NamingService {
   static readonly UrlMap: BlockchainNetworkUrlMap = {
-    'mainnet': '', // todo: fill
+    'mainnet': 'https://indexer.da.systems',
     'testnet': 'http://47.243.90.165:8223',
     'aggron': 'http://47.243.90.165:8223',
   }
@@ -186,6 +203,39 @@ export class Das extends NamingService {
     return await this.record(account, `address.${ticker}`)
   }
 
+  async account(account: string) {
+    const accountData = await this.getAccountData(account)
+
+    const profiles = accountData.records.filter(record => record.type === AccountRecordTypes.profile)
+    const addresses = accountData.records.filter(record => record.type === AccountRecordTypes.address)
+    const dwebs = accountData.records.filter(record => record.type === AccountRecordTypes.dweb)
+    const customs = accountData.records.filter(record => record.type === AccountRecordTypes.custom)
+
+    function resolveOneFromRecords(records: AccountRecord[]) {
+      return records.reduce((profile, record) => {
+        profile[record.strippedKey] = record
+        return profile
+      }, {} as Record<string, AccountRecord>)
+    }
+
+    return {
+      account: accountData.account,
+      avatar: `https://identicons.da.systems/identicon/${account}`,
+
+      profile: resolveOneFromRecords(profiles),
+      address: resolveOneFromRecords(addresses),
+      dweb: resolveOneFromRecords(dwebs),
+      custom: resolveOneFromRecords(customs),
+
+      profiles,
+      addresses,
+      dwebs,
+      customs,
+
+      records: accountData.records,
+    }
+  }
+
   async allReverse(address: string): Promise<string[]> {
     const data = await this.provider.request({
       method: 'das_getAddressAccount',
@@ -214,7 +264,12 @@ export class Das extends NamingService {
     data.data.account_data.records.forEach(record => {
       // the raw data is string, '300'
       record.ttl = Number(record.ttl)
-      record.type = record.key.split('.').shift() as AccountRecordType
+      const keyParts = record.key.split('.')
+      const type = keyParts.shift() as AccountRecordType
+      const strippedKey = keyParts.join('.')
+
+      record.type = type
+      record.strippedKey = strippedKey
     })
 
     return data.data.account_data
