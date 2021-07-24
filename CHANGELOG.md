@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/DeAccountSystems/das-sdk/compare/v0.1.5...v0.2.1) (2021-07-24)
+
+
+### Features
+
+* add `account()` function ([b13f077](https://github.com/DeAccountSystems/das-sdk/commit/b13f07756ae79d99e49410bcfb0b93daf866fe23))
+
 ### [0.1.5](https://github.com/DeAccountSystems/das-sdk/compare/v0.1.3...v0.1.5) (2021-07-20)
 
 
