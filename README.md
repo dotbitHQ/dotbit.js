@@ -16,7 +16,22 @@ const das = new Das({
   network: 'mainnet',
 })
 
-das.record('dasloveckb.bit', 'address.ckb').then(console.log) // 'ckb1q...sfl9k'
+das.recordsByKey ('dasloveckb.bit', 'address.ckb')
+/* ==>
+  [{
+  key: 'address.eth',
+  type: 'address',
+  label: 'coinbase',
+  value: '0x1234...4567',
+  ttl: 300
+}, {
+  key: 'address.eth',
+  type: 'address',
+  label: 'onchain',
+  value: '0x2345...6789',
+  ttl: 300,
+}]
+*/
 ```
 
 ## Configuration
