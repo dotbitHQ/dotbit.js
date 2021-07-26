@@ -157,6 +157,18 @@ das.account('dasloveckb.bit').then(console.log)
   ]
 }
  */
+ 
+// Get an account that is not exist.
+das.account('adasaccountwithoutanymeaningswhichisnotexist.bit').catch(console.log)
+/**
+ ResolutionError {
+    code: 'UnregisteredDomain',
+    currencyTicker: undefined,
+    domain: 'adasaccountwithoutanymeaningswhichisnotexist.bit',
+    method: undefined,
+    message: 'Domain adasaccountwithoutanymeaningswhichisnotexist.bit is not registered',
+  }
+ */
 ```
 
 ## Error Handling
