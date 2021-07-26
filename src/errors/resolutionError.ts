@@ -17,16 +17,12 @@ type ResolutionErrorOptions = {
 
 export enum ResolutionErrorCode {
   UnregisteredDomain = 'UnregisteredDomain',
-  UnspecifiedResolver = 'UnspecifiedResolver',
   UnsupportedDomain = 'UnsupportedDomain',
   UnsupportedService = 'UnsupportedService',
   UnsupportedMethod = 'UnsupportedMethod',
-  // UnspecifiedCurrency = 'UnspecifiedCurrency',
   UnsupportedCurrency = 'UnsupportedCurrency',
-  IncorrectResolverInterface = 'IncorrectResolverInterface',
   RecordNotFound = 'RecordNotFound',
   ServiceProviderError = 'ServiceProviderError',
-  InvalidTwitterVerification = 'InvalidTwitterVerification',
 }
 
 /**
@@ -36,8 +32,6 @@ export enum ResolutionErrorCode {
 const HandlersByCode: Record<ResolutionErrorCode, (params: any) => string> = {
   [ResolutionErrorCode.UnregisteredDomain]: (params: {domain: string}) =>
     `Domain ${params.domain} is not registered`,
-  [ResolutionErrorCode.UnspecifiedResolver]: (params: {domain: string}) =>
-    `Domain ${params.domain} is not configured`,
   [ResolutionErrorCode.UnsupportedDomain]: (params: {domain: string}) =>
     `Domain ${params.domain} is not supported`,
   [ResolutionErrorCode.UnsupportedMethod]: (params: {
@@ -45,15 +39,9 @@ const HandlersByCode: Record<ResolutionErrorCode, (params: any) => string> = {
     domain: string;
   }) => `Method ${params.methodName} is not supported for ${params.domain}`,
 
-  [ResolutionErrorCode.InvalidTwitterVerification]: (params: {
-    domain?: string;
-  }) => `Domain ${params.domain} has invalid Twitter signature verification`,
   [ResolutionErrorCode.UnsupportedCurrency]: (params: {
     currencyTicker: string;
   }) => `${params.currencyTicker} is not supported`,
-  [ResolutionErrorCode.IncorrectResolverInterface]: (params: {
-    method: ResolutionMethod;
-  }) => `Domain resolver is configured incorrectly for ${params.method}`,
   [ResolutionErrorCode.RecordNotFound]: (params: {
     recordName: string;
     domain: string;
