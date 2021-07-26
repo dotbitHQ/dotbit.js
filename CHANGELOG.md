@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/DeAccountSystems/das-sdk/compare/v0.2.1...v0.3.1) (2021-07-26)
+
+
+### Features
+
+* add Das() class ([58ae5bd](https://github.com/DeAccountSystems/das-sdk/commit/58ae5bd71b85d9790dbd4ccc76333fd1e68d9506))
+
 ### [0.2.1](https://github.com/DeAccountSystems/das-sdk/compare/v0.1.5...v0.2.1) (2021-07-24)
 
 
