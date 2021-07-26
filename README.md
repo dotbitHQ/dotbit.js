@@ -158,3 +158,6 @@ das.account('dasloveckb.bit').then(console.log)
 }
  */
 ```
+
+## Error Handling
+Please checkout [./src/errors](./src/errors) for error descriptions.
