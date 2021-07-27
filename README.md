@@ -15,7 +15,7 @@ It read DAS data from CKB node and keep them in locally.
 
 It provides a JSON-RPC, with which we can read DAS data in our business.
 
-Please set up a [https://github.com/DeAccountSystems/das_account_indexer](https://github.com/DeAccountSystems/das_account_indexer) on your own server and keep it running.
+Please set up a [das_account_indexer](https://github.com/DeAccountSystems/das_account_indexer) on your own server and keep it running.
 
 ## Initialize
 ```javascript
@@ -26,21 +26,20 @@ const das = new Das({
 })
 
 das.records('dasloveckb.bit').then(console.log)
-/* ==>
-  [{
-  key: 'address.eth',
-  label: 'coinbase',
-  value: '0x1234...4567',
-  ttl: 300,
-  avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit'
-}, {
-  key: 'address.eth',
-  label: 'onchain',
-  value: '0x2345...6789',
-  ttl: 300,
-  avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit'
-}]
-*/
+// ==>
+// [{
+//   key: 'address.eth',
+//   label: 'coinbase',
+//   value: '0x1234...4567',
+//   ttl: 300,
+//   avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit'
+// }, {
+//   key: 'address.eth',
+//   label: 'onchain',
+//   value: '0x2345...6789',
+//   ttl: 300,
+//   avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit'
+// }]
 ```
 
 ## Configuration
@@ -94,81 +93,98 @@ abstract class Das {
 }
 ```
 
+## API
+### das.records(account: string, key?:string): Promise<AccountRecord[]>
+Returns all the records for the given `key`.
+
+Unlike ens, users can set multiple records for the same `key`, so the result will always be a list. 
+
+All the records of the account will be returned If there is no `key` provided,
+
+Empty list will be returned if there is no record for the `key`.
+
+### das.account(string): Promise<AccountData>
+Returns all the data for an account, including avatar, manager/owner address, all the records.
+
 ## Examples
+Initialize using official indexer
 ```javascript
 import Das from 'das-sdk'
 
 const das = new Das({
   url: 'https://indexer.da.systems',
 })
+```
 
-// Get all records for the key `address.eth`
+Get all records for the key `address.eth`
+```javascript
 das.records('dasloveckb.bit', 'address.eth').then(console.log)
-/*
-[{
-  key: 'address.eth',
-  label: 'coinbase',
-  value: '0x1234...4567',
-  ttl: 300,
-  avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit''
-}, {
-  key: 'address.eth',
-  label: 'onchain',
-  value: '0x2345...6789',
-  ttl: 300,
-  avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit'
-}]
-*/
+// ==>
+// [{
+//   key: 'address.eth',
+//   label: 'coinbase',
+//   value: '0x1234...4567',
+//   ttl: 300,
+//   avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit''
+// }, {
+//   key: 'address.eth',
+//   label: 'onchain',
+//   value: '0x2345...6789',
+//   ttl: 300,
+//   avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit'
+// }]
 
-// Get all the data for an account.
+```
+
+Get all the data for an account.
+```javascript
 das.account('dasloveckb.bit').then(console.log)
-/** ==>
- {
-  account: 'dasloveckb.bit',
-  avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
+// ==>
+// {
+//   account: 'dasloveckb.bit', 
+//   avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
+//   owner_address: '0x1234...5678',
+//   owner_address_chain: 'ETH',
+//   manager_address: 'T1234...6789',
+//   manager_address_chain: 'TRX',
+//
+//   records: [
+//   {
+//     key: 'address.eth',
+//     label: '',
+//     value: '0x1234...5678',
+//     ttl: 300,
+//     avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
+//   },
+//   {
+//     key: 'profile.email',
+//     label: 'personal email',
+//     value: 'das@google.com',
+//     ttl: 300,
+//     avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
+//   },
+//   {
+//     key: 'profile.email',
+//     label: 'business email',
+//     value: 'das@da.systems',
+//     ttl: 300,
+//     avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
+//   }
+//   ]
+// } 
+```
 
-  owner_address: '0x1234...5678',
-  owner_address_chain: 'ETH',
-  manager_address: 'T1234...6789',
-  manager_address_chain: 'TRX',
-
-  records: [
-    {
-      key: 'address.eth',
-      label: '',
-      value: '0x1234...5678',
-      ttl: 300,
-      avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
-    },
-    {
-      key: 'profile.email',
-      label: 'personal email',
-      value: 'das@google.com',
-      ttl: 300,
-      avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
-    },
-    {
-      key: 'profile.email',
-      label: 'business email',
-      value: 'das@da.systems',
-      ttl: 300,
-      avatar: 'https://identicons.da.systems/identicon/dasloveckb.bit',
-    }
-  ]
-}
- */
- 
-// Get an account that is not exist.
+Get an account that is not exist.
+```javascript
 das.account('adasaccountwithoutanymeaningswhichisnotexist.bit').catch(console.log)
-/**
- ResolutionError {
-    code: 'UnregisteredDomain',
-    currencyTicker: undefined,
-    domain: 'adasaccountwithoutanymeaningswhichisnotexist.bit',
-    method: undefined,
-    message: 'Domain adasaccountwithoutanymeaningswhichisnotexist.bit is not registered',
-  }
- */
+// ==>
+// ResolutionError {
+//   code: 'UnregisteredDomain',
+//     currencyTicker: undefined,
+//     domain: 'adasaccountwithoutanymeaningswhichisnotexist.bit',
+//     method: undefined,
+//     message: 'Domain adasaccountwithoutanymeaningswhichisnotexist.bit is not registered',
+// }
 ```
 
 ## Error Handling
