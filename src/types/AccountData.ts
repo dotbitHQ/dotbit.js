@@ -1,9 +1,9 @@
-export type AccountRecordType = 'address' | 'profile' | 'dweb' | 'custom'
+export type AccountRecordType = 'address' | 'profile' | 'dweb' | 'custom_key'
 export enum AccountRecordTypes {
   address = 'address',
   profile = 'profile',
   dweb = 'dweb',
-  custom = 'custom',
+  custom = 'custom_key',
 }
 
 export interface AccountRecordOnChain {

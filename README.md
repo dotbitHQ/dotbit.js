@@ -59,7 +59,7 @@ interface DasSource {
 }
 
 export interface AccountRecord {
-  key: string, // The key of the record, in the form like `address.eth`, `profile.email`, 'custom.xx.yy`.
+  key: string, // The key of the record, in the form like `address.eth`, `profile.email`, 'custom_key.xx.yy`.
   label: string, // The label of the record. There may be multiple records for the same `key`, users can use `label` to distinguish them.  
   value: string, // The value of the record. Developers should valid the validity of the value before using them. 
   ttl: number, // Time to live for the record.
