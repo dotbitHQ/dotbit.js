@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/DeAccountSystems/das-sdk/compare/v0.3.1...v0.3.3) (2021-07-29)
+
+
+### Features
+
+* remove unused code ([82bc2d1](https://github.com/DeAccountSystems/das-sdk/commit/82bc2d15c24860fd184d0c5642f629941d608fc2))
+* remove unused code ([339eea5](https://github.com/DeAccountSystems/das-sdk/commit/339eea5008143b7c19593d0ca75c8bfb2b4b678b))
+
+
+### Bug Fixes
+
+* `custom` => `custom_key` ([68b8b50](https://github.com/DeAccountSystems/das-sdk/commit/68b8b50df0ac419e51897e6ebf3966219870de8b))
+
 ### [0.3.1](https://github.com/DeAccountSystems/das-sdk/compare/v0.2.1...v0.3.1) (2021-07-26)
 
 
