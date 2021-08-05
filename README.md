@@ -97,13 +97,18 @@ abstract class Das {
 ### das.records(account: string, key?:string): Promise<AccountRecord[]>
 Returns all the records for the given `key`.
 
-Unlike ens, users can set multiple records for the same `key`, so the result will always be a list. 
-
 All the records of the account will be returned If there is no `key` provided,
 
 Empty list will be returned if there is no record for the `key`.
 
-### das.account(string): Promise<AccountData>
+> Unlike ENS, DAS allows users to set multiple records for the same `key`, so the result will always be a list.
+
+> Developers need to validate the validity of the result.
+
+> All the supported keys can be found here: [record_key_namespace](https://github.com/DeAccountSystems/das-contracts/blob/4fdc1e09e484304d25c5965218a52bf9bf7bb7ce/tests/data/record_key_namespace.txt)
+
+
+### das.account(account: string): Promise<AccountData>
 Returns all the data for an account, including avatar, manager/owner address, all the records.
 
 ## Examples
