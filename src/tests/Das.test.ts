@@ -59,6 +59,16 @@ test(
 )
 
 test(
+  'das.accountsForOwner()',
+  async (t, address) => {
+    const accounts = await das.accountsForOwner(address)
+
+    t.true(accounts.length > 0)
+  },
+  '0x2b2b0d8eb7E6B7408608fd9Fbf595096Ff809CE6',
+)
+
+test(
   'dasService.getAccountData()',
   async (t, account: string) => {
     const accountData = await dasService.getAccountData(account)

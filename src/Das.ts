@@ -84,4 +84,20 @@ export class Das {
   async addrs(account: string, chain: string) {
     return this.records(account, `address.${chain}`)
   }
+
+  async accountsForOwner(address: string) {
+    const res = await this.provider.request({
+      method: 'das_getAddressAccount',
+      params: [address]
+    }) as { data: AccountDataCell[] }
+
+    const data = res.data || []
+
+    return data.map( account => {
+      return {
+        ...account.account_data,
+        avatar: `https://identicons.da.systems/identicon/${account}`
+      }
+    })
+  }
 }
