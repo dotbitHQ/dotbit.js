@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/DeAccountSystems/das-sdk/compare/v0.3.3...v0.4.1) (2021-08-09)
+
+
+### Features
+
+* add method `accountsForOwner` ([4fbd77f](https://github.com/DeAccountSystems/das-sdk/commit/4fbd77f1f9c0cdc06bd81e9f28aafb0a98c99286))
+* remove unnecessary dependencies ([2645d14](https://github.com/DeAccountSystems/das-sdk/commit/2645d14d16ff4d4179d2d6b7bd08a38648c98821))
+
 ### [0.3.3](https://github.com/DeAccountSystems/das-sdk/compare/v0.3.1...v0.3.3) (2021-07-29)
 
 
