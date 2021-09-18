@@ -107,9 +107,11 @@ Empty list will be returned if there is no record for the `key`.
 
 > All the supported keys can be found here: [record_key_namespace](https://github.com/DeAccountSystems/das-contracts/blob/4fdc1e09e484304d25c5965218a52bf9bf7bb7ce/tests/data/record_key_namespace.txt)
 
-
 ### das.account(account: string): Promise<AccountData>
 Returns all the data for an account, including avatar, manager/owner address, all the records.
+
+### das.accountsForOwner(address: string): Promise<AccountData[]>
+Returns all the accounts owned by the given address.
 
 ## Examples
 Initialize using official indexer
