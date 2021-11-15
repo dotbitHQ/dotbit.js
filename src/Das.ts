@@ -34,8 +34,9 @@ export class Das {
     }
   }
 
-  isSupportedDomain (account: string): boolean {
-    return /.+\.bit/.test(account) && account.split('.').every(v => Boolean(v.length))
+  async isSupportedDomain (account: string): boolean {
+    const isSupport = /.+\.bit/.test(account) && account.split('.').every(v => Boolean(v.length))
+    return Promise.resolve(isSupport)
   }
 
   async account(account: string): Promise<AccountData & {avatar: string}> {
