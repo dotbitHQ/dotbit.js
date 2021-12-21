@@ -4,14 +4,18 @@ import ConfigurationError, { ConfigurationErrorCode } from './errors/configurati
 import ResolutionError, { ResolutionErrorCode } from './errors/resolutionError'
 import {
   AccountData,
-  AccountDataCell,
+  AccountInfo,
+  AccountInfoWithRecords,
   AccountRecord,
-  AccountRecordType, AccountRecordTypes,
+  AccountRecordsData, AccountRecordType,
+  AccountRecordTypes,
 } from './types/AccountData'
 import { BlockchainNetworkUrlMap, DasSupportedNetwork } from './types/index'
 import {
+  ChainId,
+  CoinType,
   CryptoRecords,
-  DasSource,
+  DasSource, KeyDescriptor,
   NamingServiceName,
   Provider,
   ResolutionMethod,
@@ -36,9 +40,37 @@ export interface ConstructedAccount {
 
 export class DasService extends NamingService {
   static readonly UrlMap: BlockchainNetworkUrlMap = {
-    'mainnet': 'https://indexer.da.systems',
+    'mainnet': 'https://indexer-not-use-in-production-env.da.systems',
     'testnet': 'http://47.243.90.165:8223',
     'aggron': 'http://47.243.90.165:8223',
+  }
+  static tickerToDescriptorMap: Record<string, KeyDescriptor> = {
+    'ETH': {
+      type: 'blockchain',
+      key_info: {
+        coin_type: CoinType.ETH,
+      }
+    },
+    'BNB': {
+      type: 'blockchain',
+      key_info: {
+        coin_type: CoinType.ETH,
+        chain_id: ChainId.BSC
+      }
+    },
+    'TRX': {
+      type: 'blockchain',
+      key_info: {
+        coin_type: CoinType.TRX,
+      }
+    },
+    'MATIC': {
+      type: 'blockchain',
+      key_info: {
+        coin_type: CoinType.MATIC,
+        chain_id: ChainId.Polygon
+      }
+    }
   }
 
   readonly name = NamingServiceName.DAS
@@ -113,7 +145,7 @@ export class DasService extends NamingService {
   async owner (account: string): Promise<string> {
     const accountData = await this.getAccountData(account)
 
-    return accountData.owner_lock_args_hex
+    return accountData.owner_address
   }
 
   async resolver (account: string): Promise<string> {
@@ -140,17 +172,30 @@ export class DasService extends NamingService {
   async records (account: string, keys: string[]): Promise<CryptoRecords> {
     const records = await this.allRecords(account)
 
-    return keys.reduce((returnee: Record<string, string>, key) => {
+    return keys.reduce((returnee: CryptoRecords, key) => {
       returnee[key] = records[key] || ''
       return returnee
     }, {})
   }
 
   async allRecords (account: string): Promise<Record<string, string>> {
-    const data = await this.getAccountData(account)
+    if (!this.isSupportedDomain(account)) {
+      throw new ResolutionError(ResolutionErrorCode.UnsupportedService, {
+        domain: account,
+      })
+    }
+
+    const res = await this.provider.request({
+      method: 'das_accountRecords',
+      params: [{
+        account,
+      }]
+    }) as {data: AccountRecordsData}
+
+    const data = res.data
 
     if (data) {
-      const records: {key: string, value: string}[] = data.records
+      const records = data.records
 
       const returnee: CryptoRecords = {}
 
@@ -167,11 +212,18 @@ export class DasService extends NamingService {
   }
 
   async reverse(address: string, currencyTicker: string): Promise<string | null> {
-    if (!['ETH', 'CKB'].includes(currencyTicker)) {
-      throw new Error('Das does not support any chain other than CKB and ETH')
+    const descriptor = DasService.tickerToDescriptorMap[currencyTicker]
+    if (!descriptor) {
+      throw new Error(`Das currently does not support ${currencyTicker}`)
     }
 
-    const accounts = await this.allReverse(address)
+    const accounts = await this.getReverseAccount({
+      type: descriptor.type,
+      key_info: {
+        ...descriptor.key_info,
+        key: address
+      }
+    })
 
     return accounts[0]
   }
@@ -190,23 +242,12 @@ export class DasService extends NamingService {
   }
   /* -------- custom methods --------- */
 
-  /**
-   * return all the records for the give key
-   * @param account
-   * @param key
-   */
-  async recordsByKey(account: string, key: string): Promise<AccountRecord[]> {
-    const accountData = await this.getAccountData(account)
-
-    return await accountData.records.filter(record => record.key === key)
-  }
-
   async addr(account: string, ticker: string) {
     return await this.record(account, `address.${ticker}`)
   }
 
   async account(account: string) {
-    const accountData = await this.getAccountData(account)
+    const accountData = await this.getAccountDataAndRecords(account)
 
     const profiles = accountData.records.filter(record => record.type === AccountRecordTypes.profile)
     const addresses = accountData.records.filter(record => record.type === AccountRecordTypes.address)
@@ -238,24 +279,29 @@ export class DasService extends NamingService {
     }
   }
 
-  async allReverse(address: string): Promise<string[]> {
+  async getReverseAccount(descriptor: KeyDescriptor): Promise<string> {
     const data = await this.provider.request({
-      method: 'das_getAddressAccount',
-      params: [address],
-    }) as any
+      method: 'das_reverseRecord',
+      params: [descriptor],
+    }) as { data: {  account: string } }
 
-    const accounts: { account: string }[] = data.data.account_data
-
-    return accounts.map(account => account.account)
+    return data.data.account
   }
 
-  async getAccountData(account: string): Promise<AccountData> {
+  async getAccountDataAndRecords(account: string): Promise<AccountInfoWithRecords> {
+    const accountData = await this.getAccountData(account) as AccountInfoWithRecords
+    accountData.records = await this.getRecordsData(account)
+
+    return accountData
+  }
+
+  async getAccountData(account: string): Promise<AccountInfo> {
     const data = await this.provider.request({
-      method: 'das_searchAccount',
-      params: [
+      method: 'das_accountInfo',
+      params: [{
         account,
-      ]
-    }) as {data: AccountDataCell}
+      }]
+    }) as {data: AccountData}
 
     if (!data.data) {
       throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
@@ -263,17 +309,39 @@ export class DasService extends NamingService {
       });
     }
 
-    data.data.account_data.records.forEach(record => {
-      // the raw data is string, '300'
-      record.ttl = Number(record.ttl)
-      const keyParts = record.key.split('.')
-      const type = keyParts.shift() as AccountRecordType
-      const strippedKey = keyParts.join('.')
+    return data.data.account_info
+  }
 
-      record.type = type
-      record.strippedKey = strippedKey
-    })
+  async getRecordsData(account: string) {
+    if (!this.isSupportedDomain(account)) {
+      throw new ResolutionError(ResolutionErrorCode.UnsupportedService, {
+        domain: account,
+      })
+    }
 
-    return data.data.account_data
+    const res = await this.provider.request({
+      method: 'das_accountRecords',
+      params: [{
+        account,
+      }]
+    }) as {data: AccountRecordsData}
+
+    const records = res.data.records
+
+    if (records) {
+      records.forEach(record => {
+        // the raw data is string, like '300'
+        record.ttl = Number(record.ttl)
+        const keyParts = record.key.split('.')
+        const type = keyParts.shift() as AccountRecordType
+        const strippedKey = keyParts.join('.')
+
+        record.type = type
+        record.strippedKey = strippedKey
+      })
+
+    }
+
+    return records
   }
 }
