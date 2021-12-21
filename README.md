@@ -85,7 +85,7 @@ export interface AccountInfo {
   das_lock_arg_hex: string,
   owner_algorithm_id: number, // 3: eth personal sign, 4: tron sign, 5: eip-712
   manager_algorithm_id: number,
-  owner_address: string,
+  owner_key: string,
   manager_address: string
 }
 
@@ -197,7 +197,7 @@ das.account('dasloveckb.bit').then(console.log)
 //   "status": 1,
 //   "das_lock_arg_hex": "0x0559724739940777947c56c4f2f2c9211cd5130fef0559724739940777947c56c4f2f2c9211cd5130fef",
 //   "owner_algorithm_id": 5, // 3: eth personal sign, 4: tron sign, 5: eip-712
-//   "owner_address": "0x59724739940777947c56c4f2f2c9211cd5130fef",
+//   "owner_key": "0x59724739940777947c56c4f2f2c9211cd5130fef",
 //   "manager_algorithm_id": 5,
 //   "manager_address": "0x59724739940777947c56c4f2f2c9211cd5130fef"
 // } 

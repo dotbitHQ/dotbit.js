@@ -145,7 +145,7 @@ export class DasService extends NamingService {
   async owner (account: string): Promise<string> {
     const accountData = await this.getAccountData(account)
 
-    return accountData.owner_address
+    return accountData.owner_key
   }
 
   async resolver (account: string): Promise<string> {

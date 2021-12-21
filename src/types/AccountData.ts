@@ -36,7 +36,7 @@ export interface AccountInfo {
   das_lock_arg_hex: string,
   owner_algorithm_id: number, // 3: eth personal sign, 4: tron sign, 5: eip-712
   manager_algorithm_id: number,
-  owner_address: string,
+  owner_key: string,
   manager_address: string
 }
 
