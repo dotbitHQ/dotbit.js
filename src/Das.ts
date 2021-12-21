@@ -33,14 +33,14 @@ export class Das {
     }
   }
 
-  isSupportedDomain (account: string): boolean {
+  isSupportedAccount (account: string): boolean {
     return /.+\.bit/.test(account) && account.split('.').every(v => Boolean(v.length))
   }
 
   async account(account: string): Promise<AccountInfo & {avatar: string}> {
-    if (!this.isSupportedDomain(account)) {
+    if (!this.isSupportedAccount(account)) {
       throw new ResolutionError(ResolutionErrorCode.UnsupportedService, {
-        domain: account,
+        account: account,
       })
     }
 
@@ -52,8 +52,8 @@ export class Das {
     }) as {data: AccountData}
 
     if (!data.data) {
-      throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
-        domain: account,
+      throw new ResolutionError(ResolutionErrorCode.UnregisteredAccount, {
+        account: account,
       })
     }
 
@@ -64,9 +64,9 @@ export class Das {
   }
 
   async records(account: string, key?: string): Promise<AccountRecord[]> {
-    if (!this.isSupportedDomain(account)) {
-      throw new ResolutionError(ResolutionErrorCode.UnsupportedDomain, {
-        domain: account,
+    if (!this.isSupportedAccount(account)) {
+      throw new ResolutionError(ResolutionErrorCode.UnsupportedAccount, {
+        account: account,
       })
     }
 
@@ -80,8 +80,8 @@ export class Das {
     const accountData = res.data
 
     if (!accountData) {
-      throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
-        domain: account,
+      throw new ResolutionError(ResolutionErrorCode.UnregisteredAccount, {
+        account: account,
       })
     }
 
@@ -97,7 +97,7 @@ export class Das {
     return this.records(account, `address.${chain}`)
   }
 
-  async reserveRecord(descriptor: KeyDescriptor): Promise<string> {
+  async reverseRecord(descriptor: KeyDescriptor): Promise<string> {
     const res = await this.provider.request({
       method: 'das_reverseRecord',
       params: [descriptor]

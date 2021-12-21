@@ -52,9 +52,9 @@ test(
 )
 
 test(
-  'das.reserveRecord()',
+  'das.reverseRecord()',
   async (t, address) => {
-    const accounts = await das.reserveRecord({
+    const account = await das.reverseRecord({
       type: 'blockchain',
       key_info: {
         coin_type: CoinType.ETH,
@@ -63,7 +63,7 @@ test(
       }
     })
 
-    t.true(accounts.length > 0)
+    t.is(account, 'assets.bit')
   },
   '0x0b4eba3efe8ad25f1fe0bb972fe82349ad9e5155',
 )

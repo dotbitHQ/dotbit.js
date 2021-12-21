@@ -120,15 +120,15 @@ export class DasService extends NamingService {
     return this.name
   }
 
-  isSupportedDomain (account: string): boolean {
+  isSupportedAccount (account: string): boolean {
     return /.+\.bit/.test(account) && account.split('.').every(v => Boolean(v.length))
   }
 
   // todo: implement namehash
   namehash (account: string): string {
-    if (!this.isSupportedDomain(account)) {
-      throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
-        domain: account,
+    if (!this.isSupportedAccount(account)) {
+      throw new ResolutionError(ResolutionErrorCode.UnregisteredAccount, {
+        account: account,
       })
     }
 
@@ -137,7 +137,7 @@ export class DasService extends NamingService {
 
   childhash (_parentHash: string, label: string): string {
     throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
-      domain: label,
+      account: label,
       methodName: 'childhash'
     })
   }
@@ -150,7 +150,7 @@ export class DasService extends NamingService {
 
   async resolver (account: string): Promise<string> {
     throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
-      domain: account,
+      account: account,
       methodName: 'resolver',
     })
   }
@@ -161,7 +161,7 @@ export class DasService extends NamingService {
 
     if (!returnee) {
       throw new ResolutionError(ResolutionErrorCode.RecordNotFound, {
-        domain: account,
+        account: account,
         recordName: key,
       })
     }
@@ -179,9 +179,9 @@ export class DasService extends NamingService {
   }
 
   async allRecords (account: string): Promise<Record<string, string>> {
-    if (!this.isSupportedDomain(account)) {
+    if (!this.isSupportedAccount(account)) {
       throw new ResolutionError(ResolutionErrorCode.UnsupportedService, {
-        domain: account,
+        account: account,
       })
     }
 
@@ -236,7 +236,7 @@ export class DasService extends NamingService {
 
   twitter (account: string): Promise<string> {
     throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
-      domain: account,
+      account: account,
       methodName: 'twitter'
     })
   }
@@ -304,8 +304,8 @@ export class DasService extends NamingService {
     }) as {data: AccountData}
 
     if (!data.data) {
-      throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
-        domain: account,
+      throw new ResolutionError(ResolutionErrorCode.UnregisteredAccount, {
+        account: account,
       });
     }
 
@@ -313,9 +313,9 @@ export class DasService extends NamingService {
   }
 
   async getRecordsData(account: string) {
-    if (!this.isSupportedDomain(account)) {
+    if (!this.isSupportedAccount(account)) {
       throw new ResolutionError(ResolutionErrorCode.UnsupportedService, {
-        domain: account,
+        account: account,
       })
     }
 

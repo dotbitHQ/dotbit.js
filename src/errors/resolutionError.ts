@@ -9,15 +9,15 @@ type ResolutionErrorOptions = {
   providerMessage?: string;
   method?: ResolutionMethod;
   methodName?: string;
-  domain?: string;
+  account?: string;
   currencyTicker?: string;
   recordName?: string;
   namingService?: string;
 };
 
 export enum ResolutionErrorCode {
-  UnregisteredDomain = 'UnregisteredDomain',
-  UnsupportedDomain = 'UnsupportedDomain',
+  UnregisteredAccount = 'UnregisteredAccount',
+  UnsupportedAccount = 'UnsupportedAccount',
   UnsupportedService = 'UnsupportedService',
   UnsupportedMethod = 'UnsupportedMethod',
   UnsupportedCurrency = 'UnsupportedCurrency',
@@ -29,57 +29,47 @@ export enum ResolutionErrorCode {
  * @internal
  * Internal Mapping object from ResolutionErrorCode to a ResolutionErrorHandler
  */
-const HandlersByCode: Record<ResolutionErrorCode, (params: any) => string> = {
-  [ResolutionErrorCode.UnregisteredDomain]: (params: {domain: string}) =>
-    `Domain ${params.domain} is not registered`,
-  [ResolutionErrorCode.UnsupportedDomain]: (params: {domain: string}) =>
-    `Domain ${params.domain} is not supported`,
-  [ResolutionErrorCode.UnsupportedMethod]: (params: {
-    methodName: string;
-    domain: string;
-  }) => `Method ${params.methodName} is not supported for ${params.domain}`,
+const HandlersByCode: Record<ResolutionErrorCode, (params: ResolutionErrorOptions) => string> = {
+  [ResolutionErrorCode.UnregisteredAccount]: (params: ResolutionErrorOptions) =>
+    `Account ${params.account} is not registered`,
+  [ResolutionErrorCode.UnsupportedAccount]: (params: ResolutionErrorOptions) =>
+    `Account ${params.account} is not supported`,
+  [ResolutionErrorCode.UnsupportedMethod]: (params: ResolutionErrorOptions) => `Method ${params.methodName} is not supported for ${params.account}`,
 
-  [ResolutionErrorCode.UnsupportedCurrency]: (params: {
-    currencyTicker: string;
-  }) => `${params.currencyTicker} is not supported`,
-  [ResolutionErrorCode.RecordNotFound]: (params: {
-    recordName: string;
-    domain: string;
-  }) => `No ${params.recordName} record found for ${params.domain}`,
-  [ResolutionErrorCode.ServiceProviderError]: (params: {
-    providerMessage?: string;
-  }) => `< ${params.providerMessage} >`,
-  [ResolutionErrorCode.UnsupportedService]: (params: {namingService: string}) =>
+  [ResolutionErrorCode.UnsupportedCurrency]: (params: ResolutionErrorOptions) => `${params.currencyTicker} is not supported`,
+  [ResolutionErrorCode.RecordNotFound]: (params: ResolutionErrorOptions) => `No ${params.recordName} record found for ${params.account}`,
+  [ResolutionErrorCode.ServiceProviderError]: (params: ResolutionErrorOptions) => `< ${params.providerMessage} >`,
+  [ResolutionErrorCode.UnsupportedService]: (params: ResolutionErrorOptions) =>
     `Naming service ${params.namingService} is not supported`,
 };
 
 /**
  * Resolution Error class is designed to control every error being thrown by Resolution
  * @param code - Error Code
- * - UnsupportedDomain - domain is not supported by current Resolution instance
- * - UnregisteredDomain - domain is not owned by any address
- * - UnspecifiedResolver - domain has no resolver specified
- * - UnspecifiedCurrency - domain resolver doesn't have any address of specified currency
+ * - UnsupportedAccount - account is not supported by current Resolution instance
+ * - UnregisteredAccount - account is not owned by any address
+ * - UnspecifiedResolver - account has no resolver specified
+ * - UnspecifiedCurrency - account resolver doesn't have any address of specified currency
  * - UnsupportedCurrency - currency is not supported
  * - IncorrectResolverInterface - ResolverInterface is incorrected
  * - RecordNotFound - No record was found
- * @param domain - Domain name that was being used
+ * @param account - Account that was being used
  * @param method
  */
 export class ResolutionError extends Error {
   readonly code: ResolutionErrorCode;
-  readonly domain?: string;
+  readonly account?: string;
   readonly method?: string;
   readonly currencyTicker?: string;
 
   constructor(code: ResolutionErrorCode, options: ResolutionErrorOptions = {}) {
     const resolutionErrorHandler: ResolutionErrorHandler = HandlersByCode[code];
-    const {domain, method, currencyTicker} = options;
+    const {account, method, currencyTicker} = options;
     const message = resolutionErrorHandler(options);
 
     super(message);
     this.code = code;
-    this.domain = domain;
+    this.account = account;
     this.method = method;
     this.currencyTicker = currencyTicker;
     this.name = 'ResolutionError';

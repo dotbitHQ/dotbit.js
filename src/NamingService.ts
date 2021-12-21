@@ -8,7 +8,7 @@ export abstract class NamingService {
   abstract resolver(account: string): Promise<string>;
   abstract namehash(account: string): string;
   abstract childhash(parentHash: string, label: string): string;
-  abstract isSupportedDomain(account: string): boolean;
+  abstract isSupportedAccount(account: string): boolean;
   abstract record(account: string, key: string): Promise<string>;
   abstract records(
     account: string,
