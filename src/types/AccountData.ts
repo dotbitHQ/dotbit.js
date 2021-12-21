@@ -21,26 +21,31 @@ export interface AccountRecord extends Omit<AccountRecordOnChain, 'ttl'> {
   avatar: string,
 }
 
-export interface AccountData {
+export interface AccountRecordsData {
+  account: string,
+  records: AccountRecord[]
+}
+
+export interface AccountInfo {
   account: string, // abc.bit
   account_id_hex: string, // 0x1234...
   next_account_id_hex: string, // 0x1234...
   create_at_unix: number, // seconds
   expired_at_unix: number, // seconds
   status: number, // 0
-  owner_lock_args_hex: string, // '0x1234...'
+  das_lock_arg_hex: string,
+  owner_algorithm_id: number, // 3: eth personal sign, 4: tron sign, 5: eip-712
+  manager_algorithm_id: number,
   owner_address: string,
-  owner_address_chain: string,
-  manager_lock_args_hex: string, // '0x1234...'
-  manager_address: string,
-  manager_address_chain: string,
-  records: AccountRecord[]
+  manager_address: string
 }
 
-export interface AccountDataCell {
+export type AccountInfoWithRecords = AccountInfo & AccountRecordsData
+
+export interface AccountData {
   out_point: {
     tx_hash: string,
     index: number
   },
-  account_data: AccountData
+  account_info: AccountInfo
 }

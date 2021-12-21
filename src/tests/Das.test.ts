@@ -1,20 +1,13 @@
 import test from 'ava'
 
 import { Das } from '../Das'
-import { DasService } from '../DasService'
-import ResolutionError, { ResolutionErrorCode } from '../errors/resolutionError'
+import { ChainId, CoinType } from '../types/publicTypes'
 
 let das: Das
-let dasService: DasService
 
 test.before(() => {
-  dasService = new DasService({
-    url: DasService.UrlMap['aggron'],
-    network: 'aggron'
-  })
-
   das = new Das({
-    url: 'https://indexer.da.systems',
+    url: 'https://indexer-not-use-in-production-env.da.systems/',
   })
 })
 
@@ -59,92 +52,18 @@ test(
 )
 
 test(
-  'das.accountsForOwner()',
+  'das.reserveRecord()',
   async (t, address) => {
-    const accounts = await das.accountsForOwner(address)
+    const accounts = await das.reserveRecord({
+      type: 'blockchain',
+      key_info: {
+        coin_type: CoinType.ETH,
+        chain_id: ChainId.ETH,
+        key: address
+      }
+    })
 
     t.true(accounts.length > 0)
   },
-  '0x2b2b0d8eb7E6B7408608fd9Fbf595096Ff809CE6',
-)
-
-test(
-  'dasService.getAccountData()',
-  async (t, account: string) => {
-    const accountData = await dasService.getAccountData(account)
-
-    t.not(accountData, null)
-    t.not(accountData, null)
-    t.is(accountData.account, account)
-    t.not(accountData.records.length, 0)
-  },
-  'jeffjing.bit',
-);
-
-test(
-  'dasService.record()',
-  async (t, account: string, address: string) => {
-    const error: ResolutionError = await t.throwsAsync(dasService.record(account, 'eth'))
-    t.true(error.code === ResolutionErrorCode.RecordNotFound)
-
-    const ethAddress = await dasService.record(account, 'address.eth')
-    const ethAddressWithUpperCaseKey = await dasService.record(account, 'address.ETH')
-
-    t.is(ethAddress, address)
-    t.true(ethAddress === ethAddressWithUpperCaseKey)
-  },
-  'jeffjing.bit',
-  '0x5fd1d0DAD20817951E40043fEE7655548838D82E'
-)
-
-test(
-  'dasService.records()',
-  async (t, account: string, keys: string[]) => {
-    const records = await dasService.records(account, keys)
-
-    t.not(Object.keys(records).length, 0)
-    t.is(records['address.eth'], '0x5fd1d0DAD20817951E40043fEE7655548838D82E')
-  },
-  'jeffjing.bit',
-  ['address.eth', 'profile.phone', 'address.btc'],
-)
-
-test(
-  'dasService.recordsByKey()',
-  async (t, account: string, key: string) => {
-    const records = await dasService.recordsByKey(account, key)
-
-    t.true(Array.isArray(records))
-    t.truthy(records)
-  },
-  'jeffjing.bit',
-  'address.eth',
-)
-
-test(
-  'dasService.account()',
-  async (t, account) => {
-    const accountRes = await dasService.account(account)
-
-    t.is(accountRes.avatar, 'https://identicons.da.systems/identicon/jeffjing.bit')
-    t.is(accountRes.account, 'jeffjing.bit')
-
-    t.true(accountRes.records.length > 0)
-
-    t.true(Array.isArray(accountRes.profiles))
-
-    t.is(typeof accountRes.profile, 'object')
-    t.truthy(accountRes.address['eth'].value)
-  },
-  'jeffjing.bit',
-)
-
-test(
-  'dasService.autonetwork()',
-  async (t) => {
-    const das = await DasService.autonetwork()
-
-    t.is(das.network, 'mainnet')
-    t.is(das.url, 'https://indexer.da.systems')
-  },
+  '0x0b4eba3efe8ad25f1fe0bb972fe82349ad9e5155',
 )

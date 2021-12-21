@@ -3,15 +3,14 @@ import ConfigurationError, { ConfigurationErrorCode } from './errors/configurati
 import ResolutionError, { ResolutionErrorCode } from './errors/resolutionError'
 import {
   AccountData,
-  AccountDataCell,
+  AccountInfo, AccountRecord, AccountRecordsData,
 } from './types/AccountData'
 import {
+  KeyDescriptor,
   NamingServiceName,
   NamingServiceSource,
   Provider,
 } from './types/publicTypes'
-
-
 
 export class Das {
   readonly url?: string
@@ -38,40 +37,53 @@ export class Das {
     return /.+\.bit/.test(account) && account.split('.').every(v => Boolean(v.length))
   }
 
-  async account(account: string): Promise<AccountData & {avatar: string}> {
+  async account(account: string): Promise<AccountInfo & {avatar: string}> {
     if (!this.isSupportedDomain(account)) {
-      throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
+      throw new ResolutionError(ResolutionErrorCode.UnsupportedService, {
         domain: account,
       })
     }
 
     const data = await this.provider.request({
-      method: 'das_searchAccount',
-      params: [
+      method: 'das_accountInfo',
+      params: [{
         account,
-      ]
-    }) as {data: AccountDataCell}
+      }]
+    }) as {data: AccountData}
 
     if (!data.data) {
       throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
         domain: account,
-      });
+      })
     }
 
-    data.data.account_data.records.forEach(record => {
-      // the raw data is string, '300'
-      record.ttl = Number(record.ttl)
-      record.avatar = `https://identicons.da.systems/identicon/${account}`
-    })
-
     return {
-      ...data.data.account_data,
+      ...data.data.account_info,
       avatar: `https://identicons.da.systems/identicon/${account}`
     }
   }
 
-  async records(account: string, key?: string) {
-    const accountData = await this.account(account)
+  async records(account: string, key?: string): Promise<AccountRecord[]> {
+    if (!this.isSupportedDomain(account)) {
+      throw new ResolutionError(ResolutionErrorCode.UnsupportedDomain, {
+        domain: account,
+      })
+    }
+
+    const res = await this.provider.request({
+      method: 'das_accountRecords',
+      params: [{
+        account,
+      }]
+    }) as {data: AccountRecordsData}
+
+    const accountData = res.data
+
+    if (!accountData) {
+      throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, {
+        domain: account,
+      })
+    }
 
     if (!key) {
       return accountData.records
@@ -85,19 +97,12 @@ export class Das {
     return this.records(account, `address.${chain}`)
   }
 
-  async accountsForOwner(address: string) {
+  async reserveRecord(descriptor: KeyDescriptor): Promise<string> {
     const res = await this.provider.request({
-      method: 'das_getAddressAccount',
-      params: [address]
-    }) as { data: AccountDataCell[] }
+      method: 'das_reverseRecord',
+      params: [descriptor]
+    }) as { data: {  account: string } }
 
-    const data = res.data || []
-
-    return data.map( account => {
-      return {
-        ...account.account_data,
-        avatar: `https://identicons.da.systems/identicon/${account}`
-      }
-    })
+    return res.data.account
   }
 }
