@@ -37,7 +37,7 @@ export interface AccountInfo {
   owner_algorithm_id: number, // 3: eth personal sign, 4: tron sign, 5: eip-712
   manager_algorithm_id: number,
   owner_key: string,
-  manager_address: string
+  manager_key: string
 }
 
 export type AccountInfoWithRecords = AccountInfo & AccountRecordsData

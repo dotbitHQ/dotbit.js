@@ -11,9 +11,9 @@ npm install das-sdk
 ### Set up DAS Account Indexer
 [das-account-indexer](https://github.com/DeAccountSystems/das-account-indexer) is the storage layer and API layer of DAS.
 
-It read DAS data from CKB node and keep them in locally.  
+It read DAS data from CKB node and keep them locally.  
 
-It provides a JSON-RPC, with which we can read DAS data in our business.
+It provides a JSON-RPC, through which we can read DAS data in our business.
 
 Please set up a [das-account-indexer](https://github.com/DeAccountSystems/das-account-indexer) on your own server and keep it running.
 
@@ -49,13 +49,20 @@ To set up das-sdk, you need to provide `url`.
 
 We suggest that developers run their own [das-account-indexer](https://github.com/DeAccountSystems/das-account-indexer).
 
-> However, if you are new to DAS and want to test das-sdk, you can use this indexer running by the DAS team as a start: `https://indexer-not-use-in-production-env.da.systems`. It provides both forward resolution and reverse record resolution.
+> However, if you are new to DAS and want to test das-sdk, you can use this indexer run by DAS team as a start: `https://indexer-not-use-in-production-env.da.systems`. It provides both forward resolution and reverse record resolution.
 > 
 > But do remember that: do not use this in production environment.
 
-> As of [DAS Reverse Record](https://da.systems/reverse-record), we still recommend you to build your own indexer. 
+> Meanwhile, we provide an official basic-indexer which only exposed some basic apis. 
+> If you have trouble setting up an indexer, you can use this as an alternative.
 > 
-> But You can use `https://reverse-record.da.systems` for the beginning. This endpoint only provides Reverse Record resolution without forward resolution.
+> `https://indexer-basic.da.systems`
+> 
+> You can use this indexer to use the following api:
+> - das.account()
+> - das.reverseRecord()
+
+
 
 ## Interfaces
 
@@ -86,7 +93,7 @@ export interface AccountInfo {
   owner_algorithm_id: number, // 3: eth personal sign, 4: tron sign, 5: eip-712
   manager_algorithm_id: number,
   owner_key: string,
-  manager_address: string
+  manager_key: string
 }
 
 export interface KeyDescriptor {
@@ -106,8 +113,8 @@ export interface KeyDescriptor {
 class Das {
   constructor (source?: DasSource);
 
-  // Returns account full data, 
-  account(account: string): Promise<AccountData>
+  // Returns the basic account info 
+  account(account: string): Promise<AccountInfo>
 
   // Returns the record list for the given key of the DAS account
   // All records will return if the `key` is empty.
@@ -134,8 +141,8 @@ Empty list will be returned if there is no record for the `key`.
 
 > All the supported keys can be found here: [record_key_namespace](https://github.com/DeAccountSystems/das-contracts/blob/4fdc1e09e484304d25c5965218a52bf9bf7bb7ce/tests/data/record_key_namespace.txt)
 
-### das.account(account: string): Promise<AccountData>
-Returns all the data for an account, including avatar, manager/owner address, all the records.
+### das.account(account: string): Promise<AccountInfo>
+Returns basic info of an account, including avatar, manager/owner address.
 
 ### das.reverseRecord(descriptor: KeyDescriptor): Promise<string>
 Return the reverse record of the given address. For more information, pleas checkout [DAS Reverse Record](https://da.systems/reverse-record)
@@ -199,7 +206,7 @@ das.account('dasloveckb.bit').then(console.log)
 //   "owner_algorithm_id": 5, // 3: eth personal sign, 4: tron sign, 5: eip-712
 //   "owner_key": "0x59724739940777947c56c4f2f2c9211cd5130fef",
 //   "manager_algorithm_id": 5,
-//   "manager_address": "0x59724739940777947c56c4f2f2c9211cd5130fef"
+//   "manager_key": "0x59724739940777947c56c4f2f2c9211cd5130fef"
 // } 
 ```
 
