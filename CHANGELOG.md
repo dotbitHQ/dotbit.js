@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/DeAccountSystems/das-sdk/compare/v0.4.1...v1.1.0) (2021-12-24)
+
+
+### Features
+
+* **Das.ts:** remove `accountsForOwner()`, add `reverseRecord()` ([bb2dffa](https://github.com/DeAccountSystems/das-sdk/commit/bb2dffaa6b2d92edae9e7b98445db620fcbc25e5))
+* **DasService.ts:** integrate with new das-account-indexer ([bf9cac4](https://github.com/DeAccountSystems/das-sdk/commit/bf9cac4eecc7535f457b6a156a78d285ce5284d8))
+
 ### [0.4.1](https://github.com/DeAccountSystems/das-sdk/compare/v0.3.3...v0.4.1) (2021-08-09)
 
 
