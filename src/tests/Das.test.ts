@@ -63,7 +63,7 @@ test(
       }
     })
 
-    t.is(account, 'assets.bit')
+    t.is(account, 'imac.bit')
   },
-  '0x0b4eba3efe8ad25f1fe0bb972fe82349ad9e5155',
+  '0x1d643fac9a463c9d544506006a6348c234da485f',
 )

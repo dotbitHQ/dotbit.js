@@ -184,10 +184,10 @@ das.reverseRecord({
   key_info: {
     coin_type: '714', // '714' for BNB
     chain_id: '56', // '56' for BSC
-    key: '0x0b4eba3efe8ad25f1fe0bb972fe82349ad9e5155'
+    key: '0x1d643fac9a463c9d544506006a6348c234da485f'
   }
 }).then(console.log)
-// => 'assets.bit'
+// => 'imac.bit'
 ```
 
 Get account info of the account.
