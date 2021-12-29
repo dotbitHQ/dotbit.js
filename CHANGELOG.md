@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.5](https://github.com/DeAccountSystems/das-sdk/compare/v1.1.2...v1.1.5) (2021-12-29)
+
+
+### Bug Fixes
+
+* add missing dependency `node-fetch` ([4009afe](https://github.com/DeAccountSystems/das-sdk/commit/4009afe9da6deea4677c76ff79b99de439299ba9))
+
 ### [1.1.2](https://github.com/DeAccountSystems/das-sdk/compare/v1.1.0...v1.1.2) (2021-12-27)
 
 ## [1.1.0](https://github.com/DeAccountSystems/das-sdk/compare/v0.4.1...v1.1.0) (2021-12-24)
