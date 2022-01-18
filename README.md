@@ -140,6 +140,8 @@ Empty list will be returned if there is no record for the `key`.
 > Developers need to validate the validity of the result.
 
 > All the supported keys can be found here: [record_key_namespace](https://github.com/DeAccountSystems/das-contracts/blob/4fdc1e09e484304d25c5965218a52bf9bf7bb7ce/tests/data/record_key_namespace.txt)
+> 
+> The namespace for blockchains adheres to [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
 
 ### das.account(account: string): Promise<AccountInfo>
 Returns basic info of an account, including avatar, manager/owner address.
