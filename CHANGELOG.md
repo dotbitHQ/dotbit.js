@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/DeAccountSystems/das-sdk/compare/v1.1.2...v1.3.0) (2022-03-08)
+
+
+### Features
+
+* add method `accountsForOwner` ([0e6be6f](https://github.com/DeAccountSystems/das-sdk/commit/0e6be6f9fbf969e36c77971c4d3374d76215435b))
+
+
+### Bug Fixes
+
+* add missing dependency `node-fetch` ([4009afe](https://github.com/DeAccountSystems/das-sdk/commit/4009afe9da6deea4677c76ff79b99de439299ba9))
+
 ### [1.1.5](https://github.com/DeAccountSystems/das-sdk/compare/v1.1.2...v1.1.5) (2021-12-29)
 
 
