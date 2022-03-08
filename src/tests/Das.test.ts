@@ -67,3 +67,35 @@ test(
   },
   '0x1d643fac9a463c9d544506006a6348c234da485f',
 )
+
+test(
+  'das.accountsForOwner() ETH',
+  async (t, address) => {
+    const accounts = await das.accountsForOwner(address)
+
+    t.true(accounts.length > 0)
+    t.truthy(accounts[0].account)
+  },
+  '0x1d643fac9a463c9d544506006a6348c234da485f',
+)
+
+test(
+  'das.accountsForOwner() Tron',
+  async (t, address) => {
+    const accounts = await das.accountsForOwner(address, '195')
+
+    t.true(accounts.length > 0)
+    t.truthy(accounts[0].account)
+  },
+  'TPhEgBBVpNZZ4vpeEvh2jMo9WejuTbb5a2',
+)
+
+test(
+  'das.accountsForOwner() empty',
+  async (t, address) => {
+    const accounts = await das.accountsForOwner(address)
+
+    t.falsy(accounts.length > 0)
+  },
+  'TPhEgBBVpNZZ4vpeEvh2jMo9WejuTbb5a2',
+)

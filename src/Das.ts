@@ -97,6 +97,21 @@ export class Das {
     return this.records(account, `address.${chain}`)
   }
 
+  async accountsForOwner(address: string, coinType = '60'): Promise<Array<{account: string}>> {
+    const res: any = await this.provider.request({
+      method: 'das_accountList',
+      params: [{
+        "type": "blockchain",
+        "key_info":{
+          "coin_type": coinType,
+          "key": address
+        }
+      }]
+    })
+
+    return res?.data?.account_list
+  }
+
   async reverseRecord(descriptor: KeyDescriptor): Promise<string> {
     const res = await this.provider.request({
       method: 'das_reverseRecord',
