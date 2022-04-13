@@ -24,6 +24,16 @@ test(
 )
 
 test(
+  'das.isSupportedAccount()',
+  async (t, account) => {
+    const isSupported = das.isSupportedAccount(account)
+
+    t.true(isSupported)
+  },
+  'a.phone.bit'
+)
+
+test(
   'das.records()',
   async (t, account) => {
     const records = await das.records(account)
