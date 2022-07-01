@@ -13,9 +13,9 @@ describe('serverInfo', function () {
   })
 })
 
-describe('accountsOfKey', function () {
+describe('accountsOfOwner', function () {
   it('work', async function () {
-    const accounts = await dotbit.accountsOfKey({
+    const accounts = await dotbit.accountsOfOwner({
       key: '0x1d643fac9a463c9d544506006a6348c234da485f',
     })
 
@@ -29,5 +29,15 @@ describe('accountById', function () {
     const account = await dotbit.accountById('0x5728088435fb8788472a9ca601fbc0b9cbea8be3')
     expect(account).toBeInstanceOf(BitAccount)
     expect(account.account).toBe('imac.bit')
+  })
+})
+
+describe('reverse', function () {
+  it('work', async function () {
+    const account = await dotbit.reverse({
+      key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+    })
+    expect(account).toBeInstanceOf(BitAccount)
+    expect(account.account).toBe('jeffx.bit')
   })
 })

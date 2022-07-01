@@ -76,6 +76,11 @@ export class BitAccount {
     return this.#info
   }
 
+  async owner () {
+    const info = await this.info()
+    return info.owner_key
+  }
+
   async records (key?: string): Promise<BitAccountRecordExtended[]> {
     if (!this.#records) {
       const records =  (await this.bitIndexer.accountRecords(this.account))

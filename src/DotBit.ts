@@ -49,7 +49,15 @@ export class DotBit {
     return await this.bitIndexer.serverInfo()
   }
 
-  async accountsOfKey (keyInfo: KeyInfo): Promise<BitAccount[]> {
+  async reverse (keyInfo: KeyInfo): Promise<BitAccount> {
+    const { account } = await this.bitIndexer.reverseRecord(keyInfo)
+
+    if (account) {
+      return this.getAccount(account)
+    }
+  }
+
+  async accountsOfOwner (keyInfo: KeyInfo): Promise<BitAccount[]> {
     const accounts =  await this.bitIndexer.accountList(keyInfo)
 
     return accounts.map(account => this.getAccount(account))
