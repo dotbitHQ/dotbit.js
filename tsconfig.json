@@ -10,7 +10,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "target": "es6",
+    "target": "esnext",
     "sourceMap": true,
     "allowJs": true,
     "outDir": "./lib",

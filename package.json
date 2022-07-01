@@ -4,7 +4,9 @@
   "description": ".bit management",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "clear": "rm -rf ./lib/",
+    "build": "npm run clear && tsc -p tsconfig.build.json"
   },
   "keywords": [
     "dotbit",
