@@ -1,12 +1,29 @@
+import { ethers, Wallet } from 'ethers'
 import { BitAccount } from '../src/BitAccount'
+import { RemoteTxBuilder } from '../src/builders/RemoteTxBuilder'
+import { CoinType } from '../src/const'
 import { BitIndexer } from '../src/fetchers/BitIndexer'
+import { EthersSigner } from '../src/index'
 
 const bitIndexer = new BitIndexer({
-  uri: 'https://indexer-v1.did.id'
+  // uri: 'https://indexer-v1.did.id',
+  uri: 'https://test-indexer.did.id',
+  // uri: 'https://test-indexer-not-use-in-production-env.did.id',
 })
+const txBuilder = new RemoteTxBuilder({
+  subAccountUri: 'https://test-subaccount-api.did.id/v1'
+})
+const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
+const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
+const provider = new ethers.providers.InfuraProvider('goerli')
+const wallet = new Wallet(privateKey1, provider)
+const signer = new EthersSigner(wallet)
+
 const account = new BitAccount({
   account: 'imac.bit',
   bitIndexer,
+  txBuilder,
+  signer,
 })
 
 describe('constructor', () => {
@@ -257,4 +274,23 @@ describe('profiles', function () {
       ttl: '300'
     }])
   })
+})
+
+describe('enableSubAccount', function () {
+  it('should work', function () {
+    return expect(account.enableSubAccount()).rejects.toThrow('ValidationFailure: see the error code -31')
+  }, 10000)
+})
+
+describe('mintSubAccount', function () {
+  it('should work', async function () {
+    const txs = await account.mintSubAccount({
+      account: '002.imac.bit',
+      keyInfo: {
+        coin_type: CoinType.ETH,
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+      },
+      registerYears: 1,
+    })
+  }, 10000)
 })

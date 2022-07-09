@@ -9,11 +9,12 @@ export enum BitIndexerErrorCode {
 }
 
 export enum BitErrorCode {
-
+  UnsupportedEVMChainId = 1000,
+  SubAccountStatusInvalid = 1001,
 }
 
 export class CodedError extends Error {
   constructor (message: string, public code: number) {
-    super(message)
+    super(code ? `${code}: ${message}` : message)
   }
 }

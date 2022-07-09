@@ -6,7 +6,7 @@ const subAccountApi = new SubAccountAPI('https://test-subaccount-api.did.id/v1')
 describe('initSubAccount', function () {
   it('work', async function () {
     const tx = await subAccountApi.initSubAccount('imac.bit', {
-      coin_type: String(CoinType.ETH),
+      coin_type: CoinType.ETH,
       key: '0x1d643fac9a463c9d544506006a6348c234da485f',
     })
 

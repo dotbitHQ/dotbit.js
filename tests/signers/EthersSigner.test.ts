@@ -1,6 +1,6 @@
 import { signTypedData, SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 import { Wallet } from 'ethers'
-import { EthersSigner } from '../src/index'
+import { EthersSigner } from '../../src/index'
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
@@ -296,6 +296,12 @@ describe('signData', function () {
   it('signPersonal', async function () {
     const sig = await ethersSigner.signData('0xtest')
     expect(sig).toBe('0x07d19751f27e47464247f75bd8fc274b2bfe65b534e59daa081dc8a4928e08102f8a6b84131835623f745ab8f2412966c7da6f05924b9239072fa95bdf02c1941c')
+  })
+
+  it('signPersonal with hex', async function () {
+    const sig = await ethersSigner.signData(Buffer.from('b6f4af8809a529008110a468f2890875a2a9db3ac1e430e12f4a2dee0f89d33c', 'hex'))
+
+    expect(sig).toBe('0x9e300546be6eec960f46eebf5a9a1aeb088f16cb232bdeaa1e0eaa27b75e96f26e1ad42e1aa454af24e6d0dead3b94fc03dd5c65ec0c284d83a828482fa48d721b')// wu 0x
   })
 
   // same with app.did.id

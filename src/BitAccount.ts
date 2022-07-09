@@ -1,21 +1,29 @@
-import { AccountStatus, RecordType } from './const'
+import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
+import { AccountStatus, CheckSubAccountStatus, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
-import { AccountInfo, BitAccountRecordExtended } from './fetchers/BitIndexer.type'
+import { AccountInfo, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
+import { EthersSigner } from './signers/EthersSigner'
 import { isSupportedAccount } from './tools/account'
-import { BitIndexerErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
 interface BitAccountOptions {
   account: string,
   bitIndexer?: BitIndexer,
-  txBuilder?: any,
-  signer?: any,
+  txBuilder?: RemoteTxBuilder,
+  signer?: EthersSigner,
+}
+
+export interface SubAccountParams {
+  account: string,
+  keyInfo: KeyInfo,
+  registerYears: number,
 }
 
 export class BitAccount {
   account: string
   bitIndexer: BitIndexer
-  txBuilder: any
-  signer: any
+  txBuilder: RemoteTxBuilder
+  signer: EthersSigner
 
   constructor (options: BitAccountOptions) {
     if (!isSupportedAccount(options.account)) {
@@ -39,38 +47,91 @@ export class BitAccount {
     }
   }
 
-  requireTxProvider () {
+  requireTxBuilder () {
     if (!this.txBuilder) {
-      throw new Error('txProvider is required')
+      throw new Error('txBuilder is required')
     }
   }
 
   /** writer **/
   setOwner (address: string, coinType: string) {
-    this.requireTxProvider()
+    this.requireTxBuilder()
   }
 
   setManager () {
-    this.requireTxProvider()
+    this.requireTxBuilder()
   }
 
   setRecords (key: string, records: any[]) {
-    this.requireTxProvider()
+    this.requireTxBuilder()
   }
 
   setReverseRecord () {
-    this.requireTxProvider()
+    this.requireTxBuilder()
   }
 
-  createSubAccount () {
-    this.requireTxProvider()
+  async enableSubAccount () {
+    this.requireTxBuilder()
+    this.requireSigner()
+
+    const info = await this.info()
+    const coinType = await this.signer.getCoinType()
+
+    const txs = await this.txBuilder.enableSubAccount(this.account, {
+      key: info.owner_key,
+      coin_type: coinType,
+    })
+
+    await this.signer.signTxList(txs)
+
+    const res = await this.txBuilder.subAccountAPI.sendTransaction(txs)
+    return res
+  }
+
+  async mintSubAccount (params: SubAccountParams) {
+    this.requireTxBuilder()
+    this.requireSigner()
+
+    const info = await this.info()
+    const coinType = await this.signer.getCoinType()
+
+    const mintSubAccountParams = {
+      account: this.account,
+      type: 'blockchain',
+      key_info: {
+        key: info.owner_key,
+        coin_type: coinType
+      },
+      sub_account_list: [{
+        account: params.account,
+        type: 'blockchain',
+        key_info: params.keyInfo,
+        register_years: params.registerYears,
+      }],
+    }
+
+    const checkResults = await this.txBuilder.subAccountAPI.checkSubAccounts(mintSubAccountParams)
+
+    checkResults.result.forEach(result => {
+      if (result.status !== CheckSubAccountStatus.ok) {
+        throw new CodedError(`Sub-account ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
+      }
+    })
+
+    const txs = await this.txBuilder.subAccountAPI.createSubAccounts(mintSubAccountParams)
+
+    await this.signer.signTxList(txs)
+
+    return await this.txBuilder.subAccountAPI.sendTransaction(txs)
   }
 
   /** reader **/
 
   async info (): Promise<AccountInfo> {
     if (!this.#info) {
-      this.#info = (await this.bitIndexer.accountInfo(this.account)).account_info
+      const info = (await this.bitIndexer.accountInfo(this.account)).account_info
+
+      this.#info = info
     }
 
     return this.#info
