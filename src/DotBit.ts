@@ -1,46 +1,50 @@
 import { BitAccount } from './BitAccount'
+import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
+import { BitNetwork } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { KeyInfo } from './fetchers/BitIndexer.type'
+import { EthersSigner } from './signers/EthersSigner'
 
 interface CacheProvider {
   get: (key: string, options?: any) => any,
   set: (key: string, value: any, options?: any) => any,
 }
 
-interface DotBitConfig {
-  network?: 'mainnet' | 'testnet',
+export interface DotBitConfig {
+  network?: BitNetwork,
   cacheProvider?: CacheProvider,
-  bitIndexerUri?: string,
-  bitBuilderUri?: string,
-  ckbIndexerUri?: string,
-  ckbRpcUri?: string,
-  signer?: any,
+  bitIndexer?: BitIndexer,
+  bitBuilder?: RemoteTxBuilder,
+  signer?: EthersSigner,
 }
 
 export class DotBit {
-  cache: CacheProvider
+  network: BitNetwork
+  cacheProvider: CacheProvider
   bitIndexer: BitIndexer
+  bitBuilder: RemoteTxBuilder
+  signer: EthersSigner
 
-  constructor ({
-    cacheProvider,
-    bitIndexerUri,
-  }: DotBitConfig) {
-    this.cache = cacheProvider
-    this.bitIndexer = new BitIndexer({
-      uri: bitIndexerUri
-    })
+  constructor (config: DotBitConfig) {
+    this.network = config.network
+    this.cacheProvider = config.cacheProvider
+    this.bitIndexer = config.bitIndexer
+    this.bitBuilder = config.bitBuilder
+    this.signer = config.signer
   }
 
   private getAccount (account: string): BitAccount {
-    const cachedAccount = this.cache?.get(`account:${account}`)
+    const cachedAccount = this.cacheProvider?.get(`account:${account}`)
     if (cachedAccount) return cachedAccount
 
     const bitAccount = new BitAccount({
       account,
-      bitIndexer: this.bitIndexer
+      bitIndexer: this.bitIndexer,
+      bitBuilder: this.bitBuilder,
+      signer: this.signer,
     })
 
-    this.cache?.set(`account:${account}`, bitAccount)
+    this.cacheProvider?.set(`account:${account}`, bitAccount)
 
     return bitAccount
   }

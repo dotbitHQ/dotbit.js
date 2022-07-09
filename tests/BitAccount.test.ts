@@ -10,7 +10,7 @@ const bitIndexer = new BitIndexer({
   uri: 'https://test-indexer.did.id',
   // uri: 'https://test-indexer-not-use-in-production-env.did.id',
 })
-const txBuilder = new RemoteTxBuilder({
+const bitBuilder = new RemoteTxBuilder({
   subAccountUri: 'https://test-subaccount-api.did.id/v1'
 })
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
@@ -22,7 +22,7 @@ const signer = new EthersSigner(wallet)
 const account = new BitAccount({
   account: 'imac.bit',
   bitIndexer,
-  txBuilder,
+  bitBuilder,
   signer,
 })
 

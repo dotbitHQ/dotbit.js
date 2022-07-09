@@ -9,7 +9,7 @@ import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedErro
 interface BitAccountOptions {
   account: string,
   bitIndexer?: BitIndexer,
-  txBuilder?: RemoteTxBuilder,
+  bitBuilder?: RemoteTxBuilder,
   signer?: EthersSigner,
 }
 
@@ -22,7 +22,7 @@ export interface SubAccountParams {
 export class BitAccount {
   account: string
   bitIndexer: BitIndexer
-  txBuilder: RemoteTxBuilder
+  bitBuilder: RemoteTxBuilder
   signer: EthersSigner
 
   constructor (options: BitAccountOptions) {
@@ -32,7 +32,7 @@ export class BitAccount {
 
     this.account = options.account
     this.bitIndexer = options.bitIndexer
-    this.txBuilder = options.txBuilder
+    this.bitBuilder = options.bitBuilder
     this.signer = options.signer
   }
 
@@ -48,7 +48,7 @@ export class BitAccount {
   }
 
   requireTxBuilder () {
-    if (!this.txBuilder) {
+    if (!this.bitBuilder) {
       throw new Error('txBuilder is required')
     }
   }
@@ -77,14 +77,14 @@ export class BitAccount {
     const info = await this.info()
     const coinType = await this.signer.getCoinType()
 
-    const txs = await this.txBuilder.enableSubAccount(this.account, {
+    const txs = await this.bitBuilder.enableSubAccount(this.account, {
       key: info.owner_key,
       coin_type: coinType,
     })
 
     await this.signer.signTxList(txs)
 
-    const res = await this.txBuilder.subAccountAPI.sendTransaction(txs)
+    const res = await this.bitBuilder.subAccountAPI.sendTransaction(txs)
     return res
   }
 
@@ -110,7 +110,7 @@ export class BitAccount {
       }],
     }
 
-    const checkResults = await this.txBuilder.subAccountAPI.checkSubAccounts(mintSubAccountParams)
+    const checkResults = await this.bitBuilder.subAccountAPI.checkSubAccounts(mintSubAccountParams)
 
     checkResults.result.forEach(result => {
       if (result.status !== CheckSubAccountStatus.ok) {
@@ -118,11 +118,11 @@ export class BitAccount {
       }
     })
 
-    const txs = await this.txBuilder.subAccountAPI.createSubAccounts(mintSubAccountParams)
+    const txs = await this.bitBuilder.subAccountAPI.createSubAccounts(mintSubAccountParams)
 
     await this.signer.signTxList(txs)
 
-    return await this.txBuilder.subAccountAPI.sendTransaction(txs)
+    return await this.bitBuilder.subAccountAPI.sendTransaction(txs)
   }
 
   /** reader **/

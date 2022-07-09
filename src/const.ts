@@ -1,3 +1,8 @@
+export enum BitNetwork {
+  mainnet = 'mainnet',
+  testnet = 'testnet',
+}
+
 export enum CoinType {
   ETH = '60',
   TRX = '195',

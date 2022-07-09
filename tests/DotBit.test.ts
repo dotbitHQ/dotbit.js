@@ -1,8 +1,11 @@
 import { BitAccount } from '../src/BitAccount'
 import { DotBit } from '../src/DotBit'
+import { BitIndexer } from '../src/index'
 
 const dotbit = new DotBit({
-  bitIndexerUri: 'https://indexer-v1.did.id',
+  bitIndexer: new BitIndexer({
+    uri: 'https://indexer-v1.did.id',
+  })
 })
 
 describe('serverInfo', function () {

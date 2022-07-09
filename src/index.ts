@@ -1,4 +1,5 @@
 export * from './DotBit'
+export * from './createInstance'
 export * from './tools/account'
 export * from './tools/common'
 export * from './fetchers/BitIndexer'
