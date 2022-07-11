@@ -159,11 +159,19 @@ export class BitAccount {
     return key ? this.#records.filter(record => record.key === key) : this.#records
   }
 
-  async addrs (chain?: string) {
+  async #addrs (chain?: string) {
     const records = await this.records()
 
     const addresses = records.filter(record => record.type === RecordType.address)
     return chain ? addresses.filter(record => record.subtype === chain.toLowerCase()) : addresses
+  }
+
+  addresses (chain?: string) {
+    return this.#addrs(chain)
+  }
+
+  addrs (chain?: string) {
+    return this.#addrs(chain)
   }
 
   async dwebs (protocol?: string) {

@@ -64,7 +64,9 @@ export class EthersSigner {
   async signTxList (txs: TxsSignedOrUnSigned): Promise<TxsSignedOrUnSigned> {
     for (const list of txs.list) {
       for (const signList of list.sign_list) {
-        signList.sign_msg = await this.signData(Buffer.from(remove0x(signList.sign_msg), 'hex'))
+        if (signList.sign_msg) {
+          signList.sign_msg = await this.signData(Buffer.from(remove0x(signList.sign_msg), 'hex'))
+        }
       }
     }
 

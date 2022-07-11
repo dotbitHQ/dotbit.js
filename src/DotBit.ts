@@ -76,16 +76,30 @@ export class DotBit {
     return this.getAccount(bitAccount.account_info.account)
   }
 
-  async records (account: string, key?: string) {
+  records (account: string, key?: string) {
     const bitAccount = this.getAccount(account)
 
-    return await bitAccount.records(key)
+    return bitAccount.records(key)
   }
 
-  async addrs (account: string, chain?: string) {
+  accountInfo (account: string) {
     const bitAccount = this.getAccount(account)
 
-    return await bitAccount.addrs(chain)
+    return bitAccount.info()
+  }
+
+  #addrs (account: string, chain?: string) {
+    const bitAccount = this.getAccount(account)
+
+    return bitAccount.addrs(chain)
+  }
+
+  addresses (account: string, chain?: string) {
+    return this.#addrs(chain)
+  }
+
+  addrs (account: string, chain?: string) {
+    return this.#addrs(chain)
   }
 
   async dwebs (account: string, key?: string) {
