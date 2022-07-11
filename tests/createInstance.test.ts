@@ -1,6 +1,6 @@
 import { ethers, Wallet } from 'ethers'
 import { BitNetwork } from '../src/const'
-import { createInstance, DotBit, EthersSigner } from '../src/index'
+import { createInstance, DotBit, EthersSigner, ProviderSigner } from '../src/index'
 
 describe('createInstance', function () {
   it('no config', async function () {
@@ -36,5 +36,16 @@ describe('createInstance', function () {
     expect(dotbit.signer).toBeTruthy()
     const sig = await dotbit.signer.signData('0xtest')
     expect(sig).toBe('0x07d19751f27e47464247f75bd8fc274b2bfe65b534e59daa081dc8a4928e08102f8a6b84131835623f745ab8f2412966c7da6f05924b9239072fa95bdf02c1941c')
+  })
+
+  it('with ProviderSigner', async function () {
+    // @ts-expect-error
+    const signer = new ProviderSigner(window.ethereum)
+    const dotbit = createInstance({
+      network: BitNetwork.testnet,
+      signer,
+    })
+
+    expect(dotbit).toBeInstanceOf(DotBit)
   })
 })

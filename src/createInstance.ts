@@ -2,7 +2,7 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { BitNetwork } from './const'
 import { DotBit, DotBitConfig } from './DotBit'
 import { BitIndexer } from './fetchers/BitIndexer'
-import { EthersSigner } from './signers/EthersSigner'
+import { BitSigner } from './signers/BitSigner'
 
 interface CreateInstanceConfig {
   network?: BitNetwork,
@@ -10,7 +10,7 @@ interface CreateInstanceConfig {
   remoteTxBuilderConfig?: {
     subAccountUri: string,
   },
-  signer?: EthersSigner,
+  signer?: BitSigner,
 }
 
 export const DefaultConfig = {

@@ -3,7 +3,7 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { BitNetwork } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { KeyInfo } from './fetchers/BitIndexer.type'
-import { EthersSigner } from './signers/EthersSigner'
+import { BitSigner } from './signers/BitSigner'
 
 interface CacheProvider {
   get: (key: string, options?: any) => any,
@@ -15,7 +15,7 @@ export interface DotBitConfig {
   cacheProvider?: CacheProvider,
   bitIndexer?: BitIndexer,
   bitBuilder?: RemoteTxBuilder,
-  signer?: EthersSigner,
+  signer?: BitSigner,
 }
 
 export class DotBit {
@@ -23,7 +23,7 @@ export class DotBit {
   cacheProvider: CacheProvider
   bitIndexer: BitIndexer
   bitBuilder: RemoteTxBuilder
-  signer: EthersSigner
+  signer: BitSigner
 
   constructor (config: DotBitConfig) {
     this.network = config.network

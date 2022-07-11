@@ -2,7 +2,7 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { AccountStatus, CheckSubAccountStatus, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { AccountInfo, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
-import { EthersSigner } from './signers/EthersSigner'
+import { BitSigner } from './signers/BitSigner'
 import { isSupportedAccount } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
@@ -10,7 +10,7 @@ interface BitAccountOptions {
   account: string,
   bitIndexer?: BitIndexer,
   bitBuilder?: RemoteTxBuilder,
-  signer?: EthersSigner,
+  signer?: BitSigner,
 }
 
 export interface SubAccountParams {
@@ -23,7 +23,7 @@ export class BitAccount {
   account: string
   bitIndexer: BitIndexer
   bitBuilder: RemoteTxBuilder
-  signer: EthersSigner
+  signer: BitSigner
 
   constructor (options: BitAccountOptions) {
     if (!isSupportedAccount(options.account)) {
