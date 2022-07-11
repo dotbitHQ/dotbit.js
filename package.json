@@ -1,7 +1,9 @@
 {
   "name": "dotbit",
   "version": "0.1.0",
-  "description": ".bit management",
+  "description": "A complete .bit SDK and utilities in TypeScript",
+  "author": "Jeff Jing <https://github.com/zgayjjf>",
+  "license": "MIT",
   "main": "lib/index.js",
   "module": "lib.esm/index.js",
   "types": "lib/index.d.ts",
@@ -20,10 +22,21 @@
     "DID",
     "Decentralized Identity",
     "web3",
-    "Blockchain"
+    "blockchain",
+    "nervos",
+    "ckb"
   ],
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "lib",
+    "lib.esm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dotbitHQ/dotbit.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dotbitHQ/dotbit.js/issues"
+  },
   "devDependencies": {
     "@linkdesu/moleculejs": "^1.1.1",
     "@types/jest": "^28.1.2",
@@ -37,7 +50,6 @@
     "vite": "^2.9.14"
   },
   "dependencies": {
-    "@ensdomains/ensjs": "^2.1.0",
     "@metamask/eth-sig-util": "^4.0.1",
     "blake2b": "^2.1.4",
     "cross-fetch": "^3.1.5",

@@ -4,3 +4,4 @@ coverage/
 lib/
 lib.esm/
 example/browser/dist/
+*.tgz

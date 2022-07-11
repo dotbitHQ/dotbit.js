@@ -14,7 +14,7 @@ A complete [.bit](https://did.id) SDK and utilities in JavaScript (and TypeScrip
 - Query all the sub-accounts of a .bit main account. (Coming soon)
 - Manage the **ownership** of a .bit account. (Coming soon)
 - Manage the **records** of a .bit account. (Coming soon)
-- **Register a .bit account** with CKB.
+- **Register a .bit account** with CKB. (Coming soon)
 
 ## Installation
 ```shell
