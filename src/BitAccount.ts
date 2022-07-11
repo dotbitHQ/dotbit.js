@@ -43,35 +43,35 @@ export class BitAccount {
 
   requireSigner () {
     if (!this.signer) {
-      throw new Error('signer is required')
+      throw new CodedError('signer is required', BitErrorCode.SignerRequired)
     }
   }
 
-  requireTxBuilder () {
+  requireBitBuilder () {
     if (!this.bitBuilder) {
-      throw new Error('txBuilder is required')
+      throw new CodedError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
     }
   }
 
   /** writer **/
   setOwner (address: string, coinType: string) {
-    this.requireTxBuilder()
+    this.requireBitBuilder()
   }
 
   setManager () {
-    this.requireTxBuilder()
+    this.requireBitBuilder()
   }
 
   setRecords (key: string, records: any[]) {
-    this.requireTxBuilder()
+    this.requireBitBuilder()
   }
 
   setReverseRecord () {
-    this.requireTxBuilder()
+    this.requireBitBuilder()
   }
 
   async enableSubAccount () {
-    this.requireTxBuilder()
+    this.requireBitBuilder()
     this.requireSigner()
 
     const info = await this.info()
@@ -89,7 +89,7 @@ export class BitAccount {
   }
 
   async mintSubAccount (params: SubAccountParams) {
-    this.requireTxBuilder()
+    this.requireBitBuilder()
     this.requireSigner()
 
     const info = await this.info()

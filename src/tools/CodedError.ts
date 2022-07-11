@@ -10,7 +10,9 @@ export enum BitIndexerErrorCode {
 
 export enum BitErrorCode {
   UnsupportedEVMChainId = 1000,
-  SubAccountStatusInvalid = 1001,
+  SubAccountStatusInvalid,
+  SignerRequired,
+  BitBuilderRequired,
 }
 
 export class CodedError extends Error {

@@ -4,8 +4,8 @@ import { EthersSigner } from '../../src/index'
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
-const signer = new Wallet(privateKey1)
-const ethersSigner = new EthersSigner(signer)
+const wallet = new Wallet(privateKey1)
+const signer = new EthersSigner(wallet)
 
 const typedDataFromMetamask = {
   domain: {
@@ -294,32 +294,32 @@ const typedDataFromBitFull = {
 
 describe('signData', function () {
   it('signPersonal', async function () {
-    const sig = await ethersSigner.signData('0xtest')
+    const sig = await signer.signData('0xtest')
     expect(sig).toBe('0x07d19751f27e47464247f75bd8fc274b2bfe65b534e59daa081dc8a4928e08102f8a6b84131835623f745ab8f2412966c7da6f05924b9239072fa95bdf02c1941c')
   })
 
   it('signPersonal with hex', async function () {
-    const sig = await ethersSigner.signData(Buffer.from('b6f4af8809a529008110a468f2890875a2a9db3ac1e430e12f4a2dee0f89d33c', 'hex'))
+    const sig = await signer.signData(Buffer.from('b6f4af8809a529008110a468f2890875a2a9db3ac1e430e12f4a2dee0f89d33c', 'hex'))
 
     expect(sig).toBe('0x9e300546be6eec960f46eebf5a9a1aeb088f16cb232bdeaa1e0eaa27b75e96f26e1ad42e1aa454af24e6d0dead3b94fc03dd5c65ec0c284d83a828482fa48d721b')// wu 0x
   })
 
   // same with app.did.id
   it('signTypedData from MetaMask', async function () {
-    const sig = await ethersSigner.signData(typedDataFromMetamask, true)
+    const sig = await signer.signData(typedDataFromMetamask, true)
     expect(sig).toBe('0x3e6af6088752b89149fdbce440877476f1abb2f1c94ddb284829c9ae5f14339117c155af8005583a13b043e85d8a6cfb29787b9e91d6fd1c3b0a3d45906e31a51b')
   })
 
   // same with app.did.id
   it('signTypedData from .bit full', async function () {
-    const sig = await ethersSigner.signData(typedDataFromBitFull, true)
+    const sig = await signer.signData(typedDataFromBitFull, true)
     expect(sig).toBe('0x48f3a06a0b3e4763c91a4a5e087b42812814d41ca819ed4dc0e512869b19c02d6924eca590cef5dcf79721a5a7f9cfb647ce2843d684721d5d6b9dbb7de41e331c')
   })
 
   // todo: why? with or without EIP712Domain(typedDataFromBit or typedDataFromBitFull), the sig is different
   // same with app.did.id
   it('signTypedData from .bit', async function () {
-    const sig = await ethersSigner.signData(typedDataFromBit, true)
+    const sig = await signer.signData(typedDataFromBit, true)
     expect(sig).toBe('0x38304e2ee76f4faeb6c3ff0b83d7f29a213c4bf03a410a3ccd62450e23777a624629449267d225f9263c656fb2e471c1decb0854f88d2c69c84879a6ff27bdc71b')
   })
 })
@@ -361,11 +361,11 @@ describe('eth-sig-util', function () {
 
 describe('signer._signTypedData', function () {
   it('signTypedData from MetaMask, with multiple primaryTypes, error', async function () {
-    await expect(ethersSigner.signer._signTypedData(typedDataFromMetamask.domain, typedDataFromMetamask.types, typedDataFromMetamask.message)).rejects.toThrow('ambiguous primary types or unused types: "EIP712Domain", "Group", "Mail"')
+    await expect(signer.signer._signTypedData(typedDataFromMetamask.domain, typedDataFromMetamask.types, typedDataFromMetamask.message)).rejects.toThrow('ambiguous primary types or unused types: "EIP712Domain", "Group", "Mail"')
   })
 
   it('signTypedData from .bit full, with multiple primaryTypes, error', async function () {
-    await expect(ethersSigner.signer._signTypedData(typedDataFromBitFull.domain, typedDataFromBitFull.types, typedDataFromBitFull.message)).rejects.toThrow('ambiguous primary types or unused types: "EIP712Domain", "Transaction"')
+    await expect(signer.signer._signTypedData(typedDataFromBitFull.domain, typedDataFromBitFull.types, typedDataFromBitFull.message)).rejects.toThrow('ambiguous primary types or unused types: "EIP712Domain", "Transaction"')
   })
 
   // same with app.did.id
@@ -373,14 +373,14 @@ describe('signer._signTypedData', function () {
     const types = Object.assign({}, typedDataFromMetamask.types)
     delete types.EIP712Domain
     delete types.Group
-    const sig = await ethersSigner.signer._signTypedData(typedDataFromMetamask.domain, types, typedDataFromMetamask.message)
+    const sig = await signer.signer._signTypedData(typedDataFromMetamask.domain, types, typedDataFromMetamask.message)
     expect(sig).toBe('0x3e6af6088752b89149fdbce440877476f1abb2f1c94ddb284829c9ae5f14339117c155af8005583a13b043e85d8a6cfb29787b9e91d6fd1c3b0a3d45906e31a51b')
   })
 
   // todo: the ethers' result is different from metamask
   // different with app.did.id
   it('signTypedData from .bit', async function () {
-    const sig = await ethersSigner.signer._signTypedData(typedDataFromBit.domain, typedDataFromBit.types, typedDataFromBit.message)
+    const sig = await signer.signer._signTypedData(typedDataFromBit.domain, typedDataFromBit.types, typedDataFromBit.message)
 
     expect(sig).toBe('0xdf6f5835ccf3abd2c98a3a1991211754411a685e3818f61950672d5b36278d0a3269b9258d38c7af95544ba77503abf53c003eaa110a82574588c5660939db8d1c')
   })
