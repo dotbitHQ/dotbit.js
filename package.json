@@ -1,6 +1,6 @@
 {
   "name": "dotbit",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": ".bit management",
   "main": "lib/index.js",
   "module": "lib.esm/index.js",
@@ -11,7 +11,8 @@
     "build": "npm run clear && npm run build:esm && npm run build:commonjs",
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
-    "dev:browser": "npm run build & vite ./example/browser"
+    "dev:browser": "npm run build & vite ./example/browser",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "dotbit",
