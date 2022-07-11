@@ -3,14 +3,23 @@
   "version": "0.0.1",
   "description": ".bit management",
   "main": "lib/index.js",
+  "module": "lib.esm/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest",
-    "clear": "rm -rf ./lib/",
-    "build": "npm run clear && tsc -p tsconfig.build.json"
+    "clear": "rm -rf ./lib/ ./lib.esm/",
+    "build": "npm run clear && npm run build:esm && npm run build:commonjs",
+    "build:commonjs": "tsc -p tsconfig.build.json",
+    "build:esm": "tsc -p tsconfig.build.esm.json",
+    "dev:browser": "vite ./example/browser/index.html"
   },
   "keywords": [
     "dotbit",
-    ".bit"
+    ".bit",
+    "DID",
+    "Decentralized Identity",
+    "web3",
+    "Blockchain"
   ],
   "author": "",
   "license": "ISC",

@@ -1,4 +1,4 @@
-import { ethers, Wallet } from '_ethers@5.6.9@ethers'
+import { ethers, Wallet } from 'ethers'
 import { BitNetwork } from '../src/const'
 import { createInstance, DotBit, EthersSigner } from '../src/index'
 
