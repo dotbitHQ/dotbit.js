@@ -1,6 +1,7 @@
 dotbit: .bit JavaScript SDK
 ==================
 ![NPM](https://img.shields.io/npm/l/dotbit)
+![npm](https://img.shields.io/npm/v/dotbit)
 
 A complete [.bit](https://did.id) SDK and utilities in JavaScript (and TypeScript).
 
