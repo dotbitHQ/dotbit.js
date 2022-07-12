@@ -14,7 +14,8 @@
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "dev:browser": "npm run build & vite ./example/browser",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "slip44": "cnpm i bip44-constants@latest -D && node scripts/slip44-json.js"
   },
   "keywords": [
     "dotbit",
@@ -41,6 +42,7 @@
     "@linkdesu/moleculejs": "^1.1.1",
     "@types/jest": "^28.1.2",
     "@types/node": "^18.0.0",
+    "bip44-constants": "latest",
     "eslint": "^8.18.0",
     "eslint-config-blockabc": "^0.15.2",
     "jest": "^28.1.1",

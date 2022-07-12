@@ -170,6 +170,14 @@ describe('records', function () {
 })
 
 describe('addrs', function () {
+  const ethAddrs = [{
+    key: 'address.eth',
+    type: 'address',
+    subtype: 'eth',
+    label: '',
+    value: '0x1d643fac9a463c9d544506006a6348c234da485f',
+    ttl: '300'
+  }]
   it('no filter', async function () {
     const addrs = await accountProd.addrs()
 
@@ -221,27 +229,19 @@ describe('addrs', function () {
   it('filter `eth`', async function () {
     const addrs = await accountProd.addrs('eth')
 
-    expect(addrs).toMatchObject([{
-      key: 'address.eth',
-      type: 'address',
-      subtype: 'eth',
-      label: '',
-      value: '0x1d643fac9a463c9d544506006a6348c234da485f',
-      ttl: '300'
-    }])
+    expect(addrs).toMatchObject(ethAddrs)
   })
 
   it('filter `ETH`', async function () {
     const addrs = await accountProd.addrs('ETH')
 
-    expect(addrs).toMatchObject([{
-      key: 'address.eth',
-      type: 'address',
-      subtype: 'eth',
-      label: '',
-      value: '0x1d643fac9a463c9d544506006a6348c234da485f',
-      ttl: '300'
-    }])
+    expect(addrs).toMatchObject(ethAddrs)
+  })
+
+  it('filter `60`', async function () {
+    const addrs = await accountProd.addrs('60')
+
+    expect(addrs).toMatchObject(ethAddrs)
   })
 })
 

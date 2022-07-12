@@ -4,6 +4,7 @@ import { BitIndexer } from './fetchers/BitIndexer'
 import { AccountInfo, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
 import { CheckAccountsParams, SubAccount, SubAccountListParams } from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
+import { mapCoinTypeToSymbol, mapSymbolToCoinType } from './slip44/slip44'
 import { isSupportedAccount, toDottedStyle } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
@@ -206,7 +207,10 @@ export class BitAccount {
     const records = await this.records()
 
     const addresses = records.filter(record => record.type === RecordType.address)
-    return chain ? addresses.filter(record => record.subtype === chain.toLowerCase()) : addresses
+    // for the sake of compatibility, we need to search for both coinType & symbol
+    const coinType = mapSymbolToCoinType(chain)
+    const symbol = mapCoinTypeToSymbol(chain).toLowerCase()
+    return chain ? addresses.filter(record => record.subtype === symbol || record.subtype === coinType) : addresses
   }
 
   addresses (chain?: string) {
