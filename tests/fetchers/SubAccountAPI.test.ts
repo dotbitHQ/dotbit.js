@@ -16,3 +16,27 @@ describe('initSubAccount', function () {
     expect(tx.list[0].sign_list[0].sign_type).toBe(3)
   })
 })
+
+describe('subAccountList', function () {
+  it('work', async function () {
+    const res = await subAccountApi.subAccountList({
+      account: 'imac.bit',
+      page: 1,
+      size: 10,
+      keyword: '',
+    })
+
+    expect(res.list.length).toBeGreaterThan(1)
+  })
+
+  it('with keyword', async function () {
+    const res = await subAccountApi.subAccountList({
+      account: 'imac.bit',
+      page: 1,
+      size: 10,
+      keyword: '001'
+    })
+
+    expect(res.list.length).toBe(1)
+  })
+})

@@ -1,33 +1,29 @@
 import { CheckSubAccountStatus } from '../const'
 import { Networking } from '../tools/Networking'
-import { KeyInfo } from './BitIndexer.type'
+import { BitKeyInfo, KeyInfo } from './BitIndexer.type'
 
 export interface SignList {
   sign_type: number,
   sign_msg: string,
 }
 
-export interface List {
+export interface TxsList {
   sign_list: SignList[],
 }
 
 export interface TxsSignedOrUnSigned {
   action: string,
   sign_key: string,
-  list: List[],
+  list: TxsList[],
 }
 
-export interface SubAccount {
+export interface SubAccount extends BitKeyInfo {
   account: string,
-  type: string, // blockchain
-  key_info: KeyInfo,
   register_years: number,
 }
 
-export interface CheckAccountsParams {
+export interface CheckAccountsParams extends BitKeyInfo {
   account: string,
-  type: string,
-  key_info: KeyInfo,
   sub_account_list: SubAccount[],
 }
 
@@ -36,11 +32,33 @@ export interface SubAccountWithStatus extends SubAccount {
   message: string,
 }
 
-export interface CreateSubAccountParams {
+export interface CreateSubAccountParams extends BitKeyInfo {
   account: string,
-  type: string,
-  key_info: KeyInfo,
   sub_account_list: SubAccount[],
+}
+
+export interface SubAccountListParams {
+  'account': string,
+  'page': number,
+  'size': number,
+  'keyword': string,
+}
+
+export interface SubAccountListItem {
+  account: string,
+  owner: BitKeyInfo,
+  manager: BitKeyInfo,
+  registered_at: number,
+  expired_at: number,
+  status: number,
+  enable_sub_account: number,
+  renew_sub_account_price: number,
+  nonce: number,
+}
+
+export interface SubAccountListRes {
+  total: number,
+  list: SubAccountListItem[],
 }
 
 export class SubAccountAPI {
@@ -60,6 +78,10 @@ export class SubAccountAPI {
 
   sendTransaction (tx: TxsSignedOrUnSigned): Promise<{ hash: string, hash_list: string[] }> {
     return this.net.post('transaction/send', tx)
+  }
+
+  subAccountList (params: SubAccountListParams): Promise<SubAccountListRes> {
+    return this.net.post('sub/account/list', params)
   }
 
   checkSubAccounts (params: CheckAccountsParams): Promise<{result: SubAccountWithStatus[]}> {

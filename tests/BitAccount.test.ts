@@ -294,3 +294,10 @@ describe('mintSubAccount', function () {
     })
   }, 10000)
 })
+
+describe('subAccounts', function () {
+  it('should work', async function () {
+    const subAccounts = await account.subAccounts()
+    expect(subAccounts.list.length).toBeGreaterThan(1)
+  }, 10000)
+})

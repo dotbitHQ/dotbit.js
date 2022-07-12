@@ -51,6 +51,11 @@ export interface KeyInfo {
   'chain_id'?: string, // 1: ETH, 56: BSC, 137: Polygon
 }
 
+export interface BitKeyInfo {
+  type: string,
+  key_info: KeyInfo,
+}
+
 export interface BitAccountList {
   account_list: Array<{
     account: string,

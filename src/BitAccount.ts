@@ -2,8 +2,9 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { AccountStatus, CheckSubAccountStatus, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { AccountInfo, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
+import { SubAccountListParams } from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
-import { isSupportedAccount } from './tools/account'
+import { isSupportedAccount, toDottedStyle } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
 interface BitAccountOptions {
@@ -88,29 +89,35 @@ export class BitAccount {
     return res
   }
 
-  async mintSubAccount (params: SubAccountParams) {
+  /**
+   * Mint multiple sub accounts at once
+   * @param params
+   */
+  async mintSubAccounts (params: SubAccountParams[]) {
     this.requireBitBuilder()
     this.requireSigner()
 
     const info = await this.info()
     const coinType = await this.signer.getCoinType()
 
-    const mintSubAccountParams = {
+    const mintSubAccountsParams = {
       account: this.account,
       type: 'blockchain',
       key_info: {
         key: info.owner_key,
         coin_type: coinType
       },
-      sub_account_list: [{
-        account: params.account,
-        type: 'blockchain',
-        key_info: params.keyInfo,
-        register_years: params.registerYears,
-      }],
+      sub_account_list: params.map(param => {
+        return {
+          account: toDottedStyle(param.account),
+          type: 'blockchain',
+          key_info: param.keyInfo,
+          register_years: param.registerYears,
+        }
+      })
     }
 
-    const checkResults = await this.bitBuilder.subAccountAPI.checkSubAccounts(mintSubAccountParams)
+    const checkResults = await this.bitBuilder.subAccountAPI.checkSubAccounts(mintSubAccountsParams)
 
     checkResults.result.forEach(result => {
       if (result.status !== CheckSubAccountStatus.ok) {
@@ -118,11 +125,32 @@ export class BitAccount {
       }
     })
 
-    const txs = await this.bitBuilder.subAccountAPI.createSubAccounts(mintSubAccountParams)
+    const txs = await this.bitBuilder.subAccountAPI.createSubAccounts(mintSubAccountsParams)
 
     await this.signer.signTxList(txs)
 
     return await this.bitBuilder.subAccountAPI.sendTransaction(txs)
+  }
+
+  /**
+   * Mint a sub account
+   * @param params
+   */
+  mintSubAccount (params: SubAccountParams) {
+    return this.mintSubAccounts([params])
+  }
+
+  /**
+   * List the sub accounts of a main account, with pagination and filter
+   * @param params Omit<SubAccountListParams, 'account'>
+   */
+  subAccounts (params: Omit<SubAccountListParams, 'account'> = { page: 1, size: 100, keyword: '' }) {
+    return this.bitBuilder.subAccountAPI.subAccountList({
+      account: this.account,
+      page: params.page,
+      size: params.size,
+      keyword: params.keyword,
+    })
   }
 
   /** reader **/
@@ -206,10 +234,6 @@ export class BitAccount {
   }
 
   async avatar () {
-
-  }
-
-  async subAccounts () {
 
   }
 }
