@@ -296,29 +296,51 @@ describe('enableSubAccount', function () {
 })
 
 describe('mintSubAccount', function () {
+  const mintParam = {
+    account: '005.imac.bit',
+    keyInfo: {
+      coin_type: CoinType.ETH,
+      key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+    },
+    registerYears: 1,
+  }
   // it('should work', async function () {
-  //   const txs = await account.mintSubAccount({
-  //     account: '005.imac.bit',
-  //     keyInfo: {
-  //       coin_type: CoinType.ETH,
-  //       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
-  //     },
-  //     registerYears: 1,
-  //   })
+  //   const txs = await account.mintSubAccount(mintParam)
   //
   //   console.log(txs)
   //   expect(txs.hash_list.length).toBe(1)
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(account.mintSubAccount({
-      account: '005.imac.bit',
-      keyInfo: {
-        coin_type: CoinType.ETH,
-        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
-      },
-      registerYears: 1,
-    })).rejects.toThrow('Sub-account 005.imac.bit can not be registered, reason: registered, status 2')
+    await expect(account.mintSubAccount(mintParam)).rejects.toThrow('Sub-account 005.imac.bit can not be registered, reason: registered, status 2')
+  }, 10000)
+})
+
+describe('mintSubAccounts', function () {
+  const mintParams = [{
+    account: '006.imac.bit',
+    keyInfo: {
+      coin_type: CoinType.ETH,
+      key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+    },
+    registerYears: 1,
+  }, {
+    account: '007.imac.bit',
+    keyInfo: {
+      coin_type: CoinType.ETH,
+      key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+    },
+    registerYears: 1,
+  }]
+
+  it('should work', async function () {
+    const txs = await account.mintSubAccounts(mintParams)
+
+    expect(txs.hash_list.length).toBe(1)
+  }, 10000)
+
+  it('should throw error', async function () {
+    await expect(account.mintSubAccounts(mintParams)).rejects.toThrow('Sub-account 006.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
