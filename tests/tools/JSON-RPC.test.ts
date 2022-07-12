@@ -9,7 +9,7 @@ describe('request', function () {
     }])
 
     expect(res.data.account_info.account).toBe('imac.bit')
-  })
+  }, 10000)
 
   it('param error', function () {
     const request = jsonrpc.request('das_accountInfo', {

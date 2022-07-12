@@ -26,6 +26,19 @@ const account = new BitAccount({
   signer,
 })
 
+const bitIndexerProd = new BitIndexer({
+  uri: 'https://indexer-v1.did.id',
+})
+const bitBuilderProd = new RemoteTxBuilder({
+  subAccountUri: 'https://subaccount-api.did.id/v1'
+})
+const accountProd = new BitAccount({
+  account: 'imac.bit',
+  bitIndexer: bitIndexerProd,
+  bitBuilder: bitBuilderProd,
+  signer,
+})
+
 describe('constructor', () => {
   expect(() => {
     const account = new BitAccount({
@@ -54,22 +67,22 @@ describe('info', function () {
       account: 'imac.bit',
       account_alias: 'imac.bit',
       account_id_hex: '0x5728088435fb8788472a9ca601fbc0b9cbea8be3',
-      next_account_id_hex: '0x572861ec594b4f8d2dda64885f0561e4fb1591ca',
-      create_at_unix: 1631851320,
-      expired_at_unix: 1663387320,
+      next_account_id_hex: '0x5732e001baffd23c9d23c430c85dc8600c3d32ba',
+      create_at_unix: 1656672987,
+      expired_at_unix: 1688208987,
       status: 0,
-      das_lock_arg_hex: '0x051d643fac9a463c9d544506006a6348c234da485f051d643fac9a463c9d544506006a6348c234da485f',
+      das_lock_arg_hex: '0x057df93d9f500fd5a9537fee086322a988d4fdcc38057df93d9f500fd5a9537fee086322a988d4fdcc38',
       owner_algorithm_id: 5,
-      owner_key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+      owner_key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
       manager_algorithm_id: 5,
-      manager_key: '0x1d643fac9a463c9d544506006a6348c234da485f'
+      manager_key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
     })
   })
 })
 
 describe('records', function () {
   it('work', async function () {
-    const records = await account.records()
+    const records = await accountProd.records()
 
     expect(records).toStrictEqual([
       {
@@ -116,7 +129,7 @@ describe('records', function () {
   })
 
   it('filter by key', async function () {
-    const records = await account.records('address.eth')
+    const records = await accountProd.records('address.eth')
 
     expect(records).toMatchObject([{
       key: 'address.eth',
@@ -129,7 +142,7 @@ describe('records', function () {
   })
 
   it('filter by key result in multiple records', async function () {
-    const records = await account.records('address.trx')
+    const records = await accountProd.records('address.trx')
 
     expect(records).toMatchObject([{
       key: 'address.trx',
@@ -150,7 +163,7 @@ describe('records', function () {
   })
 
   it('filter by key result in empty records', async function () {
-    const records = await account.records('address.btc')
+    const records = await accountProd.records('address.btc')
 
     expect(records).toMatchObject([])
   })
@@ -158,7 +171,7 @@ describe('records', function () {
 
 describe('addrs', function () {
   it('no filter', async function () {
-    const addrs = await account.addrs()
+    const addrs = await accountProd.addrs()
 
     expect(addrs).toMatchObject([{
       key: 'address.eth',
@@ -186,7 +199,7 @@ describe('addrs', function () {
   })
 
   it('filter `trx`', async function () {
-    const addrs = await account.addrs('trx')
+    const addrs = await accountProd.addrs('trx')
 
     expect(addrs).toMatchObject([{
       key: 'address.trx',
@@ -206,7 +219,7 @@ describe('addrs', function () {
   })
 
   it('filter `eth`', async function () {
-    const addrs = await account.addrs('eth')
+    const addrs = await accountProd.addrs('eth')
 
     expect(addrs).toMatchObject([{
       key: 'address.eth',
@@ -219,7 +232,7 @@ describe('addrs', function () {
   })
 
   it('filter `ETH`', async function () {
-    const addrs = await account.addrs('ETH')
+    const addrs = await accountProd.addrs('ETH')
 
     expect(addrs).toMatchObject([{
       key: 'address.eth',
@@ -242,7 +255,7 @@ describe('addrs', function () {
 
 describe('profiles', function () {
   it('no filter', async function () {
-    const profiles = await account.profiles()
+    const profiles = await accountProd.profiles()
 
     expect(profiles).toMatchObject([{
       key: 'profile.website',
@@ -263,7 +276,7 @@ describe('profiles', function () {
   })
 
   it('filter `website`', async function () {
-    const profiles = await account.profiles('website')
+    const profiles = await accountProd.profiles('website')
 
     expect(profiles).toMatchObject([{
       key: 'profile.website',
@@ -278,23 +291,34 @@ describe('profiles', function () {
 
 describe('enableSubAccount', function () {
   it('should work', function () {
-    return expect(account.enableSubAccount()).rejects.toThrow('ValidationFailure: see the error code -31')
+    return expect(account.enableSubAccount()).rejects.toThrow('40000: sub account already initialized')
   }, 10000)
 })
 
 describe('mintSubAccount', function () {
-  it('should work', async function () {
-    const txs = await account.mintSubAccount({
+  // it('should work', async function () {
+  //   const txs = await account.mintSubAccount({
+  //     account: '005.imac.bit',
+  //     keyInfo: {
+  //       coin_type: CoinType.ETH,
+  //       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+  //     },
+  //     registerYears: 1,
+  //   })
+  //
+  //   console.log(txs)
+  //   expect(txs.hash_list.length).toBe(1)
+  // }, 10000)
+
+  it('should throw error', async function () {
+    await expect(account.mintSubAccount({
       account: '005.imac.bit',
       keyInfo: {
         coin_type: CoinType.ETH,
         key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
       },
       registerYears: 1,
-    })
-
-    console.log(txs)
-    expect(txs.hash_list.length).toBe(1)
+    })).rejects.toThrow('Sub-account 005.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 

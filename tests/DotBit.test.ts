@@ -13,7 +13,7 @@ describe('serverInfo', function () {
     const info = await dotbit.serverInfo()
 
     expect(info.current_block_number).toBeGreaterThan(10000)
-  })
+  }, 10000)
 })
 
 describe('accountsOfOwner', function () {

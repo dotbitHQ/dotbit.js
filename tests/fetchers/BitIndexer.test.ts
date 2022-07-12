@@ -9,7 +9,7 @@ describe('serverInfo', () => {
     const info = await indexer.serverInfo()
 
     expect(info.current_block_number).toBeGreaterThan(10000)
-  })
+  }, 10000)
 })
 
 describe('accountInfo', () => {

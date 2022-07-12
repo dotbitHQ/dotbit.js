@@ -301,7 +301,7 @@ describe('signData', function () {
   it('signPersonal with hex', async function () {
     const sig = await signer.signData(Buffer.from('b6f4af8809a529008110a468f2890875a2a9db3ac1e430e12f4a2dee0f89d33c', 'hex'))
 
-    expect(sig).toBe('0x9e300546be6eec960f46eebf5a9a1aeb088f16cb232bdeaa1e0eaa27b75e96f26e1ad42e1aa454af24e6d0dead3b94fc03dd5c65ec0c284d83a828482fa48d721b')// wu 0x
+    expect(sig).toBe('0x35594648433fec30670dbb952dfee533d6875c871cf0193fa5bd204ba1248df21e3bfaa08aea1bea0d79ec6097b4eb741721b90be4850b5242fa64c09edc242c1c')// wu 0x
   })
 
   // same with app.did.id

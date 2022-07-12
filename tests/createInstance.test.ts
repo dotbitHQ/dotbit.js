@@ -39,8 +39,16 @@ describe('createInstance', function () {
   })
 
   it('with ProviderSigner', async function () {
-    // @ts-expect-error
-    const signer = new ProviderSigner(window.ethereum)
+    const mockedEthereum = {
+      request: async ({ method, params }) => {
+        return {
+          jsonrpc: '2.0',
+          id: 1,
+          result: null,
+        }
+      }
+    }
+    const signer = new ProviderSigner(mockedEthereum)
     const dotbit = createInstance({
       network: BitNetwork.testnet,
       signer,
