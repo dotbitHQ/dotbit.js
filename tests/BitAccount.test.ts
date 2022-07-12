@@ -1,9 +1,9 @@
 import { ethers, Wallet } from 'ethers'
 import { BitAccount } from '../src/BitAccount'
 import { RemoteTxBuilder } from '../src/builders/RemoteTxBuilder'
-import { CoinType } from '../src/const'
+import { CheckSubAccountStatus, CoinType } from '../src/const'
 import { BitIndexer } from '../src/fetchers/BitIndexer'
-import { EthersSigner } from '../src/index'
+import { EthersSigner, SubAccount } from '../src/index'
 
 const bitIndexer = new BitIndexer({
   // uri: 'https://indexer-v1.did.id',
@@ -285,13 +285,16 @@ describe('enableSubAccount', function () {
 describe('mintSubAccount', function () {
   it('should work', async function () {
     const txs = await account.mintSubAccount({
-      account: '002.imac.bit',
+      account: '005.imac.bit',
       keyInfo: {
         coin_type: CoinType.ETH,
         key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
       },
       registerYears: 1,
     })
+
+    console.log(txs)
+    expect(txs.hash_list.length).toBe(1)
   }, 10000)
 })
 
@@ -300,4 +303,38 @@ describe('subAccounts', function () {
     const subAccounts = await account.subAccounts()
     expect(subAccounts.list.length).toBeGreaterThan(1)
   }, 10000)
+})
+
+describe('checkSubAccounts', function () {
+  it('work', async function () {
+    const subAccounts: SubAccount[] = [{
+      account: 'xyz.imac.bit',
+      type: 'blockchain',
+      key_info: {
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+        coin_type: CoinType.ETH,
+      },
+      register_years: 1,
+    }]
+
+    const result = await account.checkSubAccounts(subAccounts)
+    expect(result.result[0].status).toBe(0)
+    expect(result.result[0].message).toBe('')
+  })
+
+  it('should throw error', async function () {
+    const subAccounts: SubAccount[] = [{
+      account: '001.imac.bit',
+      type: 'blockchain',
+      key_info: {
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+        coin_type: CoinType.ETH,
+      },
+      register_years: 1,
+    }]
+
+    const result = await account.checkSubAccounts(subAccounts)
+    expect(result.result[0].status).toBe(CheckSubAccountStatus.registered)
+    expect(result.result[0].message).toBe('registered')
+  })
 })

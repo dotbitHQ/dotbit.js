@@ -1,5 +1,4 @@
 import { BitIndexer } from '../../src/fetchers/BitIndexer'
-import { BitIndexerErrorCode, CodedError } from '../../src/tools/CodedError'
 
 const indexer = new BitIndexer({
   uri: 'https://indexer-v1.did.id'

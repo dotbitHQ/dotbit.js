@@ -2,7 +2,7 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { AccountStatus, CheckSubAccountStatus, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { AccountInfo, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
-import { SubAccountListParams } from './fetchers/SubAccountAPI'
+import { CheckAccountsParams, SubAccount, SubAccountListParams } from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
 import { isSupportedAccount, toDottedStyle } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
@@ -90,6 +90,34 @@ export class BitAccount {
   }
 
   /**
+   * List the sub accounts of a main account, with pagination and filter
+   * @param params Omit<SubAccountListParams, 'account'>
+   */
+  subAccounts (params: Omit<SubAccountListParams, 'account'> = { page: 1, size: 100, keyword: '' }) {
+    return this.bitBuilder.subAccountAPI.subAccountList({
+      account: this.account,
+      page: params.page,
+      size: params.size,
+      keyword: params.keyword,
+    })
+  }
+
+  async checkSubAccounts (subAccounts: SubAccount[]) {
+    const info = await this.info()
+    const coinType = await this.signer.getCoinType()
+
+    return await this.bitBuilder.subAccountAPI.checkSubAccounts({
+      account: this.account,
+      type: 'blockchain',
+      key_info: {
+        key: info.owner_key,
+        coin_type: coinType
+      },
+      sub_account_list: subAccounts
+    })
+  }
+
+  /**
    * Mint multiple sub accounts at once
    * @param params
    */
@@ -100,7 +128,7 @@ export class BitAccount {
     const info = await this.info()
     const coinType = await this.signer.getCoinType()
 
-    const mintSubAccountsParams = {
+    const mintSubAccountsParams: CheckAccountsParams = {
       account: this.account,
       type: 'blockchain',
       key_info: {
@@ -117,7 +145,7 @@ export class BitAccount {
       })
     }
 
-    const checkResults = await this.bitBuilder.subAccountAPI.checkSubAccounts(mintSubAccountsParams)
+    const checkResults = await this.checkSubAccounts(mintSubAccountsParams.sub_account_list)
 
     checkResults.result.forEach(result => {
       if (result.status !== CheckSubAccountStatus.ok) {
@@ -138,19 +166,6 @@ export class BitAccount {
    */
   mintSubAccount (params: SubAccountParams) {
     return this.mintSubAccounts([params])
-  }
-
-  /**
-   * List the sub accounts of a main account, with pagination and filter
-   * @param params Omit<SubAccountListParams, 'account'>
-   */
-  subAccounts (params: Omit<SubAccountListParams, 'account'> = { page: 1, size: 100, keyword: '' }) {
-    return this.bitBuilder.subAccountAPI.subAccountList({
-      account: this.account,
-      page: params.page,
-      size: params.size,
-      keyword: params.keyword,
-    })
   }
 
   /** reader **/

@@ -76,7 +76,7 @@ export class SubAccountAPI {
     })
   }
 
-  sendTransaction (tx: TxsSignedOrUnSigned): Promise<{ hash: string, hash_list: string[] }> {
+  sendTransaction (tx: TxsSignedOrUnSigned): Promise<{ hash?: string, hash_list: string[] }> {
     return this.net.post('transaction/send', tx)
   }
 
