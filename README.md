@@ -26,7 +26,8 @@ npm install dotbit --save
 Query different records:
 
 ```javascript
-import { createInstance } from 'dotbit'
+// import { createInstance } from 'dotbit' // For ES Module
+const { createInstance } = require('dotbit')
 const dotbit = createInstance()
 
 // Get all .bit account records
@@ -42,7 +43,8 @@ dotbit.profiles('imac.bit', 'twitter').then(console.log)
 Mint a sub-account in `testnet`:
 
 ```javascript
-import { createInstance, ProviderSigner, BitNetwork } from 'dotbit'
+// import { createInstance, ProviderSigner, BitNetwork } from 'dotbit' // For ES Module
+const { createInstance, ProviderSigner, BitNetwork } = require('dotbit')
 
 const signer = new ProviderSigner(window.ethereum)
 const dotbit = createInstance({
