@@ -13,7 +13,7 @@
     "build": "npm run clear && npm run build:esm & npm run build:commonjs",
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
-    "dev:browser": "npm run build & vite ./example/browser",
+    "dev:browser": "npm run build && vite ./example/browser",
     "prepublishOnly": "npm run build",
     "slip44": "cnpm i bip44-constants@latest -D && node scripts/slip44-json.js"
   },
