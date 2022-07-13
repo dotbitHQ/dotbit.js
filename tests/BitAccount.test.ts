@@ -333,11 +333,11 @@ describe('mintSubAccounts', function () {
     registerYears: 1,
   }]
 
-  it('should work', async function () {
-    const txs = await account.mintSubAccounts(mintParams)
-
-    expect(txs.hash_list.length).toBe(1)
-  }, 10000)
+  // it('should work', async function () {
+  //   const txs = await account.mintSubAccounts(mintParams)
+  //
+  //   expect(txs.hash_list.length).toBe(1)
+  // }, 10000)
 
   it('should throw error', async function () {
     await expect(account.mintSubAccounts(mintParams)).rejects.toThrow('Sub-account 006.imac.bit can not be registered, reason: registered, status 2')

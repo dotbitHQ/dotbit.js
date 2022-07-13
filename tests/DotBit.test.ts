@@ -44,3 +44,15 @@ describe('reverse', function () {
     expect(account.account).toBe('jeffx.bit')
   })
 })
+
+describe('addrs', function () {
+  it('work', async function () {
+    const addrs = await dotbit.addrs('imac.bit')
+    expect(addrs.length).toBeGreaterThan(1)
+  }, 10000)
+
+  it('work with filter', async function () {
+    const addrs = await dotbit.addrs('imac.bit', 'eth')
+    expect(addrs.length).toBe(1)
+  }, 10000)
+})

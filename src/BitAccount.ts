@@ -208,9 +208,14 @@ export class BitAccount {
 
     const addresses = records.filter(record => record.type === RecordType.address)
     // for the sake of compatibility, we need to search for both coinType & symbol
-    const coinType = mapSymbolToCoinType(chain)
-    const symbol = mapCoinTypeToSymbol(chain).toLowerCase()
-    return chain ? addresses.filter(record => record.subtype === symbol || record.subtype === coinType) : addresses
+    if (chain) {
+      const coinType = mapSymbolToCoinType(chain)
+      const symbol = mapCoinTypeToSymbol(chain).toLowerCase()
+      return addresses.filter(record => record.subtype === symbol || record.subtype === coinType)
+    }
+    else {
+      return addresses
+    }
   }
 
   addresses (chain?: string) {

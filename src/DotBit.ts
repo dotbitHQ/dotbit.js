@@ -95,11 +95,11 @@ export class DotBit {
   }
 
   addresses (account: string, chain?: string) {
-    return this.#addrs(chain)
+    return this.#addrs(account, chain)
   }
 
   addrs (account: string, chain?: string) {
-    return this.#addrs(chain)
+    return this.#addrs(account, chain)
   }
 
   async dwebs (account: string, key?: string) {
