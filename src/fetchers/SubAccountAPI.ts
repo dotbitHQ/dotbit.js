@@ -32,7 +32,7 @@ export interface SubAccountWithStatus extends SubAccount {
   message: string,
 }
 
-export interface CreateSubAccountParams extends BitKeyInfo {
+export interface CreateSubAccountsParams extends BitKeyInfo {
   account: string,
   sub_account_list: SubAccount[],
 }
@@ -88,7 +88,7 @@ export class SubAccountAPI {
     return this.net.post('sub/account/check', params)
   }
 
-  createSubAccounts (CreateSubAccountParams: CreateSubAccountParams): Promise<TxsSignedOrUnSigned> {
-    return this.net.post('sub/account/create', CreateSubAccountParams)
+  createSubAccounts (params: CreateSubAccountsParams): Promise<TxsSignedOrUnSigned> {
+    return this.net.post('sub/account/create', params)
   }
 }

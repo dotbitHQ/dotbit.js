@@ -1,5 +1,5 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
-import { TxsSignedOrUnSigned, SubAccountAPI } from '../fetchers/SubAccountAPI'
+import { TxsSignedOrUnSigned, SubAccountAPI, CreateSubAccountsParams } from '../fetchers/SubAccountAPI'
 
 interface RemoteTxBuilderConfig {
   subAccountUri: string,
@@ -14,5 +14,9 @@ export class RemoteTxBuilder {
 
   enableSubAccount (account: string, keyInfo: KeyInfo): Promise<TxsSignedOrUnSigned> {
     return this.subAccountAPI.initSubAccount(account, keyInfo)
+  }
+
+  mintSubAccounts (params: CreateSubAccountsParams): Promise<TxsSignedOrUnSigned> {
+    return this.subAccountAPI.createSubAccounts(params)
   }
 }

@@ -154,7 +154,7 @@ export class BitAccount {
       }
     })
 
-    const txs = await this.bitBuilder.subAccountAPI.createSubAccounts(mintSubAccountsParams)
+    const txs = await this.bitBuilder.mintSubAccounts(mintSubAccountsParams)
 
     await this.signer.signTxList(txs)
 
