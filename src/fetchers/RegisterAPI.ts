@@ -53,6 +53,9 @@ export class RegisterAPI {
 
   // todo: response should have same signature with SubAccountAPI.sendTransaction
   sendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{hash: string}> {
-    return this.net.post('transaction/send')
+    return this.net.post('transaction/send', {
+      sign_key: params.sign_key,
+      sign_list: params.sign_list,
+    } as Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>)
   }
 }

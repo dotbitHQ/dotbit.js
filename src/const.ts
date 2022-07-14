@@ -8,21 +8,14 @@ export enum CoinType {
   TRX = '195',
   CKB = '309',
   MATIC = '966',
-  BNB = '9006',
+  BSC = '9006',
 }
 
 export enum EvmChainId {
   ETH = 1,
   ETH_GOERILI = 5,
-  BNB = 56,
+  BSC = 56,
   MATIC = 137,
-}
-
-export const EvmChainId2CoinType = {
-  [EvmChainId.ETH]: CoinType.ETH,
-  [EvmChainId.ETH_GOERILI]: CoinType.ETH,
-  [EvmChainId.BNB]: CoinType.BNB,
-  [EvmChainId.MATIC]: CoinType.MATIC,
 }
 
 // legacy custom chain type, should be replaced by CoinType in the future
@@ -34,6 +27,27 @@ export enum ChainType {
   fiat,
   bsc = 56,
   polygon = 137
+}
+
+export const EvmChainId2CoinType = {
+  [EvmChainId.ETH]: CoinType.ETH,
+  [EvmChainId.ETH_GOERILI]: CoinType.ETH,
+  [EvmChainId.BSC]: CoinType.BSC,
+  [EvmChainId.MATIC]: CoinType.MATIC,
+}
+
+export const CoinType2EvmChainId = {
+  [CoinType.ETH]: EvmChainId.ETH,
+  [CoinType.MATIC]: EvmChainId.MATIC,
+  [CoinType.BSC]: EvmChainId.BSC,
+}
+
+export const CoinType2ChainType = {
+  [CoinType.ETH]: ChainType.eth,
+  [CoinType.TRX]: ChainType.tron,
+  [CoinType.CKB]: ChainType.ckb,
+  [CoinType.MATIC]: ChainType.polygon,
+  [CoinType.BSC]: ChainType.bsc,
 }
 
 export enum RecordType {
@@ -50,7 +64,7 @@ export enum AccountStatus {
 export enum AlgorithmId {
   ethPersonalSign = 3,
   tronSign = 4,
-  EIP712 = 5,
+  eip712 = 5,
   ed2519 = 6,
 }
 

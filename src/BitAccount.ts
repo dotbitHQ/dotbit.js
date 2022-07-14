@@ -1,7 +1,10 @@
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
-import { AccountStatus, CheckSubAccountStatus, RecordType } from './const'
+import { AccountStatus, CheckSubAccountStatus, CoinType2ChainType, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { AccountInfo, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
+import {
+  TxsWithMMJsonSignedOrUnSigned,
+} from './fetchers/RegisterAPI'
 import { CheckAccountsParams, SubAccount, SubAccountListParams } from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
 import { mapCoinTypeToSymbol, mapSymbolToCoinType } from './slip44/slip44'
@@ -120,6 +123,7 @@ export class BitAccount {
 
   /**
    * Mint multiple sub accounts at once
+   * Please wait for 3 minutes between each invocation of this method
    * @param params
    */
   async mintSubAccounts (params: SubAccountParams[]) {
@@ -167,6 +171,62 @@ export class BitAccount {
    */
   mintSubAccount (params: SubAccountParams) {
     return this.mintSubAccounts([params])
+  }
+
+  async #changeOwnerManager (keyInfo: KeyInfo, isOwner = true) {
+    const signerAddress = await this.signer.getAddress()
+    const signerCoinType = await this.signer.getCoinType()
+    const signerChainId = await this.signer.getChainId()
+    const signerChainType = CoinType2ChainType[signerCoinType]
+    const newChainType = CoinType2ChainType[keyInfo.coin_type]
+
+    let mmJsonTxs: TxsWithMMJsonSignedOrUnSigned
+    if (isOwner) {
+      mmJsonTxs = await this.bitBuilder.changeOwner({
+        chain_type: signerChainType,
+        evm_chain_id: signerChainId,
+        address: signerAddress,
+        account: this.account,
+        raw_param: {
+          receiver_address: keyInfo.key,
+          receiver_chain_type: newChainType,
+        },
+      })
+    }
+    else {
+      mmJsonTxs = await this.bitBuilder.changeManager({
+        chain_type: signerChainType,
+        evm_chain_id: signerChainId,
+        address: signerAddress,
+        account: this.account,
+        raw_param: {
+          manager_address: keyInfo.key,
+          manager_chain_type: newChainType,
+        },
+      })
+    }
+
+    const res = await this.signer.signTxList(mmJsonTxs)
+
+    return await this.bitBuilder.registerAPI.sendTransaction(res)
+  }
+
+  /**
+   * Change the owner key of an account
+   * You should wait for 5 minutes between each invocation of this method
+   * @param keyInfo
+   */
+  changeOwner (keyInfo: KeyInfo) {
+    return this.#changeOwnerManager(keyInfo, true)
+  }
+
+  /**
+   * Change the manager key of an account
+   * You should wait for 5 minutes between each invocation of this method
+   * @param keyInfo
+   */
+  changeManager (keyInfo: KeyInfo) {
+    return this.#changeOwnerManager(keyInfo, false)
   }
 
   /** reader **/

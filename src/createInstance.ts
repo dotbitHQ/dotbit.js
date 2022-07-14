@@ -1,4 +1,4 @@
-import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
+import { RemoteTxBuilder, RemoteTxBuilderConfig } from './builders/RemoteTxBuilder'
 import { BitNetwork } from './const'
 import { DotBit, DotBitConfig } from './DotBit'
 import { BitIndexer } from './fetchers/BitIndexer'
@@ -7,10 +7,7 @@ import { BitSigner } from './signers/BitSigner'
 interface CreateInstanceConfig {
   network?: BitNetwork,
   bitIndexerUri?: string,
-  remoteTxBuilderConfig?: {
-    subAccountUri: string,
-    registerUri: string,
-  },
+  remoteTxBuilderConfig?: RemoteTxBuilderConfig,
   signer?: BitSigner,
 }
 

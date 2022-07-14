@@ -1,5 +1,6 @@
 import { signTypedData, SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 import { Wallet } from 'ethers'
+import { TxsWithMMJsonSignedOrUnSigned } from '../../src/fetchers/RegisterAPI'
 import { EthersSigner } from '../../src/index'
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
@@ -292,6 +293,140 @@ const typedDataFromBitFull = {
   }
 }
 
+const mmJsonChangeManager: TxsWithMMJsonSignedOrUnSigned = {
+  sign_key: '15020ef9cb836761b1b0b58943e8b971',
+  sign_list: [
+    {
+      sign_type: 5,
+      sign_msg: '0xf570c48b11c45bd8bd84bbc53ed512037680bac2912c642638bc331080b26a97'
+    }
+  ],
+  mm_json: {
+    types: {
+      EIP712Domain: [
+        {
+          name: 'chainId',
+          type: 'uint256'
+        },
+        {
+          name: 'name',
+          type: 'string'
+        },
+        {
+          name: 'verifyingContract',
+          type: 'address'
+        },
+        {
+          name: 'version',
+          type: 'string'
+        }
+      ],
+      Action: [
+        {
+          name: 'action',
+          type: 'string'
+        },
+        {
+          name: 'params',
+          type: 'string'
+        }
+      ],
+      Cell: [
+        {
+          name: 'capacity',
+          type: 'string'
+        },
+        {
+          name: 'lock',
+          type: 'string'
+        },
+        {
+          name: 'type',
+          type: 'string'
+        },
+        {
+          name: 'data',
+          type: 'string'
+        },
+        {
+          name: 'extraData',
+          type: 'string'
+        }
+      ],
+      Transaction: [
+        {
+          name: 'DAS_MESSAGE',
+          type: 'string'
+        },
+        {
+          name: 'inputsCapacity',
+          type: 'string'
+        },
+        {
+          name: 'outputsCapacity',
+          type: 'string'
+        },
+        {
+          name: 'fee',
+          type: 'string'
+        },
+        {
+          name: 'action',
+          type: 'Action'
+        },
+        {
+          name: 'inputs',
+          type: 'Cell[]'
+        },
+        {
+          name: 'outputs',
+          type: 'Cell[]'
+        },
+        {
+          name: 'digest',
+          type: 'bytes32'
+        }
+      ]
+    },
+    primaryType: 'Transaction',
+    domain: {
+      chainId: 5,
+      name: 'da.systems',
+      verifyingContract: '0x0000000000000000000000000000000020210722',
+      version: '1'
+    },
+    message: {
+      DAS_MESSAGE: 'EDIT MANAGER OF ACCOUNT imac.bit',
+      inputsCapacity: '214.9997 CKB',
+      outputsCapacity: '214.9996 CKB',
+      fee: '0.0001 CKB',
+      digest: '',
+      action: {
+        action: 'edit_manager',
+        params: '0x00'
+      },
+      inputs: [
+        {
+          capacity: '214.9997 CKB',
+          lock: 'das-lock,0x01,0x057df93d9f500fd5a9537fee086322a988d4fdcc...',
+          type: 'account-cell-type,0x01,0x',
+          data: '{ account: imac.bit, expired_at: 1688208987 }',
+          extraData: '{ status: 0, records_hash: 0x55478d76900611eb079b22088081124ed6c8bae21a05dd1a0d197efcc7c114ce }'
+        }
+      ],
+      outputs: [
+        {
+          capacity: '214.9996 CKB',
+          lock: 'das-lock,0x01,0x057df93d9f500fd5a9537fee086322a988d4fdcc...',
+          type: 'account-cell-type,0x01,0x',
+          data: '{ account: imac.bit, expired_at: 1688208987 }',
+          extraData: '{ status: 0, records_hash: 0x55478d76900611eb079b22088081124ed6c8bae21a05dd1a0d197efcc7c114ce }'
+        }
+      ]
+    }
+  }
+}
+
 describe('signData', function () {
   it('signPersonal', async function () {
     const sig = await signer.signData('0xtest')
@@ -383,5 +518,12 @@ describe('signer._signTypedData', function () {
     const sig = await signer.signer._signTypedData(typedDataFromBit.domain, typedDataFromBit.types, typedDataFromBit.message)
 
     expect(sig).toBe('0xdf6f5835ccf3abd2c98a3a1991211754411a685e3818f61950672d5b36278d0a3269b9258d38c7af95544ba77503abf53c003eaa110a82574588c5660939db8d1c')
+  })
+})
+
+describe('signTxList', function () {
+  it('work for mmJson', async function () {
+    const res = await signer.signTxList(mmJsonChangeManager)
+    expect(res.sign_list[0].sign_msg).toBe('0x99e335b373fa2bf1f025e4df89bfad75cc5608f9336441ae6e910c5a20fbde2f30f03ed49cee4eb7ea6bd03708206adfa60f2df7a5df83c3bc54a7e5d043fe491c3c08cabb37989ee799f37990f09f951dd8ed5a4b1afade04f0ff1a41ecd44b840000000000000005')
   })
 })

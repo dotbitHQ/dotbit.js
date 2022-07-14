@@ -11,7 +11,8 @@ const bitIndexer = new BitIndexer({
   // uri: 'https://test-indexer-not-use-in-production-env.did.id',
 })
 const bitBuilder = new RemoteTxBuilder({
-  subAccountUri: 'https://test-subaccount-api.did.id/v1'
+  subAccountUri: 'https://test-subaccount-api.did.id/v1',
+  registerUri: 'https://test-register-api.did.id/v1',
 })
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
@@ -30,7 +31,8 @@ const bitIndexerProd = new BitIndexer({
   uri: 'https://indexer-v1.did.id',
 })
 const bitBuilderProd = new RemoteTxBuilder({
-  subAccountUri: 'https://subaccount-api.did.id/v1'
+  subAccountUri: 'https://subaccount-api.did.id/v1',
+  registerUri: 'https://register-api.did.id/v1',
 })
 const accountProd = new BitAccount({
   account: 'imac.bit',
@@ -71,11 +73,8 @@ describe('info', function () {
       create_at_unix: 1656672987,
       expired_at_unix: 1688208987,
       status: 0,
-      das_lock_arg_hex: '0x057df93d9f500fd5a9537fee086322a988d4fdcc38057df93d9f500fd5a9537fee086322a988d4fdcc38',
       owner_algorithm_id: 5,
       owner_key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
-      manager_algorithm_id: 5,
-      manager_key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
     })
   })
 })
@@ -124,6 +123,14 @@ describe('records', function () {
         label: '',
         value: 'https://thiscatdoesnotexist.com',
         ttl: '300'
+      },
+      {
+        key: 'profile.twitter',
+        label: '',
+        subtype: 'twitter',
+        ttl: '300',
+        type: 'profile',
+        value: 'Apple',
       }
     ])
   })
@@ -272,6 +279,14 @@ describe('profiles', function () {
       label: '',
       value: 'https://thiscatdoesnotexist.com',
       ttl: '300'
+    },
+    {
+      key: 'profile.twitter',
+      label: '',
+      subtype: 'twitter',
+      ttl: '300',
+      type: 'profile',
+      value: 'Apple',
     }])
   })
 
@@ -383,4 +398,40 @@ describe('checkSubAccounts', function () {
     expect(result.result[0].status).toBe(CheckSubAccountStatus.registered)
     expect(result.result[0].message).toBe('registered')
   })
+})
+
+describe('changeManager', function () {
+  // it('should work', async function () {
+  //   const txs = await account.changeManager({
+  //     key: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
+  //     coin_type: CoinType.TRX,
+  //   })
+  //
+  //   expect(txs.hash).toBeTruthy()
+  // }, 10000)
+
+  it('should throw error: same address', async function () {
+    await expect(account.changeManager({
+      key: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
+      coin_type: CoinType.TRX,
+    })).rejects.toThrow('same address')
+  }, 10000)
+})
+
+describe('changeOwner', function () {
+  // it('should work', async function () {
+  //   const txs = await account.changeOwner({
+  //     key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+  //     coin_type: CoinType.ETH,
+  //   })
+  //
+  //   expect(txs.hash).toBeTruthy()
+  // }, 10000)
+
+  it('should throw error: same address', async function () {
+    await expect(account.changeOwner({
+      key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+      coin_type: CoinType.ETH,
+    })).rejects.toThrow('same address')
+  }, 10000)
 })
