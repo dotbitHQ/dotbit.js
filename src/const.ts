@@ -25,6 +25,17 @@ export const EvmChainId2CoinType = {
   [EvmChainId.MATIC]: CoinType.MATIC,
 }
 
+// legacy custom chain type, should be replaced by CoinType in the future
+export enum ChainType {
+  ckb,
+  eth,
+  btc,
+  tron,
+  fiat,
+  bsc = 56,
+  polygon = 137
+}
+
 export enum RecordType {
   address = 'address',
   profile = 'profile',

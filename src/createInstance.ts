@@ -9,16 +9,18 @@ interface CreateInstanceConfig {
   bitIndexerUri?: string,
   remoteTxBuilderConfig?: {
     subAccountUri: string,
+    registerUri: string,
   },
   signer?: BitSigner,
 }
 
-export const DefaultConfig = {
+export const DefaultConfig: { [key: string]: CreateInstanceConfig} = {
   [BitNetwork.mainnet]: {
     network: BitNetwork.mainnet,
     bitIndexerUri: 'https://indexer-v1.did.id',
     remoteTxBuilderConfig: {
       subAccountUri: 'https://subaccount-api.did.id/v1',
+      registerUri: 'https://register-api.did.id/v1',
     },
   },
   [BitNetwork.testnet]: {
@@ -26,6 +28,7 @@ export const DefaultConfig = {
     bitIndexerUri: 'https://test-indexer.did.id',
     remoteTxBuilderConfig: {
       subAccountUri: 'https://test-subaccount-api.did.id/v1',
+      registerUri: 'https://test-register-api.did.id/v1',
     }
   },
 }
