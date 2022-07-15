@@ -1,6 +1,7 @@
 import './polyfill'
 import { createInstance } from '../../lib.esm/index.js'
 import { ProviderSigner } from '../../lib.esm/signers/ProviderSigner'
+import { CoinType } from '../../lib/const'
 import { typedDataFromMetamask } from './typedData'
 
 const $ = document.querySelector.bind(document)
@@ -51,7 +52,7 @@ async function main () {
       const res = await bitAccount.mintSubAccount({
         account: subAccount,
         keyInfo: {
-          coin_type: '60',
+          coin_type: CoinType.ETH,
           key: address,
         },
         registerYears: 1,
