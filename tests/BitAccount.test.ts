@@ -3,7 +3,7 @@ import { BitAccount } from '../src/BitAccount'
 import { RemoteTxBuilder } from '../src/builders/RemoteTxBuilder'
 import { CheckSubAccountStatus, CoinType } from '../src/const'
 import { BitIndexer } from '../src/fetchers/BitIndexer'
-import { EthersSigner, SubAccount } from '../src/index'
+import { EthersSigner, sleep, SubAccount } from '../src/index'
 
 const bitIndexer = new BitIndexer({
   // uri: 'https://indexer-v1.did.id',
@@ -429,6 +429,7 @@ describe('changeOwner', function () {
   // }, 10000)
 
   it('should throw error: same address', async function () {
+    await sleep(1000)
     await expect(account.changeOwner({
       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
       coin_type: CoinType.ETH,

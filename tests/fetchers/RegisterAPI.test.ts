@@ -26,7 +26,7 @@ describe('editAccountManager', function () {
       address: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
       account: 'imac.bit',
       raw_param: {
-        manager_address: 'TWiV82cSnCffyqkAwCuyjuvqUwZJx2nr3a',
+        manager_address: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
         manager_chain_type: ChainType.tron,
       }
     })).rejects.toThrow('30023: same address')
