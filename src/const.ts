@@ -80,3 +80,9 @@ export enum CheckSubAccountStatus {
   registered,
   registering
 }
+
+export enum EditRecordAction {
+  delete = 'delete',
+  change = 'change',
+  add = 'add'
+}

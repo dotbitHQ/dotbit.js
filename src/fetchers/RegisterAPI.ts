@@ -1,5 +1,7 @@
 import { MessageTypes, TypedMessage } from '@metamask/eth-sig-util'
+import { ChainType, EditRecordAction, EvmChainId } from '../const'
 import { Networking } from '../tools/Networking'
+import { BitAccountRecord } from './BitIndexer.type'
 
 export interface SignList {
   sign_type: number,
@@ -24,17 +26,38 @@ export interface ManagerRawParam {
   manager_chain_type: number,
 }
 
-export interface EditAccountPermissionParam<T> {
+export interface EditAccountParams<T> {
   // todo-open: all chain_type should be deprecated
-  chain_type: number,
-  evm_chain_id: number,
+  chain_type: ChainType,
+  evm_chain_id: EvmChainId,
   address: string,
   account: string,
   raw_param: T,
 }
 
-export type EditAccountManagerParam = EditAccountPermissionParam<ManagerRawParam>
-export type EditAccountOwnerParam = EditAccountPermissionParam<OwnerRawParam>
+export interface EditAccountRecord {
+  type: string, // eg: `profile`
+  key: string, // eg: `twitter`
+  label: string,
+  value: string,
+  ttl: string,
+}
+
+export interface RecordsRawParam {
+  records: EditAccountRecord[],
+}
+
+export type EditAccountManagerParam = EditAccountParams<ManagerRawParam>
+export type EditAccountOwnerParam = EditAccountParams<OwnerRawParam>
+export type EditAccountRecordsParam = EditAccountParams<RecordsRawParam>
+
+export function toEditingRecord (record: BitAccountRecord): EditAccountRecord {
+  return {
+    ...record,
+    type: record.key.split('.')[0],
+    key: record.key.split('.')[1],
+  }
+}
 
 export class RegisterAPI {
   net: Networking
@@ -51,11 +74,19 @@ export class RegisterAPI {
     return this.net.post('account/edit/owner', params)
   }
 
-  // todo: response should have same signature with SubAccountAPI.sendTransaction
+  editAccountRecords (params: EditAccountRecordsParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+    return this.net.post('account/edit/records', params)
+  }
+
+  // todo-open: response should have same signature with SubAccountAPI.sendTransaction
   sendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{hash: string}> {
     return this.net.post('transaction/send', {
       sign_key: params.sign_key,
       sign_list: params.sign_list,
     } as Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>)
   }
+}
+
+export function fromSplitRecordToUnifiedRecord () {
+
 }

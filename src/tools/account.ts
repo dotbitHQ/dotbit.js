@@ -1,4 +1,5 @@
 import blake2b from 'blake2b'
+import { BitAccountRecord, BitAccountRecordExtended } from '../fetchers/BitIndexer.type'
 import { pad0x } from './common'
 
 export function isSupportedAccount (account: string): boolean {
@@ -60,4 +61,12 @@ export function accountIdHex (account: string): string {
   const hashBuffer = hasher.digest('binary') as Uint8Array
   const first20Bytes = Buffer.from(hashBuffer.slice(0, 20))
   return pad0x(first20Bytes.toString('hex'))
+}
+
+export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExtended {
+  return {
+    ...record,
+    type: record.key.split('.')[0],
+    subtype: record.key.split('.')[1],
+  }
 }

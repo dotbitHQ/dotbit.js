@@ -1,45 +1,8 @@
-import { ethers, Wallet } from 'ethers'
 import { BitAccount } from '../src/BitAccount'
-import { RemoteTxBuilder } from '../src/builders/RemoteTxBuilder'
 import { CheckSubAccountStatus, CoinType } from '../src/const'
-import { BitIndexer } from '../src/fetchers/BitIndexer'
-import { EthersSigner, sleep, SubAccount } from '../src/index'
-
-const bitIndexer = new BitIndexer({
-  // uri: 'https://indexer-v1.did.id',
-  uri: 'https://test-indexer.did.id',
-  // uri: 'https://test-indexer-not-use-in-production-env.did.id',
-})
-const bitBuilder = new RemoteTxBuilder({
-  subAccountUri: 'https://test-subaccount-api.did.id/v1',
-  registerUri: 'https://test-register-api.did.id/v1',
-})
-const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
-const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
-const provider = new ethers.providers.InfuraProvider('goerli')
-const wallet = new Wallet(privateKey1, provider)
-const signer = new EthersSigner(wallet)
-
-const account = new BitAccount({
-  account: 'imac.bit',
-  bitIndexer,
-  bitBuilder,
-  signer,
-})
-
-const bitIndexerProd = new BitIndexer({
-  uri: 'https://indexer-v1.did.id',
-})
-const bitBuilderProd = new RemoteTxBuilder({
-  subAccountUri: 'https://subaccount-api.did.id/v1',
-  registerUri: 'https://register-api.did.id/v1',
-})
-const accountProd = new BitAccount({
-  account: 'imac.bit',
-  bitIndexer: bitIndexerProd,
-  bitBuilder: bitBuilderProd,
-  signer,
-})
+import { SubAccount } from '../src/fetchers/SubAccountAPI'
+import { sleep } from '../src/tools/common'
+import { accountWithSigner, accountWithSignerProd } from './common/index'
 
 describe('constructor', () => {
   expect(() => {
@@ -50,17 +13,12 @@ describe('constructor', () => {
 })
 
 describe('info', function () {
-  const localAccount = new BitAccount({
-    account: 'imac.bit',
-    bitIndexer,
-  })
-
   it('work', async function () {
     const start = Date.now()
-    const info1 = await localAccount.info()
+    const info1 = await accountWithSigner.info()
     const end1 = Date.now()
 
-    const info2 = await localAccount.info()
+    const info2 = await accountWithSigner.info()
     const end2 = Date.now()
 
     expect(end1 - start).toBeGreaterThan(500)
@@ -81,7 +39,7 @@ describe('info', function () {
 
 describe('records', function () {
   it('work', async function () {
-    const records = await accountProd.records()
+    const records = await accountWithSignerProd.records()
 
     expect(records).toStrictEqual([
       {
@@ -136,7 +94,7 @@ describe('records', function () {
   })
 
   it('filter by key', async function () {
-    const records = await accountProd.records('address.eth')
+    const records = await accountWithSignerProd.records('address.eth')
 
     expect(records).toMatchObject([{
       key: 'address.eth',
@@ -149,7 +107,7 @@ describe('records', function () {
   })
 
   it('filter by key result in multiple records', async function () {
-    const records = await accountProd.records('address.trx')
+    const records = await accountWithSignerProd.records('address.trx')
 
     expect(records).toMatchObject([{
       key: 'address.trx',
@@ -170,7 +128,7 @@ describe('records', function () {
   })
 
   it('filter by key result in empty records', async function () {
-    const records = await accountProd.records('address.btc')
+    const records = await accountWithSignerProd.records('address.btc')
 
     expect(records).toMatchObject([])
   })
@@ -186,7 +144,7 @@ describe('addrs', function () {
     ttl: '300'
   }]
   it('no filter', async function () {
-    const addrs = await accountProd.addrs()
+    const addrs = await accountWithSignerProd.addrs()
 
     expect(addrs).toMatchObject([{
       key: 'address.eth',
@@ -214,7 +172,7 @@ describe('addrs', function () {
   })
 
   it('filter `trx`', async function () {
-    const addrs = await accountProd.addrs('trx')
+    const addrs = await accountWithSignerProd.addrs('trx')
 
     expect(addrs).toMatchObject([{
       key: 'address.trx',
@@ -234,19 +192,19 @@ describe('addrs', function () {
   })
 
   it('filter `eth`', async function () {
-    const addrs = await accountProd.addrs('eth')
+    const addrs = await accountWithSignerProd.addrs('eth')
 
     expect(addrs).toMatchObject(ethAddrs)
   })
 
   it('filter `ETH`', async function () {
-    const addrs = await accountProd.addrs('ETH')
+    const addrs = await accountWithSignerProd.addrs('ETH')
 
     expect(addrs).toMatchObject(ethAddrs)
   })
 
   it('filter `60`', async function () {
-    const addrs = await accountProd.addrs('60')
+    const addrs = await accountWithSignerProd.addrs('60')
 
     expect(addrs).toMatchObject(ethAddrs)
   })
@@ -262,7 +220,7 @@ describe('addrs', function () {
 
 describe('profiles', function () {
   it('no filter', async function () {
-    const profiles = await accountProd.profiles()
+    const profiles = await accountWithSignerProd.profiles()
 
     expect(profiles).toMatchObject([{
       key: 'profile.website',
@@ -291,7 +249,7 @@ describe('profiles', function () {
   })
 
   it('filter `website`', async function () {
-    const profiles = await accountProd.profiles('website')
+    const profiles = await accountWithSignerProd.profiles('website')
 
     expect(profiles).toMatchObject([{
       key: 'profile.website',
@@ -306,7 +264,7 @@ describe('profiles', function () {
 
 describe('enableSubAccount', function () {
   it('should work', function () {
-    return expect(account.enableSubAccount()).rejects.toThrow('40000: sub account already initialized')
+    return expect(accountWithSigner.enableSubAccount()).rejects.toThrow('40000: sub account already initialized')
   }, 10000)
 })
 
@@ -327,7 +285,7 @@ describe('mintSubAccount', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(account.mintSubAccount(mintParam)).rejects.toThrow('Sub-account 005.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccount(mintParam)).rejects.toThrow('Sub-account 005.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
@@ -355,13 +313,13 @@ describe('mintSubAccounts', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(account.mintSubAccounts(mintParams)).rejects.toThrow('Sub-account 006.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccounts(mintParams)).rejects.toThrow('Sub-account 006.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
 describe('subAccounts', function () {
   it('should work', async function () {
-    const subAccounts = await account.subAccounts()
+    const subAccounts = await accountWithSigner.subAccounts()
     expect(subAccounts.list.length).toBeGreaterThan(1)
   }, 10000)
 })
@@ -378,7 +336,7 @@ describe('checkSubAccounts', function () {
       register_years: 1,
     }]
 
-    const result = await account.checkSubAccounts(subAccounts)
+    const result = await accountWithSigner.checkSubAccounts(subAccounts)
     expect(result.result[0].status).toBe(0)
     expect(result.result[0].message).toBe('')
   })
@@ -394,7 +352,7 @@ describe('checkSubAccounts', function () {
       register_years: 1,
     }]
 
-    const result = await account.checkSubAccounts(subAccounts)
+    const result = await accountWithSigner.checkSubAccounts(subAccounts)
     expect(result.result[0].status).toBe(CheckSubAccountStatus.registered)
     expect(result.result[0].message).toBe('registered')
   })
@@ -411,7 +369,7 @@ describe('changeManager', function () {
   // }, 10000)
 
   it('should throw error: same address', async function () {
-    await expect(account.changeManager({
+    await expect(accountWithSigner.changeManager({
       key: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
       coin_type: CoinType.TRX,
     })).rejects.toThrow('same address')
@@ -430,7 +388,7 @@ describe('changeOwner', function () {
 
   it('should throw error: same address', async function () {
     await sleep(1000)
-    await expect(account.changeOwner({
+    await expect(accountWithSigner.changeOwner({
       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
       coin_type: CoinType.ETH,
     })).rejects.toThrow('same address')

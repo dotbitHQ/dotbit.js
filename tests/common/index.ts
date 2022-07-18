@@ -1,0 +1,39 @@
+import { ethers, Wallet } from '_ethers@5.6.9@ethers'
+import { BitAccount } from '../../src/BitAccount'
+import { BitIndexer, EthersSigner, RemoteTxBuilder } from '../../src/index'
+
+const bitIndexer = new BitIndexer({
+  // uri: 'https://indexer-v1.did.id',
+  uri: 'https://test-indexer.did.id',
+  // uri: 'https://test-indexer-not-use-in-production-env.did.id',
+})
+const bitBuilder = new RemoteTxBuilder({
+  subAccountUri: 'https://test-subaccount-api.did.id/v1',
+  registerUri: 'https://test-register-api.did.id/v1',
+})
+const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
+const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
+const provider = new ethers.providers.InfuraProvider('goerli')
+const wallet = new Wallet(privateKey1, provider)
+const signer = new EthersSigner(wallet)
+
+const bitIndexerProd = new BitIndexer({
+  uri: 'https://indexer-v1.did.id',
+})
+const bitBuilderProd = new RemoteTxBuilder({
+  subAccountUri: 'https://subaccount-api.did.id/v1',
+  registerUri: 'https://register-api.did.id/v1',
+})
+
+export const accountWithSigner = new BitAccount({
+  account: 'imac.bit',
+  bitIndexer,
+  bitBuilder,
+  signer,
+})
+export const accountWithSignerProd = new BitAccount({
+  account: 'imac.bit',
+  bitIndexer: bitIndexerProd,
+  bitBuilder: bitBuilderProd,
+  signer,
+})

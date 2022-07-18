@@ -1,6 +1,11 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
-import { EditAccountManagerParam, EditAccountOwnerParam, RegisterAPI } from '../fetchers/RegisterAPI'
-import { TxsSignedOrUnSigned, SubAccountAPI, CreateSubAccountsParams } from '../fetchers/SubAccountAPI'
+import {
+  EditAccountManagerParam,
+  EditAccountOwnerParam,
+  EditAccountRecordsParam,
+  RegisterAPI,
+} from '../fetchers/RegisterAPI'
+import { CreateSubAccountsParams, SubAccountAPI, TxsSignedOrUnSigned } from '../fetchers/SubAccountAPI'
 
 export interface RemoteTxBuilderConfig {
   subAccountUri: string,
@@ -30,5 +35,9 @@ export class RemoteTxBuilder {
 
   changeOwner (params: EditAccountOwnerParam) {
     return this.registerAPI.editAccountOwner(params)
+  }
+
+  editRecords (params: EditAccountRecordsParam) {
+    return this.registerAPI.editAccountRecords(params)
   }
 }

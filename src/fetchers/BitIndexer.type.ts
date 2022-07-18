@@ -30,8 +30,8 @@ export interface BitAccountInfo {
 
 export interface BitAccountRecord {
   key: string,
-  label: string,
   value: string,
+  label: string,
   ttl: string,
 }
 

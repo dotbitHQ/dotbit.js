@@ -1,14 +1,13 @@
+import { RecordsEditor } from './builders/RecordsEditor'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { AccountStatus, CheckSubAccountStatus, CoinType2ChainType, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
-import { AccountInfo, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
-import {
-  TxsWithMMJsonSignedOrUnSigned,
-} from './fetchers/RegisterAPI'
+import { AccountInfo, BitAccountRecord, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
+import { toEditingRecord, TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI'
 import { CheckAccountsParams, SubAccount, SubAccountListParams } from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
 import { mapCoinTypeToSymbol, mapSymbolToCoinType } from './slip44/slip44'
-import { isSupportedAccount, toDottedStyle } from './tools/account'
+import { isSupportedAccount, toDottedStyle, toRecordExtended } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
 interface BitAccountOptions {
@@ -229,6 +228,41 @@ export class BitAccount {
     return this.#changeOwnerManager(keyInfo, false)
   }
 
+  /**
+   * Update all the records with given records
+   * @param records
+   */
+  async updateRecords (records: BitAccountRecord[]) {
+    this.requireBitBuilder()
+    this.requireSigner()
+
+    const signerAddress = await this.signer.getAddress()
+    const signerCoinType = await this.signer.getCoinType()
+    const signerChainId = await this.signer.getChainId()
+    const signerChainType = CoinType2ChainType[signerCoinType]
+
+    const txs = await this.bitBuilder.editRecords({
+      chain_type: signerChainType,
+      evm_chain_id: signerChainId,
+      address: signerAddress,
+      account: this.account,
+      raw_param: {
+        records: records.map(toEditingRecord)
+      },
+    })
+
+    const res = await this.signer.signTxList(txs)
+    return await this.bitBuilder.registerAPI.sendTransaction(res)
+  }
+
+  /**
+   * Update records in a chaining way
+   */
+  async editRecords () {
+    const records = await this.records()
+    return new RecordsEditor(records, this)
+  }
+
   /** reader **/
 
   async info (): Promise<AccountInfo> {
@@ -250,12 +284,7 @@ export class BitAccount {
     if (!this.#records) {
       const records =  (await this.bitIndexer.accountRecords(this.account))
 
-      this.#records = records.map(record => {
-        return Object.assign(record, {
-          type: record.key.split('.')[0],
-          subtype: record.key.split('.')[1],
-        })
-      })
+      this.#records = records.map(toRecordExtended)
     }
 
     key = key?.toLowerCase()
