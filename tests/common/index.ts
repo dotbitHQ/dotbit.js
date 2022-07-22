@@ -37,3 +37,53 @@ export const accountWithSignerProd = new BitAccount({
   bitBuilder: bitBuilderProd,
   signer,
 })
+export const accountWithSignerProdRecords = [
+  {
+    key: 'address.eth',
+    type: 'address',
+    subtype: 'eth',
+    label: '',
+    value: '0x1d643fac9a463c9d544506006a6348c234da485f',
+    ttl: '300'
+  },
+  {
+    key: 'address.trx',
+    type: 'address',
+    subtype: 'trx',
+    label: '',
+    value: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
+    ttl: '300'
+  },
+  {
+    key: 'address.trx',
+    type: 'address',
+    subtype: 'trx',
+    label: '',
+    value: 'TWiV82cSnCffyqkAwCuyjuvqUwZJx2nr3a',
+    ttl: '300'
+  },
+  {
+    key: 'profile.website',
+    type: 'profile',
+    subtype: 'website',
+    label: 'Apple',
+    value: 'https://www.apple.com/imac',
+    ttl: '300'
+  },
+  {
+    key: 'profile.avatar',
+    type: 'profile',
+    subtype: 'avatar',
+    label: '',
+    value: 'https://thiscatdoesnotexist.com',
+    ttl: '300'
+  },
+  {
+    key: 'profile.twitter',
+    label: '',
+    subtype: 'twitter',
+    ttl: '300',
+    type: 'profile',
+    value: 'Apple',
+  }
+]

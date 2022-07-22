@@ -2,7 +2,7 @@ import { BitAccount } from '../src/BitAccount'
 import { CheckSubAccountStatus, CoinType } from '../src/const'
 import { SubAccount } from '../src/fetchers/SubAccountAPI'
 import { sleep } from '../src/tools/common'
-import { accountWithSigner, accountWithSignerProd } from './common/index'
+import { accountWithSigner, accountWithSignerProd, accountWithSignerProdRecords } from './common/index'
 
 describe('constructor', () => {
   expect(() => {
@@ -41,56 +41,7 @@ describe('records', function () {
   it('work', async function () {
     const records = await accountWithSignerProd.records()
 
-    expect(records).toStrictEqual([
-      {
-        key: 'address.eth',
-        type: 'address',
-        subtype: 'eth',
-        label: '',
-        value: '0x1d643fac9a463c9d544506006a6348c234da485f',
-        ttl: '300'
-      },
-      {
-        key: 'address.trx',
-        type: 'address',
-        subtype: 'trx',
-        label: '',
-        value: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
-        ttl: '300'
-      },
-      {
-        key: 'address.trx',
-        type: 'address',
-        subtype: 'trx',
-        label: '',
-        value: 'TWiV82cSnCffyqkAwCuyjuvqUwZJx2nr3a',
-        ttl: '300'
-      },
-      {
-        key: 'profile.website',
-        type: 'profile',
-        subtype: 'website',
-        label: 'Apple',
-        value: 'https://www.apple.com/imac',
-        ttl: '300'
-      },
-      {
-        key: 'profile.avatar',
-        type: 'profile',
-        subtype: 'avatar',
-        label: '',
-        value: 'https://thiscatdoesnotexist.com',
-        ttl: '300'
-      },
-      {
-        key: 'profile.twitter',
-        label: '',
-        subtype: 'twitter',
-        ttl: '300',
-        type: 'profile',
-        value: 'Apple',
-      }
-    ])
+    expect(records).toStrictEqual(accountWithSignerProdRecords)
   })
 
   it('filter by key', async function () {
@@ -370,8 +321,8 @@ describe('changeManager', function () {
 
   it('should throw error: same address', async function () {
     await expect(accountWithSigner.changeManager({
-      key: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
-      coin_type: CoinType.TRX,
+      key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+      coin_type: CoinType.ETH,
     })).rejects.toThrow('same address')
   }, 10000)
 })
@@ -393,4 +344,31 @@ describe('changeOwner', function () {
       coin_type: CoinType.ETH,
     })).rejects.toThrow('same address')
   }, 10000)
+})
+
+describe('updateRecords', function () {
+  it('should work', async function () {
+    const tx = await accountWithSigner.updateRecords([{
+      key: 'profile.email',
+      value: 'hr@apple.com',
+      label: 'HR',
+      ttl: '3000',
+    }])
+    expect(tx.hash).toBeTruthy()
+  }, 10000)
+})
+
+describe('editRecords', function () {
+  // what if label and ttl is missing?
+  it('should work', async function () {
+    const editor = await accountWithSigner.editRecords()
+    const tx = await editor.delete({
+      key: 'profile.email',
+    }).add({
+      key: 'profile.email',
+      value: 'recruit@apple.com',
+    }).execute()
+
+    expect(tx.hash).toBeTruthy()
+  })
 })

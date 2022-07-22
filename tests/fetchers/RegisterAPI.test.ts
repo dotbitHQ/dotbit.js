@@ -1,4 +1,4 @@
-import { ChainType, EvmChainId } from '../../src/const'
+import { ChainType, EditRecordAction, EvmChainId } from '../../src/const'
 import { RegisterAPI } from '../../src/fetchers/RegisterAPI'
 
 const registerAPI = new RegisterAPI('https://test-register-api.did.id/v1')
@@ -61,4 +61,28 @@ describe('editAccountOwner', function () {
       }
     })).rejects.toThrow('30023: same address')
   })
+})
+
+describe('editAccountRecords', function () {
+  it('work', async function () {
+    const res = await registerAPI.editAccountRecords({
+      chain_type: ChainType.eth,
+      evm_chain_id: EvmChainId.ETH_GOERILI,
+      address: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
+      account: 'imac.bit',
+      raw_param: {
+        records: [
+          {
+            type: 'profile',
+            key: 'twitter',
+            label: '',
+            value: 'apple',
+            ttl: '300',
+          },
+        ]
+      }
+    })
+
+    expect(res.sign_list.length).toBe(1)
+  }, 10000)
 })
