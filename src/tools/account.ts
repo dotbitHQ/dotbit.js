@@ -26,7 +26,8 @@ export function toDottedStyle (inputAccount: string) {
 }
 
 /**
- * Transform dot-style account to hash-style account
+ * Transform dot-style account to hash-style account imac#001.bit
+ * @Deprecated We currently not support this style
  * @param inputAccount
  */
 export function toHashedStyle (inputAccount: string) {
