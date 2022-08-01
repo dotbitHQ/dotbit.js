@@ -48,3 +48,28 @@ describe('subAccountList', function () {
     expect(res.list.length).toBe(1)
   })
 })
+
+describe('editSubAccount', function () {
+  it('should work', async function () {
+    const res = await subAccountApi.editSubAccount({
+      account: '001.imac.bit',
+      type: 'blockchain',
+      key_info: {
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+        coin_type: CoinType.ETH,
+      },
+      edit_key: 'manager',
+      edit_value: {
+        manager: {
+          type: 'blockchain',
+          key_info: {
+            key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+            coin_type: CoinType.ETH,
+          }
+        }
+      }
+    })
+
+    expect(res.list[0].sign_list.length).toBe(1)
+  })
+})

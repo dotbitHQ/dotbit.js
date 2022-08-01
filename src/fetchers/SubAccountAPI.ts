@@ -1,6 +1,7 @@
 import { CheckSubAccountStatus } from '../const'
 import { Networking } from '../tools/Networking'
 import { BitKeyInfo, KeyInfo } from './BitIndexer.type'
+import { EditAccountRecord } from './RegisterAPI'
 
 export interface SignList {
   sign_type: number,
@@ -61,6 +62,28 @@ export interface SubAccountListRes {
   list: SubAccountListItem[],
 }
 
+export type EditSubAccountEditKey = 'manager'|'owner'|'records'
+export interface EditSubAccountParamsGeneric<T> {
+  account: string,
+  type: string, // blockchain
+  key_info: KeyInfo,
+  edit_key: EditSubAccountEditKey,
+  edit_value: T,
+}
+
+export type EditSubAccountManagerParams = EditSubAccountParamsGeneric<{
+  manager: BitKeyInfo,
+}>
+export type EditSubAccountOwnerParams = EditSubAccountParamsGeneric<{
+  owner: BitKeyInfo,
+}>
+export type EditSubAccountRecordsParams = EditSubAccountParamsGeneric<{
+  records: EditAccountRecord[],
+}>
+
+// todo-open: this should be align with main-account
+export type EditSubAccountParams = EditSubAccountOwnerParams | EditSubAccountManagerParams | EditSubAccountRecordsParams
+
 export class SubAccountAPI {
   net: Networking
 
@@ -90,5 +113,9 @@ export class SubAccountAPI {
 
   createSubAccounts (params: CreateSubAccountsParams): Promise<TxsSignedOrUnSigned> {
     return this.net.post('sub/account/create', params)
+  }
+
+  editSubAccount (params: EditSubAccountParams): Promise<TxsSignedOrUnSigned> {
+    return this.net.post('sub/account/edit', params)
   }
 }

@@ -1,7 +1,7 @@
 import './polyfill'
 import { createInstance } from '../../lib.esm/index.js'
 import { ProviderSigner } from '../../lib.esm/signers/ProviderSigner'
-import { CoinType } from '../../lib/const'
+import { CoinType } from '../../lib.esm/const'
 import { typedDataFromMetamask } from './typedData'
 
 const $ = document.querySelector.bind(document)
@@ -16,7 +16,7 @@ const $codeOutput = $('#code-output')
 
 async function main () {
   const signer = new ProviderSigner(window.ethereum)
-  const dotbit = createInstance({ network: 'testnet', signer })
+  const dotbit = window.dotbit = createInstance({ signer })
 
   const addresses = await window.ethereum.send('eth_requestAccounts')
 

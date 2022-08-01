@@ -1,4 +1,5 @@
 import { BitAccount } from '../src/BitAccount'
+import { BitSubAccount } from '../src/BitSubAccount'
 import { DotBit } from '../src/DotBit'
 import { BitIndexer } from '../src/index'
 
@@ -14,6 +15,20 @@ describe('serverInfo', function () {
 
     expect(info.current_block_number).toBeGreaterThan(10000)
   }, 10000)
+})
+
+describe('account', function () {
+  it('main account', function () {
+    const bitAccount = dotbit.account('imac.bit')
+    expect(bitAccount).toBeInstanceOf(BitAccount)
+    expect(bitAccount.account).toBe('imac.bit')
+  })
+
+  it('sub account', function () {
+    const bitSubAccount = dotbit.account('001.imac.bit')
+    expect(bitSubAccount).toBeInstanceOf(BitSubAccount)
+    expect(bitSubAccount.account).toBe('001.imac.bit')
+  })
 })
 
 describe('accountsOfOwner', function () {

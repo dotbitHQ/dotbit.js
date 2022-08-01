@@ -1,7 +1,7 @@
 const { createInstance } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
 const { EthersSigner } = require('../../lib/index')
-const {CoinType} = require('../../lib/const')
+const { CoinType } = require('../../lib/const')
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'

@@ -1,9 +1,11 @@
 import { BitAccount } from './BitAccount'
+import { BitSubAccount } from './BitSubAccount'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { BitNetwork } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { KeyInfo } from './fetchers/BitIndexer.type'
 import { BitSigner } from './signers/BitSigner'
+import { isSubAccount } from './tools/account'
 
 interface CacheProvider {
   get: (key: string, options?: any) => any,
@@ -34,15 +36,25 @@ export class DotBit {
   }
 
   private getAccount (account: string): BitAccount {
-    const cachedAccount = this.cacheProvider?.get(`account:${account}`)
-    if (cachedAccount) return cachedAccount
+    let bitAccount: BitAccount = this.cacheProvider?.get(`account:${account}`)
+    if (bitAccount) return bitAccount
 
-    const bitAccount = new BitAccount({
-      account,
-      bitIndexer: this.bitIndexer,
-      bitBuilder: this.bitBuilder,
-      signer: this.signer,
-    })
+    if (isSubAccount(account)) {
+      bitAccount = new BitSubAccount({
+        account,
+        bitIndexer: this.bitIndexer,
+        bitBuilder: this.bitBuilder,
+        signer: this.signer,
+      })
+    }
+    else {
+      bitAccount = new BitAccount({
+        account,
+        bitIndexer: this.bitIndexer,
+        bitBuilder: this.bitBuilder,
+        signer: this.signer,
+      })
+    }
 
     this.cacheProvider?.set(`account:${account}`, bitAccount)
 

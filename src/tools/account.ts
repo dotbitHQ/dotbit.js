@@ -71,3 +71,12 @@ export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExt
     subtype: record.key.split('.')[1],
   }
 }
+
+/**
+ * Check if a given account is sub-account.
+ * 001.imac.bit vs imac.bit
+ * @param account
+ */
+export function isSubAccount (account: string): boolean {
+  return account.split('.').length >= 3
+}

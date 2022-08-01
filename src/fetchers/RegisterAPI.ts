@@ -35,6 +35,7 @@ export interface EditAccountParams<T> {
   raw_param: T,
 }
 
+// todo-open: this format should be aborted
 export interface EditAccountRecord {
   type: string, // eg: `profile`
   key: string, // eg: `twitter`

@@ -10,7 +10,7 @@ import { mapCoinTypeToSymbol, mapSymbolToCoinType } from './slip44/slip44'
 import { isSupportedAccount, toDottedStyle, toRecordExtended } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
-interface BitAccountOptions {
+export interface BitAccountOptions {
   account: string,
   bitIndexer?: BitIndexer,
   bitBuilder?: RemoteTxBuilder,
@@ -40,8 +40,8 @@ export class BitAccount {
     this.signer = options.signer
   }
 
-  #info: AccountInfo
-  #records: BitAccountRecordExtended[]
+  protected _info: AccountInfo
+  protected _records: BitAccountRecordExtended[]
 
   status: AccountStatus
 
@@ -58,18 +58,6 @@ export class BitAccount {
   }
 
   /** writer **/
-  setOwner (address: string, coinType: string) {
-    this.requireBitBuilder()
-  }
-
-  setManager () {
-    this.requireBitBuilder()
-  }
-
-  setRecords (key: string, records: any[]) {
-    this.requireBitBuilder()
-  }
-
   setReverseRecord () {
     this.requireBitBuilder()
   }
@@ -88,8 +76,7 @@ export class BitAccount {
 
     await this.signer.signTxList(txs)
 
-    const res = await this.bitBuilder.subAccountAPI.sendTransaction(txs)
-    return res
+    return await this.bitBuilder.subAccountAPI.sendTransaction(txs)
   }
 
   /**
@@ -266,13 +253,13 @@ export class BitAccount {
   /** reader **/
 
   async info (): Promise<AccountInfo> {
-    if (!this.#info) {
+    if (!this._info) {
       const info = (await this.bitIndexer.accountInfo(this.account)).account_info
 
-      this.#info = info
+      this._info = info
     }
 
-    return this.#info
+    return this._info
   }
 
   async owner () {
@@ -281,15 +268,15 @@ export class BitAccount {
   }
 
   async records (key?: string): Promise<BitAccountRecordExtended[]> {
-    if (!this.#records) {
+    if (!this._records) {
       const records =  (await this.bitIndexer.accountRecords(this.account))
 
-      this.#records = records.map(toRecordExtended)
+      this._records = records.map(toRecordExtended)
     }
 
     key = key?.toLowerCase()
 
-    return key ? this.#records.filter(record => record.key === key) : this.#records
+    return key ? this._records.filter(record => record.key === key) : this._records
   }
 
   async #addrs (chain?: string) {

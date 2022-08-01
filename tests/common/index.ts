@@ -1,5 +1,6 @@
 import { ethers, Wallet } from '_ethers@5.6.9@ethers'
 import { BitAccount } from '../../src/BitAccount'
+import { BitSubAccount } from '../../src/BitSubAccount'
 import { BitIndexer, EthersSigner, RemoteTxBuilder } from '../../src/index'
 
 const bitIndexer = new BitIndexer({
@@ -87,3 +88,10 @@ export const accountWithSignerProdRecords = [
     value: 'Apple',
   }
 ]
+
+export const subAccountWithSigner = new BitSubAccount({
+  account: '001.imac.bit',
+  bitIndexer,
+  bitBuilder,
+  signer,
+})

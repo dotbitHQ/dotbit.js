@@ -1,4 +1,4 @@
-import { accountIdHex, isSupportedAccount, toDottedStyle, toHashedStyle } from '../../src/tools/account'
+import { accountIdHex, isSubAccount, isSupportedAccount, toDottedStyle, toHashedStyle } from '../../src/tools/account'
 
 describe('isSupportedAccount', function () {
   it('main account', function () {
@@ -101,5 +101,19 @@ describe('accountIdHex', function () {
     const accountId = accountIdHex('superdid.2077.bit')
 
     expect(accountId).toBe('0x85a13eea14c4bc5474e205e136df349b7dbc0442')
+  })
+})
+
+describe('isSubAccount', function () {
+  it('should be false for main-account', function () {
+    expect(isSubAccount('imac.bit')).toBe(false)
+  })
+
+  it('should be true for sub-account', function () {
+    expect(isSubAccount('superdid.2077.bit')).toBe(true)
+  })
+
+  it('should be false for hash-style account', function () {
+    expect(isSubAccount('imac#001.bit')).toBe(false)
   })
 })

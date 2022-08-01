@@ -5,7 +5,11 @@ import {
   EditAccountRecordsParam,
   RegisterAPI,
 } from '../fetchers/RegisterAPI'
-import { CreateSubAccountsParams, SubAccountAPI, TxsSignedOrUnSigned } from '../fetchers/SubAccountAPI'
+import {
+  CreateSubAccountsParams, EditSubAccountParams,
+  SubAccountAPI,
+  TxsSignedOrUnSigned,
+} from '../fetchers/SubAccountAPI'
 
 export interface RemoteTxBuilderConfig {
   subAccountUri: string,
@@ -39,5 +43,9 @@ export class RemoteTxBuilder {
 
   editRecords (params: EditAccountRecordsParam) {
     return this.registerAPI.editAccountRecords(params)
+  }
+
+  editSubAccount (params: EditSubAccountParams) {
+    return this.subAccountAPI.editSubAccount(params)
   }
 }
