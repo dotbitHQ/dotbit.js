@@ -13,8 +13,8 @@ A complete [.bit](https://did.id) SDK and utilities in JavaScript (and TypeScrip
 - Enable .bit [Sub-Account](https://www.did.id/sub-account) for a specific account.
 - **Mint a sub-account** of a .bit main account.
 - Query all the sub-accounts of a .bit main account.
-- Manage the **ownership** of a .bit account.
-- Manage the **records** of a .bit account. (Coming soon)
+- Manage the **ownership** of a .bit account(sub-account included).
+- Manage the **records** of a .bit account(sub-account included).
 - **Register a .bit account** with CKB. (Coming soon)
 
 ## Installation
