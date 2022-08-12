@@ -19,9 +19,11 @@ export interface TxsSignedOrUnSigned {
   list: TxsList[],
 }
 
-export interface SubAccount extends BitKeyInfo {
+export interface SubAccount {
+  type: string,
   account: string,
   register_years: number,
+  key_info?: KeyInfo,
   mint_for_account?: string,
   status?: number,
   account_char_str?: ICharInfo[],

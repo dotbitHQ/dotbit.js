@@ -195,37 +195,37 @@ export function splitAccount (account: string, addSuffix = false, language = 'en
     }
   })
 
-  const englishNotKnownChar = englishSplitArr.find((item: ICharInfo) => {
+  const englishUnknownChar = englishSplitArr.find((item: ICharInfo) => {
     return item.char_set_name === CHAR_TYPE.unknown
   })
-  const turkishNotKnownChar = turkishSplitArr.find((item: ICharInfo) => {
+  const turkishUnknownChar = turkishSplitArr.find((item: ICharInfo) => {
     return item.char_set_name === CHAR_TYPE.unknown
   })
-  const vietnameseNotKnownChar = vietnameseSplitArr.find((item: ICharInfo) => {
+  const vietnameseUnknownChar = vietnameseSplitArr.find((item: ICharInfo) => {
     return item.char_set_name === CHAR_TYPE.unknown
   })
-  const thaiNotKnownChar = thaiSplitArr.find((item: ICharInfo) => {
+  const thaiUnknownChar = thaiSplitArr.find((item: ICharInfo) => {
     return item.char_set_name === CHAR_TYPE.unknown
   })
-  const koreanNotKnownChar = koreanSplitArr.find((item: ICharInfo) => {
+  const koreanUnknownChar = koreanSplitArr.find((item: ICharInfo) => {
     return item.char_set_name === CHAR_TYPE.unknown
   })
 
   let splitArr = null
 
-  if (!englishNotKnownChar) {
+  if (!englishUnknownChar) {
     splitArr = englishSplitArr
   }
-  else if (!turkishNotKnownChar) {
+  else if (!turkishUnknownChar) {
     splitArr = turkishSplitArr
   }
-  else if (!vietnameseNotKnownChar) {
+  else if (!vietnameseUnknownChar) {
     splitArr = vietnameseSplitArr
   }
-  else if (!thaiNotKnownChar) {
+  else if (!thaiUnknownChar) {
     splitArr = thaiSplitArr
   }
-  else if (!koreanNotKnownChar) {
+  else if (!koreanUnknownChar) {
     splitArr = koreanSplitArr
   }
   else {
@@ -237,29 +237,29 @@ export function splitAccount (account: string, addSuffix = false, language = 'en
     })
   }
 
-  const notKnownChar = splitArr.find((item: ICharInfo) => {
+  const unknownChar = splitArr.find((item: ICharInfo) => {
     return item.char_set_name === CHAR_TYPE.unknown
   })
 
-  if (!notKnownChar) {
+  if (!unknownChar) {
     const charList: { [key: string]: any } = {}
-    if (!englishNotKnownChar) {
+    if (!englishUnknownChar) {
       charList.en = englishSplitArr
     }
 
-    if (!turkishNotKnownChar) {
+    if (!turkishUnknownChar) {
       charList.tr = turkishSplitArr
     }
 
-    if (!vietnameseNotKnownChar) {
+    if (!vietnameseUnknownChar) {
       charList.vi = vietnameseSplitArr
     }
 
-    if (!thaiNotKnownChar) {
+    if (!thaiUnknownChar) {
       charList.th = thaiSplitArr
     }
 
-    if (!koreanNotKnownChar) {
+    if (!koreanUnknownChar) {
       charList.ko = koreanSplitArr
     }
 

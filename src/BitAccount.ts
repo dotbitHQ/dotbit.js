@@ -19,7 +19,7 @@ export interface BitAccountOptions {
 
 export interface SubAccountParams {
   account: string,
-  keyInfo?: KeyInfo,
+  keyInfo?: KeyInfo, // The keyInfo has higher priority than mintForAccount.
   registerYears: number,
   mintForAccount?: string,
 }

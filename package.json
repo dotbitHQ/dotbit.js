@@ -15,7 +15,7 @@
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "dev:browser": "npm run build && vite ./example/browser",
     "prepublishOnly": "npm run build",
-    "slip44": "cnpm i bip44-constants@latest -D && node scripts/slip44-json.js",
+    "slip44": "npm i bip44-constants@latest -D && node scripts/slip44-json.js",
     "character": "node scripts/get_character_list.js"
   },
   "keywords": [
