@@ -101,7 +101,7 @@ export interface ICharInfo {
  * @param addSuffix
  * @param language e.g. window.navigator.language
  */
-export function splitAccount (account: string, addSuffix = false, language = 'en'): ICharInfo[] {
+export function graphemesAccount (account: string, addSuffix = false, language = 'en'): ICharInfo[] {
   const splitter = new GraphemeSplitter()
   const split = splitter.splitGraphemes(account)
 

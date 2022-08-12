@@ -89,6 +89,7 @@ export enum EditRecordAction {
 
 export const ACCOUNT_SUFFIX = '.bit'
 
+// source: https://github.com/dotbitHQ/das-types/blob/master/rust/src/constants.rs#L145
 export enum CHAR_TYPE {
   emoji = 0,
   number = 1,

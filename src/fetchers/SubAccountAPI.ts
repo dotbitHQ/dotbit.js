@@ -19,19 +19,27 @@ export interface TxsSignedOrUnSigned {
   list: TxsList[],
 }
 
-export interface SubAccount {
-  type: string,
+export interface SubAccount extends BitKeyInfo {
   account: string,
   register_years: number,
-  key_info?: KeyInfo,
-  mint_for_account?: string,
-  status?: number,
-  account_char_str?: ICharInfo[],
 }
+
+export interface SubAccountMintForAddress extends SubAccount {
+  account_char_str: ICharInfo[],
+}
+
+export interface SubAccountMintForAccount {
+  mint_for_account: string,
+  account: string,
+  register_years: number,
+  account_char_str: ICharInfo[],
+}
+
+export type SubAccountMintParams = SubAccountMintForAddress | SubAccountMintForAccount
 
 export interface CheckAccountsParams extends BitKeyInfo {
   account: string,
-  sub_account_list: SubAccount[],
+  sub_account_list: SubAccountMintParams[],
 }
 
 export interface SubAccountWithStatus extends SubAccount {
@@ -39,10 +47,7 @@ export interface SubAccountWithStatus extends SubAccount {
   message: string,
 }
 
-export interface CreateSubAccountsParams extends BitKeyInfo {
-  account: string,
-  sub_account_list: SubAccount[],
-}
+export interface CreateSubAccountsParams extends CheckAccountsParams {}
 
 export interface SubAccountListParams {
   'account': string,
