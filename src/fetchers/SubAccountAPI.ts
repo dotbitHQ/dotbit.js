@@ -1,4 +1,5 @@
 import { CheckSubAccountStatus } from '../const'
+import { ICharInfo } from '../tools/account'
 import { Networking } from '../tools/Networking'
 import { BitKeyInfo, KeyInfo } from './BitIndexer.type'
 import { EditAccountRecord } from './RegisterAPI'
@@ -21,6 +22,9 @@ export interface TxsSignedOrUnSigned {
 export interface SubAccount extends BitKeyInfo {
   account: string,
   register_years: number,
+  mint_for_account?: string,
+  status?: number,
+  account_char_str?: ICharInfo[],
 }
 
 export interface CheckAccountsParams extends BitKeyInfo {

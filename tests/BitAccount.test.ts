@@ -255,6 +255,10 @@ describe('mintSubAccounts', function () {
       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
     },
     registerYears: 1,
+  }, {
+    account: '008.imac.bit',
+    registerYears: 1,
+    mintForAccount: 'imac.bit'
   }]
 
   // it('should work', async function () {

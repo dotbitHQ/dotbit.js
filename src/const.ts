@@ -86,3 +86,20 @@ export enum EditRecordAction {
   change = 'change',
   add = 'add'
 }
+
+export const ACCOUNT_SUFFIX = '.bit'
+
+export enum CHAR_TYPE {
+  emoji = 0,
+  number = 1,
+  english = 2,
+  simplifiedChinese = 3,
+  traditionalChinese,
+  japanese,
+  korean,
+  russian,
+  turkish,
+  thai,
+  vietnamese,
+  unknown = 99
+}

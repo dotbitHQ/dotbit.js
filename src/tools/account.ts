@@ -1,6 +1,15 @@
 import blake2b from 'blake2b'
 import { BitAccountRecord, BitAccountRecordExtended } from '../fetchers/BitIndexer.type'
 import { pad0x } from './common'
+import GraphemeSplitter from 'grapheme-splitter'
+import emojiList from './char_set/emoji_list.json'
+import numberList from './char_set/digit_list.json'
+import englishList from './char_set/en_list.json'
+import turkishList from './char_set/tr_list.json'
+import thaiList from './char_set/th_list.json'
+import koreanList from './char_set/ko_list.json'
+import vietnameseList from './char_set/vi_list.json'
+import { ACCOUNT_SUFFIX, CHAR_TYPE } from '../const'
 
 export function isSupportedAccount (account: string): boolean {
   return /.+\.bit/.test(account) && account.split(/.#/).every(v => Boolean(v.length))
@@ -79,4 +88,220 @@ export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExt
  */
 export function isSubAccount (account: string): boolean {
   return account.split('.').length >= 3
+}
+
+export interface ICharInfo {
+  char_set_name: number,
+  char: string,
+}
+
+/**
+ * split the account by character set.
+ * @param account
+ * @param addSuffix
+ * @param language e.g. window.navigator.language
+ */
+export function splitAccount (account: string, addSuffix = false, language = 'en'): ICharInfo[] {
+  const splitter = new GraphemeSplitter()
+  const split = splitter.splitGraphemes(account)
+
+  const englishSplitArr: ICharInfo[] = split.map((char: string) => {
+    let _charType: number = CHAR_TYPE.unknown
+    if (emojiList.includes(char)) {
+      _charType = CHAR_TYPE.emoji
+    }
+    else if (numberList.includes(char)) {
+      _charType = CHAR_TYPE.number
+    }
+    else if (englishList.includes(char)) {
+      _charType = CHAR_TYPE.english
+    }
+
+    return {
+      char_set_name: _charType,
+      char
+    }
+  })
+
+  const turkishSplitArr: ICharInfo[] = split.map((char: string) => {
+    let _charType: number = CHAR_TYPE.unknown
+    if (emojiList.includes(char)) {
+      _charType = CHAR_TYPE.emoji
+    }
+    else if (numberList.includes(char)) {
+      _charType = CHAR_TYPE.number
+    }
+    else if (turkishList.includes(char)) {
+      _charType = CHAR_TYPE.turkish
+    }
+
+    return {
+      char_set_name: _charType,
+      char
+    }
+  })
+
+  const vietnameseSplitArr: ICharInfo[] = split.map((char: string) => {
+    let _charType: number = CHAR_TYPE.unknown
+    if (emojiList.includes(char)) {
+      _charType = CHAR_TYPE.emoji
+    }
+    else if (numberList.includes(char)) {
+      _charType = CHAR_TYPE.number
+    }
+    else if (vietnameseList.includes(char)) {
+      _charType = CHAR_TYPE.vietnamese
+    }
+
+    return {
+      char_set_name: _charType,
+      char
+    }
+  })
+
+  const thaiSplitArr: ICharInfo[] = split.map((char: string) => {
+    let _charType: number = CHAR_TYPE.unknown
+    if (emojiList.includes(char)) {
+      _charType = CHAR_TYPE.emoji
+    }
+    else if (numberList.includes(char)) {
+      _charType = CHAR_TYPE.number
+    }
+    else if (thaiList.includes(char)) {
+      _charType = CHAR_TYPE.thai
+    }
+
+    return {
+      char_set_name: _charType,
+      char
+    }
+  })
+
+  const koreanSplitArr: ICharInfo[] = split.map((char: string) => {
+    let _charType: number = CHAR_TYPE.unknown
+    if (emojiList.includes(char)) {
+      _charType = CHAR_TYPE.emoji
+    }
+    else if (numberList.includes(char)) {
+      _charType = CHAR_TYPE.number
+    }
+    else if (koreanList.includes(char)) {
+      _charType = CHAR_TYPE.korean
+    }
+
+    return {
+      char_set_name: _charType,
+      char
+    }
+  })
+
+  const englishNotKnownChar = englishSplitArr.find((item: ICharInfo) => {
+    return item.char_set_name === CHAR_TYPE.unknown
+  })
+  const turkishNotKnownChar = turkishSplitArr.find((item: ICharInfo) => {
+    return item.char_set_name === CHAR_TYPE.unknown
+  })
+  const vietnameseNotKnownChar = vietnameseSplitArr.find((item: ICharInfo) => {
+    return item.char_set_name === CHAR_TYPE.unknown
+  })
+  const thaiNotKnownChar = thaiSplitArr.find((item: ICharInfo) => {
+    return item.char_set_name === CHAR_TYPE.unknown
+  })
+  const koreanNotKnownChar = koreanSplitArr.find((item: ICharInfo) => {
+    return item.char_set_name === CHAR_TYPE.unknown
+  })
+
+  let splitArr = null
+
+  if (!englishNotKnownChar) {
+    splitArr = englishSplitArr
+  }
+  else if (!turkishNotKnownChar) {
+    splitArr = turkishSplitArr
+  }
+  else if (!vietnameseNotKnownChar) {
+    splitArr = vietnameseSplitArr
+  }
+  else if (!thaiNotKnownChar) {
+    splitArr = thaiSplitArr
+  }
+  else if (!koreanNotKnownChar) {
+    splitArr = koreanSplitArr
+  }
+  else {
+    splitArr = split.map((char: string) => {
+      return {
+        char_set_name: CHAR_TYPE.unknown,
+        char
+      }
+    })
+  }
+
+  const notKnownChar = splitArr.find((item: ICharInfo) => {
+    return item.char_set_name === CHAR_TYPE.unknown
+  })
+
+  if (!notKnownChar) {
+    const charList: { [key: string]: any } = {}
+    if (!englishNotKnownChar) {
+      charList.en = englishSplitArr
+    }
+
+    if (!turkishNotKnownChar) {
+      charList.tr = turkishSplitArr
+    }
+
+    if (!vietnameseNotKnownChar) {
+      charList.vi = vietnameseSplitArr
+    }
+
+    if (!thaiNotKnownChar) {
+      charList.th = thaiSplitArr
+    }
+
+    if (!koreanNotKnownChar) {
+      charList.ko = koreanSplitArr
+    }
+
+    if (/^en/i.test(language)) {
+      language = 'en'
+    }
+    else if (/^ja/i.test(language)) {
+      language = 'ja'
+    }
+    else if (/^ru/i.test(language)) {
+      language = 'ru'
+    }
+    else if (/^tr/i.test(language)) {
+      language = 'tr'
+    }
+    else if (/^vi/i.test(language)) {
+      language = 'vi'
+    }
+    else if (/^th/i.test(language)) {
+      language = 'th'
+    }
+    else if (/^ko/i.test(language)) {
+      language = 'ko'
+    }
+
+    if (charList[language]) {
+      splitArr = charList[language]
+    }
+    else if (charList.en) {
+      splitArr = charList.en
+    }
+  }
+
+  if (addSuffix) {
+    ACCOUNT_SUFFIX.split('')
+      .forEach((char: string) => {
+        splitArr.push({
+          char_set_name: CHAR_TYPE.english,
+          char
+        })
+      })
+  }
+
+  return splitArr
 }

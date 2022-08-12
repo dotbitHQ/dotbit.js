@@ -53,7 +53,7 @@ export interface KeyInfo {
 
 export interface BitKeyInfo {
   type: string,
-  key_info: KeyInfo,
+  key_info?: KeyInfo,
 }
 
 export interface BitAccountList {

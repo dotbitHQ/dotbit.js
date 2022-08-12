@@ -7,7 +7,7 @@ import { toEditingRecord, TxsWithMMJsonSignedOrUnSigned } from './fetchers/Regis
 import { CheckAccountsParams, SubAccount, SubAccountListParams } from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
 import { mapCoinTypeToSymbol, mapSymbolToCoinType } from './slip44/slip44'
-import { isSupportedAccount, toDottedStyle, toRecordExtended } from './tools/account'
+import { isSupportedAccount, splitAccount, toDottedStyle, toRecordExtended } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
 export interface BitAccountOptions {
@@ -19,8 +19,9 @@ export interface BitAccountOptions {
 
 export interface SubAccountParams {
   account: string,
-  keyInfo: KeyInfo,
+  keyInfo?: KeyInfo,
   registerYears: number,
+  mintForAccount?: string,
 }
 
 export class BitAccount {
@@ -127,11 +128,25 @@ export class BitAccount {
         coin_type: coinType
       },
       sub_account_list: params.map(param => {
-        return {
-          account: toDottedStyle(param.account),
-          type: 'blockchain',
-          key_info: param.keyInfo,
-          register_years: param.registerYears,
+        const account = toDottedStyle(param.account)
+
+        if (param.mintForAccount) {
+          return {
+            type: 'blockchain',
+            account,
+            mint_for_account: param.mintForAccount,
+            register_years: param.registerYears,
+            account_char_str: splitAccount(account.split('.')[0])
+          }
+        }
+        else {
+          return {
+            type: 'blockchain',
+            account,
+            key_info: param.keyInfo,
+            register_years: param.registerYears,
+            account_char_str: splitAccount(account.split('.')[0])
+          }
         }
       })
     }
