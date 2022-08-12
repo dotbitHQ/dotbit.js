@@ -71,5 +71,10 @@ For more complete usages, please check out the examples: [For browser](./example
 ## Get help
 Please join our [Discord channel](https://discord.gg/fVppR7z4ht), or raise an issue: [Issues](https://github.com/dotbitHQ/dotbit.js/issues)
 
+## Contribute
+This SDK is still under development. Any contribution including PR is welcome.
+
+Please raise an [issue](https://github.com/dotbitHQ/dotbit.js/issues) if you find any bugs or have any suggestions.
+
 ## License
 MIT License (including **all** dependencies).
