@@ -11,6 +11,10 @@ import koreanList from './char_set/ko_list.json'
 import vietnameseList from './char_set/vi_list.json'
 import { ACCOUNT_SUFFIX, CHAR_TYPE } from '../const'
 
+/**
+ * @description: check if the account is supported by .bit
+ * @param account in the format of `xxx.bit`
+ */
 export function isSupportedAccount (account: string): boolean {
   return /.+\.bit/.test(account) && account.split(/.#/).every(v => Boolean(v.length))
 }
@@ -112,7 +116,6 @@ export interface ICharInfo {
 export function graphemesAccount (account: string, addSuffix = false, language = 'en'): ICharInfo[] {
   const splitter = new GraphemeSplitter()
   const split = splitter.splitGraphemes(account)
-
   const englishSplitArr: ICharInfo[] = split.map((char: string) => {
     let _charType: number = CHAR_TYPE.unknown
     if (emojiList.includes(char)) {
@@ -312,4 +315,22 @@ export function graphemesAccount (account: string, addSuffix = false, language =
   }
 
   return splitArr
+}
+
+/**
+ * Get the account's all graphemes
+ * @param account in the form of 'xxx.bit'
+ * @returns {Partial<Record<CHAR_TYPE, boolean>>}
+ */
+export function getAccountCharsetTypes (account: string): Partial<Record<CHAR_TYPE, boolean>> {
+  const name = trimAccountSuffix(account)
+  const graphemes = graphemesAccount(name)
+
+  const charTypes: Partial<Record<CHAR_TYPE, boolean>> = {}
+
+  graphemes.forEach(grapheme => {
+    charTypes[grapheme.char_set_name] = true
+  })
+
+  return charTypes
 }
