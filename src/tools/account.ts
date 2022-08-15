@@ -90,8 +90,16 @@ export function isSubAccount (account: string): boolean {
   return account.split('.').length >= 3
 }
 
+/**
+ * trim the suffix of the account, e.g. imac.bit -> imac
+ * @param account
+ */
+export function trimAccountSuffix (account: string): string {
+  return account.replace(/\.bit$/, '')
+}
+
 export interface ICharInfo {
-  char_set_name: number,
+  char_set_name: CHAR_TYPE,
   char: string,
 }
 

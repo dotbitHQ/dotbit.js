@@ -29,8 +29,8 @@ export interface SubAccountMintForAddress extends SubAccount {
 }
 
 export interface SubAccountMintForAccount {
-  mint_for_account: string,
   account: string,
+  mint_for_account: string,
   register_years: number,
   account_char_str: ICharInfo[],
 }

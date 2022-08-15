@@ -6,12 +6,18 @@ import { AccountInfo, BitAccountRecord, BitAccountRecordExtended, KeyInfo } from
 import { toEditingRecord, TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI'
 import {
   CheckAccountsParams,
-  SubAccountListParams,
-  SubAccountMintParams
+  SubAccountListParams, SubAccountMintForAccount, SubAccountMintForAddress,
+  SubAccountMintParams,
 } from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
 import { mapCoinTypeToSymbol, mapSymbolToCoinType } from './slip44/slip44'
-import { isSupportedAccount, graphemesAccount, toDottedStyle, toRecordExtended } from './tools/account'
+import {
+  isSupportedAccount,
+  graphemesAccount,
+  toDottedStyle,
+  toRecordExtended,
+  trimAccountSuffix,
+} from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
 export interface BitAccountOptions {
@@ -136,21 +142,20 @@ export class BitAccount {
 
         if (param.mintForAccount) {
           return {
-            type: 'blockchain',
             account,
             mint_for_account: param.mintForAccount,
             register_years: param.registerYears,
-            account_char_str: graphemesAccount(account.split('.')[0])
-          }
+            account_char_str: graphemesAccount(trimAccountSuffix(account)),
+          } as SubAccountMintForAccount
         }
         else {
           return {
-            type: 'blockchain',
             account,
+            type: 'blockchain',
             key_info: param.keyInfo,
             register_years: param.registerYears,
-            account_char_str: graphemesAccount(account.split('.')[0])
-          }
+            account_char_str: graphemesAccount(trimAccountSuffix(account))
+          } as SubAccountMintForAddress
         }
       })
     }
