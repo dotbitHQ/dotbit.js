@@ -4,10 +4,14 @@ import { AccountStatus, CheckSubAccountStatus, CoinType2ChainType, RecordType } 
 import { BitIndexer } from './fetchers/BitIndexer'
 import { AccountInfo, BitAccountRecord, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
 import { toEditingRecord, TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI'
-import { CheckAccountsParams, SubAccount, SubAccountListParams } from './fetchers/SubAccountAPI'
+import {
+  CheckAccountsParams,
+  SubAccountListParams,
+  SubAccountMintParams
+} from './fetchers/SubAccountAPI'
 import { BitSigner } from './signers/BitSigner'
 import { mapCoinTypeToSymbol, mapSymbolToCoinType } from './slip44/slip44'
-import { isSupportedAccount, toDottedStyle, toRecordExtended } from './tools/account'
+import { isSupportedAccount, graphemesAccount, toDottedStyle, toRecordExtended } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
 export interface BitAccountOptions {
@@ -19,7 +23,8 @@ export interface BitAccountOptions {
 
 export interface SubAccountParams {
   account: string,
-  keyInfo: KeyInfo,
+  keyInfo?: KeyInfo, // The keyInfo has higher priority than mintForAccount.
+  mintForAccount?: string,
   registerYears: number,
 }
 
@@ -92,7 +97,7 @@ export class BitAccount {
     })
   }
 
-  async checkSubAccounts (subAccounts: SubAccount[]) {
+  async checkSubAccounts (subAccounts: SubAccountMintParams[]) {
     const info = await this.info()
     const coinType = await this.signer.getCoinType()
 
@@ -127,11 +132,25 @@ export class BitAccount {
         coin_type: coinType
       },
       sub_account_list: params.map(param => {
-        return {
-          account: toDottedStyle(param.account),
-          type: 'blockchain',
-          key_info: param.keyInfo,
-          register_years: param.registerYears,
+        const account = toDottedStyle(param.account)
+
+        if (param.mintForAccount) {
+          return {
+            type: 'blockchain',
+            account,
+            mint_for_account: param.mintForAccount,
+            register_years: param.registerYears,
+            account_char_str: graphemesAccount(account.split('.')[0])
+          }
+        }
+        else {
+          return {
+            type: 'blockchain',
+            account,
+            key_info: param.keyInfo,
+            register_years: param.registerYears,
+            account_char_str: graphemesAccount(account.split('.')[0])
+          }
         }
       })
     }

@@ -1,8 +1,9 @@
 import { BitAccount } from '../src/BitAccount'
 import { CheckSubAccountStatus, CoinType } from '../src/const'
-import { SubAccount } from '../src/fetchers/SubAccountAPI'
+import { SubAccountMintParams } from '../src/fetchers/SubAccountAPI'
 import { sleep } from '../src/tools/common'
 import { accountWithSigner, accountWithSignerProd, accountWithSignerProdRecords } from './common/index'
+import { graphemesAccount } from '../src'
 
 describe('constructor', () => {
   expect(() => {
@@ -255,6 +256,10 @@ describe('mintSubAccounts', function () {
       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
     },
     registerYears: 1,
+  }, {
+    account: '008.imac.bit',
+    registerYears: 1,
+    mintForAccount: 'imac.bit'
   }]
 
   // it('should work', async function () {
@@ -277,7 +282,7 @@ describe('subAccounts', function () {
 
 describe('checkSubAccounts', function () {
   it('work', async function () {
-    const subAccounts: SubAccount[] = [{
+    const subAccounts: SubAccountMintParams[] = [{
       account: 'xyz.imac.bit',
       type: 'blockchain',
       key_info: {
@@ -285,6 +290,7 @@ describe('checkSubAccounts', function () {
         coin_type: CoinType.ETH,
       },
       register_years: 1,
+      account_char_str: graphemesAccount('xyz')
     }]
 
     const result = await accountWithSigner.checkSubAccounts(subAccounts)
@@ -293,7 +299,7 @@ describe('checkSubAccounts', function () {
   })
 
   it('should throw error', async function () {
-    const subAccounts: SubAccount[] = [{
+    const subAccounts: SubAccountMintParams[] = [{
       account: '001.imac.bit',
       type: 'blockchain',
       key_info: {
@@ -301,6 +307,7 @@ describe('checkSubAccounts', function () {
         coin_type: CoinType.ETH,
       },
       register_years: 1,
+      account_char_str: graphemesAccount('001')
     }]
 
     const result = await accountWithSigner.checkSubAccounts(subAccounts)

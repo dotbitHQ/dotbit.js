@@ -15,7 +15,8 @@
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "dev:browser": "npm run build && vite ./example/browser",
     "prepublishOnly": "npm run build",
-    "slip44": "cnpm i bip44-constants@latest -D && node scripts/slip44-json.js"
+    "slip44": "npm i bip44-constants@latest -D && node scripts/slip44-json.js",
+    "character": "node scripts/get_character_list.js"
   },
   "keywords": [
     "dotbit",
@@ -56,6 +57,7 @@
     "blake2b": "^2.1.4",
     "cross-fetch": "^3.1.5",
     "ethers": "^5.6.9",
+    "grapheme-splitter": "^1.0.4",
     "type-fest": "^2.16.0"
   }
 }

@@ -4,9 +4,9 @@ import { EditAccountRecord, toEditingRecord } from './fetchers/RegisterAPI'
 import {
   EditSubAccountEditKey,
   EditSubAccountParams,
-  SubAccount,
   SubAccountListParams,
-  TxsSignedOrUnSigned,
+  SubAccountMintParams,
+  TxsSignedOrUnSigned
 } from './fetchers/SubAccountAPI'
 import { BitErrorCode, CodedError } from './tools/CodedError'
 
@@ -32,7 +32,7 @@ export class BitSubAccount extends BitAccount {
     throw new CodedError(`'subAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
-  checkSubAccounts (subAccounts: SubAccount[]): null {
+  checkSubAccounts (subAccounts: SubAccountMintParams[]): null {
     throw new CodedError(`'checkSubAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 

@@ -1,4 +1,4 @@
-import { ethers, Wallet } from '_ethers@5.6.9@ethers'
+import { ethers, Wallet } from 'ethers'
 import { BitAccount } from '../../src/BitAccount'
 import { BitSubAccount } from '../../src/BitSubAccount'
 import { BitIndexer, EthersSigner, RemoteTxBuilder } from '../../src/index'
