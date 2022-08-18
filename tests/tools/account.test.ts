@@ -1,4 +1,12 @@
-import { accountIdHex, isSubAccount, isSupportedAccount, toDottedStyle, toHashedStyle } from '../../src/tools/account'
+import { CHAR_TYPE } from '../../src/const'
+import {
+  accountIdHex,
+  getAccountCharsetTypes,
+  isSubAccount,
+  isSupportedAccount,
+  toDottedStyle,
+  toHashedStyle,
+} from '../../src/tools/account'
 
 describe('isSupportedAccount', function () {
   it('main account', function () {
@@ -115,5 +123,60 @@ describe('isSubAccount', function () {
 
   it('should be false for hash-style account', function () {
     expect(isSubAccount('imac#001.bit')).toBe(false)
+  })
+})
+
+describe('getAccountCharsetTypes', function () {
+  it('english.bit', () => {
+    expect(getAccountCharsetTypes('english.bit')).toEqual({
+      [CHAR_TYPE.english]: true,
+    })
+  })
+
+  it('quốcngữ.bit', () => {
+    expect(getAccountCharsetTypes('quốcngữ.bit')).toEqual({
+      [CHAR_TYPE.vietnamese]: true,
+    })
+  })
+
+  it('😊🐶.bit', () => {
+    expect(getAccountCharsetTypes('😊🐶.bit')).toEqual({
+      [CHAR_TYPE.emoji]: true,
+    })
+  })
+
+  it('english123.bit', () => {
+    expect(getAccountCharsetTypes('english123.bit')).toEqual({
+      [CHAR_TYPE.english]: true,
+      [CHAR_TYPE.number]: true,
+    })
+  })
+
+  it('english123😊.bit', () => {
+    expect(getAccountCharsetTypes('english123😊.bit')).toEqual({
+      [CHAR_TYPE.english]: true,
+      [CHAR_TYPE.number]: true,
+      [CHAR_TYPE.emoji]: true,
+    })
+  })
+
+  it('quốcngữ123😊.bit', () => {
+    expect(getAccountCharsetTypes('quốcngữ123😊.bit')).toEqual({
+      [CHAR_TYPE.vietnamese]: true,
+      [CHAR_TYPE.number]: true,
+      [CHAR_TYPE.emoji]: true,
+    })
+  })
+
+  it('にほんご.bit', () => {
+    expect(getAccountCharsetTypes('にほんご.bit')).toEqual({
+      [CHAR_TYPE.unknown]: true,
+    })
+  })
+
+  it('english .bit', () => {
+    expect(getAccountCharsetTypes('english .bit')).toEqual({
+      [CHAR_TYPE.unknown]: true,
+    })
   })
 })

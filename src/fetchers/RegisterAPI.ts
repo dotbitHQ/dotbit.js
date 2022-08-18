@@ -55,8 +55,8 @@ export type EditAccountRecordsParam = EditAccountParams<RecordsRawParam>
 export function toEditingRecord (record: BitAccountRecord): EditAccountRecord {
   return {
     ...record,
-    type: record.key.split('.')[0],
-    key: record.key.split('.')[1],
+    type: record.key.split('.')[0], // eg: `profile`
+    key: record.key.split('.')[1], // eg: `twitter`
   }
 }
 
