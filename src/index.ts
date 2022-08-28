@@ -1,4 +1,5 @@
 export * from './DotBit'
+export * from './const'
 export * from './createInstance'
 export * from './tools/account'
 export * from './tools/common'
