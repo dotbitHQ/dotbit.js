@@ -56,13 +56,13 @@ export class BitAccount {
 
   status: AccountStatus
 
-  requireSigner () {
+  private requireSigner () {
     if (!this.signer) {
       throw new CodedError('signer is required', BitErrorCode.SignerRequired)
     }
   }
 
-  requireBitBuilder () {
+  private requireBitBuilder () {
     if (!this.bitBuilder) {
       throw new CodedError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
     }

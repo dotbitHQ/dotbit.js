@@ -31,6 +31,16 @@ describe('account', function () {
   })
 })
 
+describe('exist', function () {
+  it('exist', async () => {
+    expect(await dotbit.exist('imac.bit')).toBe(true)
+  })
+
+  it('not exist', async () => {
+    expect(await dotbit.exist('imac123abc.bit')).toBe(false)
+  })
+})
+
 describe('accountsOfOwner', function () {
   it('work', async function () {
     const accounts = await dotbit.accountsOfOwner({

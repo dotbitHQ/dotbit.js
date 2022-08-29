@@ -6,6 +6,7 @@ import { BitIndexer } from './fetchers/BitIndexer'
 import { KeyInfo } from './fetchers/BitIndexer.type'
 import { BitSigner } from './signers/BitSigner'
 import { isSubAccount } from './tools/account'
+import { BitIndexerErrorCode, CodedError } from './tools/CodedError'
 
 interface CacheProvider {
   get: (key: string, options?: any) => any,
@@ -81,6 +82,19 @@ export class DotBit {
 
   account (account: string): BitAccount {
     return this.getAccount(account)
+  }
+
+  exist (account: string): Promise<boolean> {
+    const bitAccount = this.getAccount(account)
+
+    return bitAccount.info()
+      .then(() => true)
+      .catch((err) => {
+        if ((err as CodedError).code === BitIndexerErrorCode.AccountNotExist) {
+          return false
+        }
+        throw err
+      })
   }
 
   async accountById (accountId: string): Promise<BitAccount> {
