@@ -145,7 +145,7 @@ export class BitAccount {
             account,
             mint_for_account: param.mintForAccount,
             register_years: param.registerYears,
-            account_char_str: graphemesAccount(trimAccountSuffix(account)),
+            account_char_str: graphemesAccount(account.split('.')[0]),
           } as SubAccountMintForAccount
         }
         else {
@@ -154,7 +154,7 @@ export class BitAccount {
             type: 'blockchain',
             key_info: param.keyInfo,
             register_years: param.registerYears,
-            account_char_str: graphemesAccount(trimAccountSuffix(account))
+            account_char_str: graphemesAccount(account.split('.')[0])
           } as SubAccountMintForAddress
         }
       })
