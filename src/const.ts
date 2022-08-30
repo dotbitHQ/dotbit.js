@@ -68,6 +68,12 @@ export enum AlgorithmId {
   ed2519 = 6,
 }
 
+export const AlgorithmId2CoinType = {
+  [AlgorithmId.ethPersonalSign]: CoinType.ETH,
+  [AlgorithmId.eip712]: CoinType.ETH,
+  [AlgorithmId.tronSign]: CoinType.TRX,
+}
+
 export enum SubAccountEnabledStatus {
   unknown = -1,
   off,
@@ -84,7 +90,7 @@ export enum CheckSubAccountStatus {
 export enum EditRecordAction {
   delete = 'delete',
   change = 'change',
-  add = 'add'
+  add = 'add',
 }
 
 export const ACCOUNT_SUFFIX = '.bit'
