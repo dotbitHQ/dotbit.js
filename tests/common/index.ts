@@ -26,6 +26,13 @@ const bitBuilderProd = new RemoteTxBuilder({
   registerUri: 'https://register-api.did.id/v1',
 })
 
+export const accountNotExist = new BitAccount({
+  account: 'imac-1.bit',
+  bitIndexer,
+  bitBuilder,
+  signer,
+})
+
 export const accountWithSigner = new BitAccount({
   account: 'imac.bit',
   bitIndexer,

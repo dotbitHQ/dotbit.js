@@ -60,6 +60,12 @@ describe('accountById', function () {
   })
 })
 
+describe('records', function () {
+  it('work for not exist account', function () {
+    return expect(dotbit.records('imac-1.bit')).rejects.toThrow('account not exist')
+  })
+})
+
 describe('reverse', function () {
   it('work', async function () {
     const account = await dotbit.reverse({

@@ -2,7 +2,7 @@ import { BitAccount } from '../src/BitAccount'
 import { CheckSubAccountStatus, CoinType } from '../src/const'
 import { SubAccountMintParams } from '../src/fetchers/SubAccountAPI'
 import { sleep } from '../src/tools/common'
-import { accountWithSigner, accountWithSignerProd, accountWithSignerProdRecords } from './common/index'
+import { accountNotExist, accountWithSigner, accountWithSignerProd, accountWithSignerProdRecords } from './common/index'
 import { graphemesAccount } from '../src'
 
 describe('constructor', () => {
@@ -83,6 +83,10 @@ describe('records', function () {
     const records = await accountWithSignerProd.records('address.btc')
 
     expect(records).toMatchObject([])
+  })
+
+  it('not exist account', function () {
+    return expect(accountNotExist.records()).rejects.toThrow('account not exist')
   })
 })
 
