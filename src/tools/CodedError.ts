@@ -14,6 +14,7 @@ export enum BitErrorCode {
   SubAccountDoNotSupportSubAccount,
   SignerRequired,
   BitBuilderRequired,
+  InvalidAccountId,
 }
 
 export class CodedError extends Error {

@@ -6,7 +6,8 @@ import { BitIndexer } from './fetchers/BitIndexer'
 import { KeyInfo } from './fetchers/BitIndexer.type'
 import { BitSigner } from './signers/BitSigner'
 import { isSubAccount } from './tools/account'
-import { BitIndexerErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
+import { isEmptyAddress } from './tools/common'
 
 interface CacheProvider {
   get: (key: string, options?: any) => any,
@@ -98,6 +99,9 @@ export class DotBit {
   }
 
   async accountById (accountId: string): Promise<BitAccount> {
+    if (isEmptyAddress(accountId)) {
+      throw new CodedError('Please provide a valid account id, current: ' + accountId, BitErrorCode.InvalidAccountId)
+    }
     const bitAccount = await this.bitIndexer.accountInfoById(accountId)
     return this.getAccount(bitAccount.account_info.account)
   }
