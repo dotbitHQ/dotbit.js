@@ -75,6 +75,10 @@ export class DotBit {
     }
   }
 
+  alias (keyInfo: KeyInfo): Promise<BitAccount> {
+    return this.reverse(keyInfo)
+  }
+
   async accountsOfOwner (keyInfo: KeyInfo): Promise<BitAccount[]> {
     const accounts =  await this.bitIndexer.accountList(keyInfo)
 
