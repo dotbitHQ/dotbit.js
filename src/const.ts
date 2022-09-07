@@ -110,3 +110,13 @@ export enum CHAR_TYPE {
   vietnamese,
   unknown = 99
 }
+
+export const languageToCharType = {
+  en: CHAR_TYPE.english,
+  tr: CHAR_TYPE.turkish,
+  vi: CHAR_TYPE.vietnamese,
+  th: CHAR_TYPE.thai,
+  ko: CHAR_TYPE.korean
+}
+
+export const languages = ['en', 'tr', 'vi', 'th', 'ko']

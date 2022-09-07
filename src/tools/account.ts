@@ -9,7 +9,7 @@ import turkishList from './char_set/tr_list.json'
 import thaiList from './char_set/th_list.json'
 import koreanList from './char_set/ko_list.json'
 import vietnameseList from './char_set/vi_list.json'
-import { ACCOUNT_SUFFIX, CHAR_TYPE } from '../const'
+import { ACCOUNT_SUFFIX, CHAR_TYPE, languageToCharType, languages } from '../const'
 
 /**
  * @description: check if the account is supported by .bit
@@ -108,6 +108,57 @@ export interface ICharInfo {
 }
 
 /**
+ * get char info of the char array with specific language
+ * if any char don't belong to the specific language or emoji or number, return null
+ * @param charSplit
+ * @param language
+ */
+function getLanguageGraphemes(charSplit: string[], language: string): ICharInfo[] | null {
+  const languageToCharList = {
+    en: englishList,
+    tr: turkishList,
+    vi: vietnameseList,
+    th: thaiList,
+    ko: koreanList
+  }
+  const charList = languageToCharList[language]
+  const charInfos: ICharInfo[] = []
+  const charTypes = [CHAR_TYPE.emoji, CHAR_TYPE.number, languageToCharType[language]]
+
+  for (const char of charSplit) {
+    let included = false
+    for (const [index, list]  of [emojiList, numberList, charList].entries()) {
+      if (list.includes(char)) {
+        charInfos.push({
+          char_set_name: charTypes[index],
+          char
+        })
+        included = true
+        break
+      }
+    }
+    if (!included) {
+      return null
+    }
+  }
+  return charInfos
+}
+
+/**
+ * get language code(https://i18ns.com/languagecode.html)
+ * one of 'en', 'ja', 'ru', 'tr', 'vi', 'th', 'ko', default return 'en'.
+ * @param language
+ */
+function getLanguage (language: string): string {
+  for (const languageStr of languages) {
+    if (language.startsWith(languageStr)) {
+      return language
+    }
+  }
+  return 'en'
+}
+
+/**
  * split the account by character set.
  * @param account
  * @param addSuffix
@@ -116,194 +167,28 @@ export interface ICharInfo {
 export function graphemesAccount (account: string, addSuffix = false, language = 'en'): ICharInfo[] {
   const splitter = new GraphemeSplitter()
   const split = splitter.splitGraphemes(account)
-  const englishSplitArr: ICharInfo[] = split.map((char: string) => {
-    let _charType: number = CHAR_TYPE.unknown
-    if (emojiList.includes(char)) {
-      _charType = CHAR_TYPE.emoji
-    }
-    else if (numberList.includes(char)) {
-      _charType = CHAR_TYPE.number
-    }
-    else if (englishList.includes(char)) {
-      _charType = CHAR_TYPE.english
-    }
 
-    return {
-      char_set_name: _charType,
-      char
+  language = getLanguage(language)
+  
+  // rules: https://docs.did.id/register-das/charsets
+  let splitArr: ICharInfo[] | null = null
+  const languageList = languages.filter(lang => lang !== language)
+  languageList.unshift(language)
+  for (const languageItem of languageList) {
+    splitArr = getLanguageGraphemes(split, languageItem)
+    if (splitArr !== null) {
+      break;
     }
-  })
-
-  const turkishSplitArr: ICharInfo[] = split.map((char: string) => {
-    let _charType: number = CHAR_TYPE.unknown
-    if (emojiList.includes(char)) {
-      _charType = CHAR_TYPE.emoji
-    }
-    else if (numberList.includes(char)) {
-      _charType = CHAR_TYPE.number
-    }
-    else if (turkishList.includes(char)) {
-      _charType = CHAR_TYPE.turkish
-    }
-
-    return {
-      char_set_name: _charType,
-      char
-    }
-  })
-
-  const vietnameseSplitArr: ICharInfo[] = split.map((char: string) => {
-    let _charType: number = CHAR_TYPE.unknown
-    if (emojiList.includes(char)) {
-      _charType = CHAR_TYPE.emoji
-    }
-    else if (numberList.includes(char)) {
-      _charType = CHAR_TYPE.number
-    }
-    else if (vietnameseList.includes(char)) {
-      _charType = CHAR_TYPE.vietnamese
-    }
-
-    return {
-      char_set_name: _charType,
-      char
-    }
-  })
-
-  const thaiSplitArr: ICharInfo[] = split.map((char: string) => {
-    let _charType: number = CHAR_TYPE.unknown
-    if (emojiList.includes(char)) {
-      _charType = CHAR_TYPE.emoji
-    }
-    else if (numberList.includes(char)) {
-      _charType = CHAR_TYPE.number
-    }
-    else if (thaiList.includes(char)) {
-      _charType = CHAR_TYPE.thai
-    }
-
-    return {
-      char_set_name: _charType,
-      char
-    }
-  })
-
-  const koreanSplitArr: ICharInfo[] = split.map((char: string) => {
-    let _charType: number = CHAR_TYPE.unknown
-    if (emojiList.includes(char)) {
-      _charType = CHAR_TYPE.emoji
-    }
-    else if (numberList.includes(char)) {
-      _charType = CHAR_TYPE.number
-    }
-    else if (koreanList.includes(char)) {
-      _charType = CHAR_TYPE.korean
-    }
-
-    return {
-      char_set_name: _charType,
-      char
-    }
-  })
-
-  const englishUnknownChar = englishSplitArr.find((item: ICharInfo) => {
-    return item.char_set_name === CHAR_TYPE.unknown
-  })
-  const turkishUnknownChar = turkishSplitArr.find((item: ICharInfo) => {
-    return item.char_set_name === CHAR_TYPE.unknown
-  })
-  const vietnameseUnknownChar = vietnameseSplitArr.find((item: ICharInfo) => {
-    return item.char_set_name === CHAR_TYPE.unknown
-  })
-  const thaiUnknownChar = thaiSplitArr.find((item: ICharInfo) => {
-    return item.char_set_name === CHAR_TYPE.unknown
-  })
-  const koreanUnknownChar = koreanSplitArr.find((item: ICharInfo) => {
-    return item.char_set_name === CHAR_TYPE.unknown
-  })
-
-  let splitArr = null
-
-  if (!englishUnknownChar) {
-    splitArr = englishSplitArr
   }
-  else if (!turkishUnknownChar) {
-    splitArr = turkishSplitArr
-  }
-  else if (!vietnameseUnknownChar) {
-    splitArr = vietnameseSplitArr
-  }
-  else if (!thaiUnknownChar) {
-    splitArr = thaiSplitArr
-  }
-  else if (!koreanUnknownChar) {
-    splitArr = koreanSplitArr
-  }
-  else {
-    splitArr = split.map((char: string) => {
+
+  if (!splitArr) {
+    splitArr = split.map((char) => {
       return {
         char_set_name: CHAR_TYPE.unknown,
         char
       }
     })
   }
-
-  const unknownChar = splitArr.find((item: ICharInfo) => {
-    return item.char_set_name === CHAR_TYPE.unknown
-  })
-
-  if (!unknownChar) {
-    const charList: { [key: string]: any } = {}
-    if (!englishUnknownChar) {
-      charList.en = englishSplitArr
-    }
-
-    if (!turkishUnknownChar) {
-      charList.tr = turkishSplitArr
-    }
-
-    if (!vietnameseUnknownChar) {
-      charList.vi = vietnameseSplitArr
-    }
-
-    if (!thaiUnknownChar) {
-      charList.th = thaiSplitArr
-    }
-
-    if (!koreanUnknownChar) {
-      charList.ko = koreanSplitArr
-    }
-
-    if (/^en/i.test(language)) {
-      language = 'en'
-    }
-    else if (/^ja/i.test(language)) {
-      language = 'ja'
-    }
-    else if (/^ru/i.test(language)) {
-      language = 'ru'
-    }
-    else if (/^tr/i.test(language)) {
-      language = 'tr'
-    }
-    else if (/^vi/i.test(language)) {
-      language = 'vi'
-    }
-    else if (/^th/i.test(language)) {
-      language = 'th'
-    }
-    else if (/^ko/i.test(language)) {
-      language = 'ko'
-    }
-
-    if (charList[language]) {
-      splitArr = charList[language]
-    }
-    else if (charList.en) {
-      splitArr = charList.en
-    }
-  }
-
   if (addSuffix) {
     ACCOUNT_SUFFIX.split('')
       .forEach((char: string) => {
