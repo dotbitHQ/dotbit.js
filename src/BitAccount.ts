@@ -104,14 +104,14 @@ export class BitAccount {
   }
 
   async checkSubAccounts (subAccounts: SubAccountMintParams[]) {
-    const info = await this.info()
+    const address = await this.signer.getAddress()
     const coinType = await this.signer.getCoinType()
 
     return await this.bitBuilder.subAccountAPI.checkSubAccounts({
       account: this.account,
       type: 'blockchain',
       key_info: {
-        key: info.owner_key,
+        key: address,
         coin_type: coinType
       },
       sub_account_list: subAccounts
@@ -127,14 +127,14 @@ export class BitAccount {
     this.requireBitBuilder()
     this.requireSigner()
 
-    const info = await this.info()
+    const address = await this.signer.getAddress()
     const coinType = await this.signer.getCoinType()
 
     const mintSubAccountsParams: CheckAccountsParams = {
       account: this.account,
       type: 'blockchain',
       key_info: {
-        key: info.owner_key,
+        key: address,
         coin_type: coinType
       },
       sub_account_list: params.map(param => {
