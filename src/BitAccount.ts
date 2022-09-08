@@ -18,7 +18,7 @@ import {
   toRecordExtended,
   trimAccountSuffix,
 } from './tools/account'
-import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, CodedError } from './tools/CodedError'
 
 export interface BitAccountOptions {
   account: string,
@@ -83,6 +83,11 @@ export class BitAccount {
 
     const info = await this.info()
     const coinType = await this.signer.getCoinType()
+    const address = await this.signer.getAddress()
+
+    if (address !== info.owner_key) {
+      throw new CodedError('Permission Denied: only owner can perform this action', BitSubAccountErrorCode.PermissionDenied)
+    }
 
     const txs = await this.bitBuilder.enableSubAccount(this.account, {
       key: info.owner_key, // only owner can enable sub-account
