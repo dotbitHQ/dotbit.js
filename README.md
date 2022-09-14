@@ -23,7 +23,7 @@ npm install dotbit --save
 ```
 
 ## QuickStart
-**Query different records:**
+#### Query different records:
 
 ```javascript
 // import { createInstance } from 'dotbit' // For ES Module
@@ -40,7 +40,7 @@ dotbit.addrs('imac.bit', 'eth').then(console.log)
 dotbit.profiles('imac.bit', 'twitter').then(console.log)
 ```
 
-**Query [.bit Alias](https://www.did.id/bit-alias)(Reverse Record)**
+#### Query [.bit Alias](https://www.did.id/bit-alias)(Reverse Record)
 
 ```javascript
 const account = await dotbit.reverse({
@@ -49,7 +49,7 @@ const account = await dotbit.reverse({
 console.log(account.account) // jeffx.bit
 ```
 
-**Mint a sub-account in `testnet`:**
+#### Mint a sub-account in `testnet`:
 
 ```javascript
 // import { createInstance, ProviderSigner, BitNetwork } from 'dotbit' // For ES Module

@@ -1,7 +1,7 @@
 import { ethers, Wallet } from 'ethers'
 import { BitAccount } from '../../src/BitAccount'
 import { BitSubAccount } from '../../src/BitSubAccount'
-import { BitIndexer, EthersSigner, RemoteTxBuilder } from '../../src/index'
+import { BitIndexer, DotBit, EthersSigner, RemoteTxBuilder } from '../../src/index'
 
 const bitIndexer = new BitIndexer({
   // uri: 'https://indexer-v1.did.id',
@@ -24,6 +24,10 @@ const bitIndexerProd = new BitIndexer({
 const bitBuilderProd = new RemoteTxBuilder({
   subAccountUri: 'https://subaccount-api.did.id/v1',
   registerUri: 'https://register-api.did.id/v1',
+})
+
+export const dotbitProd = new DotBit({
+  bitIndexer: bitIndexerProd
 })
 
 export const accountNotExist = new BitAccount({
