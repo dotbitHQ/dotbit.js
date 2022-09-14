@@ -51,6 +51,9 @@ console.log(account.account) // jeffx.bit
 
 #### Mint a sub-account in `testnet`:
 
+> Currently, sub-account is fully available in **testnet**, and need whitelist on **mainnet**.
+> If you would like to distribute sub-accounts, please email [supermancy@did.id](supermancy@did.id) with a brief description of your project.
+
 ```javascript
 // import { createInstance, ProviderSigner, BitNetwork } from 'dotbit' // For ES Module
 const { createInstance, ProviderSigner, BitNetwork } = require('dotbit')
