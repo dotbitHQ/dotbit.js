@@ -8,6 +8,7 @@ import { BitSigner } from './signers/BitSigner'
 import { isSubAccount } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
 import { isEmptyAddress } from './tools/common'
+import { BitPluginBase } from './types'
 
 interface CacheProvider {
   get: (key: string, options?: any) => any,
@@ -29,12 +30,30 @@ export class DotBit {
   bitBuilder: RemoteTxBuilder
   signer: BitSigner
 
-  constructor (config: DotBitConfig) {
+  plugins: BitPluginBase[] = []
+
+  constructor (config: DotBitConfig = {}) {
     this.network = config.network
     this.cacheProvider = config.cacheProvider
     this.bitIndexer = config.bitIndexer
     this.bitBuilder = config.bitBuilder
     this.signer = config.signer
+  }
+
+  installPlugin (plugin: BitPluginBase) {
+    if (plugin.onInstall) {
+      plugin.onInstall(this)
+      this.plugins.push(plugin)
+    }
+    else {
+      console.warn(`Plugin '${plugin.name}' does not have 'onInstall' method, please check your plugin`)
+    }
+  }
+
+  uninstallPlugin (plugin: BitPluginBase) {
+    const index = this.plugins.indexOf(plugin)
+    this.plugins.splice(index, 1)
+    plugin.onUninstall?.(this)
   }
 
   private getAccount (account: string): BitAccount {
@@ -57,6 +76,8 @@ export class DotBit {
         signer: this.signer,
       })
     }
+
+    this.plugins.forEach(plugin => plugin.onInitAccount?.(bitAccount))
 
     this.cacheProvider?.set(`account:${account}`, bitAccount)
 

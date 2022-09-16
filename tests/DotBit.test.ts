@@ -1,3 +1,5 @@
+import { DotBit } from '../src/DotBit'
+import { BitPluginBase } from '../src/types'
 import { BitAccount } from '../src/BitAccount'
 import { BitSubAccount } from '../src/BitSubAccount'
 import { dotbitProd } from './common/index'
@@ -66,6 +68,87 @@ describe('reverse', function () {
     })
     expect(account).toBeInstanceOf(BitAccount)
     expect(account.account).toBe('jeffx.bit')
+  })
+})
+
+describe('installPlugin', function () {
+  it('should work', function () {
+    const plugin: BitPluginBase = {
+      onInstall: jest.fn(),
+    }
+    const dotbit = new DotBit()
+
+    expect(dotbit.plugins.length).toBe(0)
+    dotbit.installPlugin(plugin)
+    expect(plugin.onInstall).toBeCalled()
+    expect(dotbit.plugins.length).toBe(1)
+  })
+
+  it('should not work when no onInstall function provided', function () {
+    const plugin: BitPluginBase = {} as any
+    const dotbit = new DotBit()
+
+    console.warn = jest.fn()
+    dotbit.installPlugin(plugin)
+
+    expect(dotbit.plugins.length).toBe(0)
+    expect(console.warn).toBeCalled()
+  })
+
+  it('should work when onInitAccount provided', function () {
+    const plugin: BitPluginBase = {
+      onInstall () {},
+      onInitAccount: jest.fn()
+    }
+
+    const dotbit = new DotBit()
+    dotbit.installPlugin(plugin)
+
+    const account = dotbit.account('imac.bit')
+
+    expect(plugin.onInitAccount).toBeCalled()
+  })
+
+  it('should work for multiple plugins', function () {
+    const plugin: BitPluginBase = {
+      onInstall: jest.fn(),
+    }
+
+    const dotbit = new DotBit()
+    dotbit.installPlugin(plugin)
+    dotbit.installPlugin(plugin)
+
+    expect(dotbit.plugins.length).toBe(2)
+    expect(plugin.onInstall).toBeCalledTimes(2)
+  })
+})
+
+describe('uninstallPlugin', function () {
+  it('should work', function () {
+    const plugin: BitPluginBase = {
+      onInstall () {},
+      onUninstall: jest.fn()
+    }
+    const dotbit = new DotBit()
+
+    dotbit.installPlugin(plugin)
+    expect(dotbit.plugins.length).toBe(1)
+    dotbit.uninstallPlugin(plugin)
+    expect(dotbit.plugins.length).toBe(0)
+    expect(plugin.onUninstall).toBeCalled()
+  })
+
+  it('should work when no onUninstall provided', function () {
+    const plugin: BitPluginBase = {
+      onInstall () {},
+    }
+    const dotbit = new DotBit()
+
+    dotbit.installPlugin(plugin)
+
+    expect(dotbit.plugins.length).toBe(1)
+    dotbit.uninstallPlugin(plugin)
+    expect(dotbit.plugins.length).toBe(0)
   })
 })
 
