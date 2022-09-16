@@ -80,6 +80,36 @@ For all `coin_type` .bit supported, please check [const.ts](./src/const.ts)
 
 For more complete usages, please check out the examples: [For browser](./example/browser/index.js), [For Node.js](./example/node/index.js).
 
+## Plugins
+.bit has partnerships with the greatest teams & projects in the ecosystems.
+
+`dotbit.js` provided a simple yet powerful plugin system, with which we can add more powerful features to this library.
+
+#### Usage
+Basically, you can install and use a plugin like the codes below.
+
+```javascript
+import { PluginXXX } from 'dotbit-plugin-xxx'
+import { createInstance } from 'dotbit'
+
+const dotbit = createInstance()
+
+dotbit.installPlugin(new PluginXXX())
+
+dotbit.methodAddedByXXX()
+```
+
+For detailed usage, please follow the instructions in the specific plugin's README.
+
+#### List of plugins
+- [@dotbit/plugin-template](./packages/plugin-template/README.md): A demo plugin demonstrating the basic structure of a .bit plugin.
+- [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/)
+
+#### Write your own plugin
+Write a plugin for .bit is easy! 
+
+If you want to write a plugin for your or other projects, please follow the same structure of [plugin template](./packages/plugin-template/README.md).
+
 ## Get help
 Please join our [Discord channel](https://discord.gg/fVppR7z4ht), or raise an issue: [Issues](https://github.com/dotbitHQ/dotbit.js/issues)
 
