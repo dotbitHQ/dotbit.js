@@ -18,3 +18,7 @@ describe('fly', function () {
     expect(await account.fly()).toBe('imac.bit is flying')
   })
 })
+
+afterAll(() => {
+  dotbit.uninstallPlugin(pluginTemplate)
+})

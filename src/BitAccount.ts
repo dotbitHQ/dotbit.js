@@ -75,6 +75,7 @@ export class BitAccount {
   /** writer **/
   setReverseRecord () {
     this.requireBitBuilder()
+    // TODO
   }
 
   async enableSubAccount () {
@@ -380,6 +381,6 @@ export class BitAccount {
   }
 
   async avatar () {
-
+    // TODO: we can introduce an avatar plugin here
   }
 }
