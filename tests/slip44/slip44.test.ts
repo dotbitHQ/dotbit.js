@@ -31,4 +31,12 @@ describe('mapSymbolToCoinType', function () {
     // slip44 have duplicated symbol `BSC`, one for `Binance Smart Chain`, one for `Bitcoin Smart Contract`, which is deprecated.
     expect(mapSymbolToCoinType('bsc')).toBe('9006')
   })
+
+  it('work for polygon', () => {
+    expect(mapSymbolToCoinType('polygon')).toBe('966')
+  })
+
+  it('work for matic', () => {
+    expect(mapSymbolToCoinType('matic')).toBe('966')
+  })
 })

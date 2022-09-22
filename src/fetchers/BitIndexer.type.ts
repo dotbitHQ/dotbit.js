@@ -40,6 +40,10 @@ export interface BitAccountRecordExtended extends BitAccountRecord{
   subtype: string,
 }
 
+export interface BitAccountRecordAddress extends BitAccountRecordExtended {
+  coin_type: string,
+}
+
 export interface DasAccountRecords {
   account: string,
   records: BitAccountRecord[],
