@@ -158,6 +158,18 @@ describe('addrs', function () {
     expect(addrs.length).toBeGreaterThan(1)
   }, 10000)
 
+  it('work for polygon', async function () {
+    const addrs = await dotbitProd.addrs('bestcase.bit', 'polygon')
+    console.log(addrs)
+    expect(addrs.length).toBe(1)
+  })
+
+  it('work for matic', async function () {
+    const addrs = await dotbitProd.addrs('bestcase.bit', 'matic')
+    console.log(addrs)
+    expect(addrs.length).toBe(1)
+  })
+
   it('work with filter', async function () {
     const addrs = await dotbitProd.addrs('imac.bit', 'eth')
     expect(addrs.length).toBe(1)

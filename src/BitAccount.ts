@@ -334,7 +334,17 @@ export class BitAccount {
     if (chain) {
       const coinType = mapSymbolToCoinType(chain)
       const symbol = mapCoinTypeToSymbol(chain).toLowerCase()
-      return addresses.filter(record => record.subtype === symbol || record.subtype === coinType)
+
+      return addresses.filter(record => {
+        // special cases for polygon/matic, as the indexer-v1 use 'polygon' instead of 'matic'
+        // this special cases will be removed in the future(when indexer-v2 is used)
+        if (record.subtype === 'polygon') {
+          return symbol === 'matic' || symbol === 'polygon'
+        }
+        else {
+          return record.subtype === symbol || record.subtype === coinType
+        }
+      })
     }
     else {
       return addresses
