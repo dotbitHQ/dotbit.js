@@ -23,21 +23,30 @@ npm install dotbit --save
 ```
 
 ## QuickStart
-#### Query different records:
-
+#### Query users' addresses
 ```javascript
 // import { createInstance } from 'dotbit' // For ES Module
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
 
-// Get all .bit account records
-dotbit.records('imac.bit').then(console.log)
-
 // Get all `eth` addresses of a .bit account
+dotbit.addrs('imac.bit', '60').then(console.log)  // Result is the same as below, using coin_type
 dotbit.addrs('imac.bit', 'eth').then(console.log)
+```
 
+Developers are encouraged to use `coin_type` instead of plain symbol like 'eth' as `coin_type` is a more standard way to identify a chain/coin, and there will only be `coin_type` on chain in the future. [What is coin_type](https://github.com/dotbitHQ/dotbit.js#what-is-coin_type)
+
+#### Query other different records:
+
+```javascript
 // Get `twitter` account of a .bit account
 dotbit.profiles('imac.bit', 'twitter').then(console.log)
+
+// Get all `dwebs` of a .bit account
+dotbit.dwebs('imac.bit').then(console.log)
+
+// Get all .bit account records, please only use it when necessary.
+dotbit.records('imac.bit').then(console.log)
 ```
 
 #### Query [.bit Alias](https://www.did.id/bit-alias)(Reverse Record)
