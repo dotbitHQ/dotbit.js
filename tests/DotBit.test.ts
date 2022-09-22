@@ -160,13 +160,16 @@ describe('addrs', function () {
 
   it('work for polygon', async function () {
     const addrs = await dotbitProd.addrs('bestcase.bit', 'polygon')
-    console.log(addrs)
     expect(addrs.length).toBe(1)
   })
 
   it('work for matic', async function () {
     const addrs = await dotbitProd.addrs('bestcase.bit', 'matic')
-    console.log(addrs)
+    expect(addrs.length).toBe(1)
+  })
+
+  it('work for 966', async function () {
+    const addrs = await dotbitProd.addrs('bestcase.bit', '966')
     expect(addrs.length).toBe(1)
   })
 
