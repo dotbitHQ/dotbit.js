@@ -8,6 +8,10 @@ export enum BitIndexerErrorCode {
   AccountNotExist = 20007,
 }
 
+export enum BitSubAccountErrorCode {
+  PermissionDenied = 30011,
+}
+
 export enum BitErrorCode {
   UnsupportedEVMChainId = 1000,
   SubAccountStatusInvalid,

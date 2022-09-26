@@ -6,6 +6,7 @@
     "removeComments": true,
     "noLib": false,
     "lib": ["esnext", "dom"],
+    "types": ["jest", "node"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -13,8 +14,12 @@
     "target": "es6",
     "sourceMap": true,
     "allowJs": true,
+    "baseUrl": "./",
     "outDir": "./lib",
-    "types": ["jest", "node"],
+    "paths": {
+      "dotbit": ["src"],
+      "dotbit/*": ["src/*"]
+    }
   },
 
   "include": [
@@ -23,7 +28,9 @@
     "types",
     ".*.js",
     "*.js",
+    "*.ts",
     "example",
+    "packages",
   ],
   "exclude": [
     "**/*.spec.ts"

@@ -1,6 +1,6 @@
 import { RecordsEditor } from './builders/RecordsEditor'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
-import { AccountStatus, CheckSubAccountStatus, CoinType2ChainType, RecordType } from './const'
+import { AccountStatus, AlgorithmId2CoinType, CheckSubAccountStatus, CoinType2ChainType, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { AccountInfo, BitAccountRecord, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
 import { toEditingRecord, TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI'
@@ -18,7 +18,7 @@ import {
   toRecordExtended,
   trimAccountSuffix,
 } from './tools/account'
-import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, CodedError } from './tools/CodedError'
 
 export interface BitAccountOptions {
   account: string,
@@ -32,6 +32,10 @@ export interface SubAccountParams {
   keyInfo?: KeyInfo, // The keyInfo has higher priority than mintForAccount.
   mintForAccount?: string,
   registerYears: number,
+}
+
+export interface RoleKeyInfo extends KeyInfo {
+  algorithm_id: number,
 }
 
 export class BitAccount {
@@ -71,6 +75,7 @@ export class BitAccount {
   /** writer **/
   setReverseRecord () {
     this.requireBitBuilder()
+    // TODO
   }
 
   async enableSubAccount () {
@@ -79,9 +84,14 @@ export class BitAccount {
 
     const info = await this.info()
     const coinType = await this.signer.getCoinType()
+    const address = await this.signer.getAddress()
+
+    if (address !== info.owner_key) {
+      throw new CodedError('Permission Denied: only owner can perform this action', BitSubAccountErrorCode.PermissionDenied)
+    }
 
     const txs = await this.bitBuilder.enableSubAccount(this.account, {
-      key: info.owner_key,
+      key: info.owner_key, // only owner can enable sub-account
       coin_type: coinType,
     })
 
@@ -104,14 +114,14 @@ export class BitAccount {
   }
 
   async checkSubAccounts (subAccounts: SubAccountMintParams[]) {
-    const info = await this.info()
+    const address = await this.signer.getAddress()
     const coinType = await this.signer.getCoinType()
 
     return await this.bitBuilder.subAccountAPI.checkSubAccounts({
       account: this.account,
       type: 'blockchain',
       key_info: {
-        key: info.owner_key,
+        key: address,
         coin_type: coinType
       },
       sub_account_list: subAccounts
@@ -127,14 +137,14 @@ export class BitAccount {
     this.requireBitBuilder()
     this.requireSigner()
 
-    const info = await this.info()
+    const address = await this.signer.getAddress()
     const coinType = await this.signer.getCoinType()
 
     const mintSubAccountsParams: CheckAccountsParams = {
       account: this.account,
       type: 'blockchain',
       key_info: {
-        key: info.owner_key,
+        key: address,
         coin_type: coinType
       },
       sub_account_list: params.map(param => {
@@ -286,9 +296,22 @@ export class BitAccount {
     return this._info
   }
 
-  async owner () {
+  async owner (): Promise<RoleKeyInfo> {
     const info = await this.info()
-    return info.owner_key
+    return {
+      key: info.owner_key,
+      coin_type: AlgorithmId2CoinType[info.owner_algorithm_id],
+      algorithm_id: info.owner_algorithm_id,
+    }
+  }
+
+  async manager (): Promise<RoleKeyInfo> {
+    const info = await this.info()
+    return {
+      key: info.manager_key,
+      coin_type: AlgorithmId2CoinType[info.manager_algorithm_id],
+      algorithm_id: info.manager_algorithm_id,
+    }
   }
 
   async records (key?: string): Promise<BitAccountRecordExtended[]> {
@@ -311,7 +334,17 @@ export class BitAccount {
     if (chain) {
       const coinType = mapSymbolToCoinType(chain)
       const symbol = mapCoinTypeToSymbol(chain).toLowerCase()
-      return addresses.filter(record => record.subtype === symbol || record.subtype === coinType)
+
+      return addresses.filter(record => {
+        // special cases for polygon/matic, as the indexer-v1 use 'polygon' instead of 'matic'
+        // this special cases will be removed in the future(when indexer-v2 is used)
+        if (record.subtype === 'polygon') {
+          return symbol === 'matic' || symbol === 'polygon'
+        }
+        else {
+          return record.subtype === symbol || record.subtype === coinType
+        }
+      })
     }
     else {
       return addresses
@@ -358,6 +391,6 @@ export class BitAccount {
   }
 
   async avatar () {
-
+    // TODO: we can introduce an avatar plugin here
   }
 }

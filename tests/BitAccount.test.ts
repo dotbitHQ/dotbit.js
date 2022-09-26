@@ -1,5 +1,5 @@
-import { BitAccount } from '../src/BitAccount'
-import { CheckSubAccountStatus, CoinType } from '../src/const'
+import { BitAccount, RoleKeyInfo } from '../src/BitAccount'
+import { AlgorithmId, CheckSubAccountStatus, CoinType } from '../src/const'
 import { SubAccountMintParams } from '../src/fetchers/SubAccountAPI'
 import { sleep } from '../src/tools/common'
 import { accountNotExist, accountWithSigner, accountWithSignerProd, accountWithSignerProdRecords } from './common/index'
@@ -35,6 +35,28 @@ describe('info', function () {
       owner_algorithm_id: 5,
       owner_key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
     })
+  })
+})
+
+describe('owner', function () {
+  it('work', async function () {
+    const owner = await accountWithSigner.owner()
+    expect(owner).toMatchObject({
+      key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
+      coin_type: CoinType.ETH,
+      algorithm_id: AlgorithmId.eip712,
+    } as RoleKeyInfo)
+  })
+})
+
+describe('manager', function () {
+  it('work', async function () {
+    const manager = await accountWithSigner.manager()
+    expect(manager).toMatchObject({
+      key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
+      coin_type: CoinType.ETH,
+      algorithm_id: AlgorithmId.eip712,
+    } as RoleKeyInfo)
   })
 })
 
