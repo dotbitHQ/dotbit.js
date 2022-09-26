@@ -48,7 +48,13 @@ const account = await dotbit.reverse({
 })
 console.log(account.account) // jeffx.bit
 ```
+```javascript
+const accounts = await dotbit.accountsOfOwner({
+    key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+})
 
+console.log(accounts[0].account) // thefirst💯registeredbydevteamtoensuredassuccessfullylaunched10.bit
+```
 **Mint a sub-account in `testnet`:**
 
 ```javascript
