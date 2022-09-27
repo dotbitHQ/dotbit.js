@@ -2,7 +2,13 @@ import { RecordsEditor } from './builders/RecordsEditor'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { AccountStatus, AlgorithmId2CoinType, CheckSubAccountStatus, CoinType2ChainType, RecordType } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
-import { AccountInfo, BitAccountRecord, BitAccountRecordExtended, KeyInfo } from './fetchers/BitIndexer.type'
+import {
+  AccountInfo,
+  BitAccountRecord,
+  BitAccountRecordAddress,
+  BitAccountRecordExtended,
+  KeyInfo,
+} from './fetchers/BitIndexer.type'
 import { toEditingRecord, TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI'
 import {
   CheckAccountsParams,
@@ -326,25 +332,23 @@ export class BitAccount {
     return key ? this._records.filter(record => record.key === key) : this._records
   }
 
-  async #addrs (chain?: string) {
+  async #addrs (chain?: string): Promise<BitAccountRecordAddress[]> {
     const records = await this.records()
 
-    const addresses = records.filter(record => record.type === RecordType.address)
+    const addresses = records
+      .filter(record => record.type === RecordType.address)
+      .map<BitAccountRecordAddress>(record => {
+      return ({
+        ...record,
+        coin_type: mapSymbolToCoinType(record.subtype),
+      })
+    })
     // for the sake of compatibility, we need to search for both coinType & symbol
     if (chain) {
       const coinType = mapSymbolToCoinType(chain)
       const symbol = mapCoinTypeToSymbol(chain).toLowerCase()
 
-      return addresses.filter(record => {
-        // special cases for polygon/matic, as the indexer-v1 use 'polygon' instead of 'matic'
-        // this special cases will be removed in the future(when indexer-v2 is used)
-        if (record.subtype === 'polygon') {
-          return symbol === 'matic' || symbol === 'polygon'
-        }
-        else {
-          return record.subtype === symbol || record.subtype === coinType
-        }
-      })
+      return addresses.filter(record => record.coin_type === coinType || record.subtype === symbol || record.subtype === coinType)
     }
     else {
       return addresses
