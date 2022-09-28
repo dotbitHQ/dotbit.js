@@ -389,8 +389,4 @@ export class BitAccount {
     const profiles = records.filter(record => record.type === RecordType.profile)
     return subtype ? profiles.filter(record => record.subtype === subtype.toLowerCase()) : profiles
   }
-
-  async avatar () {
-    // TODO: we can introduce an avatar plugin here
-  }
 }
