@@ -1,11 +1,12 @@
 import { CHAR_TYPE } from '../../src/const'
 import {
   accountIdHex,
+  digitalEmojiUnifiedHandle,
   getAccountCharsetTypes,
   isSubAccount,
   isSupportedAccount,
   toDottedStyle,
-  toHashedStyle,
+  toHashedStyle
 } from '../../src/tools/account'
 
 describe('isSupportedAccount', function () {
@@ -178,5 +179,23 @@ describe('getAccountCharsetTypes', function () {
     expect(getAccountCharsetTypes('english .bit')).toEqual({
       [CHAR_TYPE.unknown]: true,
     })
+  })
+})
+
+describe('digitalEmojiUnifiedHandle', function () {
+  it('0⃣️.bit', () => {
+    expect(digitalEmojiUnifiedHandle('0⃣️.bit')).toEqual('0️⃣.bit')
+  })
+
+  it('1️⃣.bit', () => {
+    expect(digitalEmojiUnifiedHandle('1️⃣.bit')).toEqual('1️⃣.bit')
+  })
+
+  it('2⃣.bit', () => {
+    expect(digitalEmojiUnifiedHandle('2⃣.bit')).toEqual('2️⃣.bit')
+  })
+
+  it('mac0012⃣.bit', () => {
+    expect(digitalEmojiUnifiedHandle('mac0012⃣.bit')).toEqual('mac0012️⃣.bit')
   })
 })
