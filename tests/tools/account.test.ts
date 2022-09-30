@@ -194,4 +194,8 @@ describe('digitalEmojiUnifiedHandle', function () {
   it('2⃣.bit', () => {
     expect(digitalEmojiUnifiedHandle('2⃣.bit')).toEqual('2️⃣.bit')
   })
+
+  it('mac0012⃣.bit', () => {
+    expect(digitalEmojiUnifiedHandle('mac0012⃣.bit')).toEqual('mac0012️⃣.bit')
+  })
 })

@@ -166,12 +166,7 @@ export function digitalEmojiUnifiedHandle (str: string): string {
   const splitter = new GraphemeSplitter()
   const split = splitter.splitGraphemes(str)
   const list = split.map((item) => {
-    if (DigitalEmojiUnifiedMap[item]) {
-      return DigitalEmojiUnifiedMap[item]
-    }
-    else {
-      return item
-    }
+    return DigitalEmojiUnifiedMap[item] || item
   })
   return list.join('')
 }
