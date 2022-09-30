@@ -13,9 +13,13 @@ import { DID_TYPE_ENUM } from './types';
 export class BitPluginWeb3MQ implements BitPluginBase {
   version = '0.0.1';
   name = 'BitPluginWeb3MQ';
+  appKey = ''
 
+  constructor(appkey: string) {
+    this.appKey = appkey
+  }
   async onInstall(dotbit: DotBit) {
-    await init();
+    await init(this.appKey);
     let keys = hasKeys();
     if (!keys) {
       keys = await signMetaMask();

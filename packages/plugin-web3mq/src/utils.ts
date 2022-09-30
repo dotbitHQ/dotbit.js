@@ -7,11 +7,10 @@ import {createInstance} from 'dotbit';
 //@ts-ignore
 const web3 = new Web3(window.ethereum);
 
-export const init = async () => {
+export const init = async (appKey: string) => {
   const fastUrl = await Client.init({
     connectUrl: localStorage.getItem('FAST_URL'),
-    app_key: 'vAUJTFXbBZRkEDRE',
-    env: 'dev',
+    app_key: appKey,
   });
   localStorage.setItem('FAST_URL', fastUrl);
 };
