@@ -1,24 +1,63 @@
-import { DotBit, BitAccount, BitPluginBase, matchers, getIpfsLink, _parseString, matcherIpfs } from 'dotbit'
-import { hexConcat, hexZeroPad } from '@ethersproject/bytes'
-import { BigNumber } from '@ethersproject/bignumber'
-import { fetchJson } from '@ethersproject/web'
+import { DotBit, BitAccount, BitPluginBase } from 'dotbit'
 import { ethers } from 'ethers'
+import { fetchJson } from '@ethersproject/web'
+import { BigNumber } from '@ethersproject/bignumber'
+import { hexConcat, hexDataSlice, hexZeroPad } from '@ethersproject/bytes'
+import { toUtf8String } from '@ethersproject/strings'
+
+const matcherIpfs = /^(ipfs):\/\/(.*)$/i
+
+const matchers = [
+  /^(https):\/\/(.*)$/i,
+  /^(data):(.*)$/i,
+  matcherIpfs,
+  /^eip155:[0-9]+\/(erc[0-9]+):(.*)$/i,
+]
+
+// Trim off the ipfs:// prefix and return the default gateway URL
+function getIpfsLink (link: string): string {
+  if (link.match(/^ipfs:\/\/ipfs\//i)) {
+    link = link.substring(12)
+  }
+  else if (link.match(/^ipfs:\/\//i)) {
+    link = link.substring(7)
+  }
+  else {
+    throw new Error(`unsupported IPFS format '${link}'`)
+  }
+
+  return `https://gateway.ipfs.io/ipfs/${link}`
+}
+
+function _parseBytes (result: string, start: number): null | string {
+  if (result === '0x') {
+    return null
+  }
+
+  const offset: number = BigNumber.from(hexDataSlice(result, start, start + 32)).toNumber()
+  const length: number = BigNumber.from(hexDataSlice(result, offset, offset + 32)).toNumber()
+
+  return hexDataSlice(result, offset + 32, offset + 32 + length)
+}
+function _parseString (result: string, start: number): null | string {
+  try {
+    return toUtf8String(_parseBytes(result, start))
+  }
+  catch (error) { }
+  return null
+}
 
 export class BitPluginAvatar implements BitPluginBase {
   version = '0.0.1'
-  name = 'BitPluginTemplate'
+  name = 'BitPluginAvatar'
 
   onInstall (dotbit: DotBit) {
-    console.log('This function will be invoked when plugin installed, you can add some methods to DotBit like the code below:')
   }
 
   onUninstall (dotbit: DotBit) {
-    console.log('This function will be invoked when plugin uninstalled')
   }
 
   onInitAccount (bitAccount: BitAccount) {
-    console.log('This function will be invoked when .bit account initialized')
-
     bitAccount.avatar = async function (this: BitAccount) {
       const linkage: Array<{ type: string, content: string }> = [{ type: 'account', content: this.account }]
       const provider = new ethers.providers.AnkrProvider()
