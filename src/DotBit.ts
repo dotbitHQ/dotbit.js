@@ -40,9 +40,9 @@ export class DotBit {
     this.signer = config.signer
   }
 
-  installPlugin (plugin: BitPluginBase) {
+  async installPlugin (plugin: BitPluginBase) {
     if (plugin.onInstall) {
-      plugin.onInstall(this)
+      await plugin.onInstall(this)
       this.plugins.push(plugin)
     }
     else {
