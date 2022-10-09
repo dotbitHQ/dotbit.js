@@ -1,4 +1,5 @@
 import { DotBit, BitAccount, BitPluginBase, sleep } from 'dotbit'
+import './types'
 
 export class BitPluginTemplate implements BitPluginBase {
   version = '0.0.1'

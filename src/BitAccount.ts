@@ -389,4 +389,9 @@ export class BitAccount {
     const profiles = records.filter(record => record.type === RecordType.profile)
     return subtype ? profiles.filter(record => record.subtype === subtype.toLowerCase()) : profiles
   }
+
+  avatar (): Promise<{ linkage: Array<{ type: string, content: string }>, url: string } | null>
+  avatar (): any {
+    throw new Error('Please install @dotbit/plugin-avatar to get users avatar')
+  }
 }
