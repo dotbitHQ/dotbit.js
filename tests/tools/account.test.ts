@@ -2,11 +2,11 @@ import { CHAR_TYPE } from '../../src/const'
 import {
   accountIdHex,
   digitalEmojiUnifiedHandle,
-  getAccountCharsetTypes,
+  getAccountCharsetTypes, graphemesAccount,
   isSubAccount,
   isSupportedAccount,
   toDottedStyle,
-  toHashedStyle
+  toHashedStyle,
 } from '../../src/tools/account'
 
 describe('isSupportedAccount', function () {
@@ -197,5 +197,14 @@ describe('digitalEmojiUnifiedHandle', function () {
 
   it('mac0012⃣.bit', () => {
     expect(digitalEmojiUnifiedHandle('mac0012⃣.bit')).toEqual('mac0012️⃣.bit')
+  })
+})
+
+describe('graphemesAccount', function () {
+  it('emoji', function () {
+    expect(graphemesAccount('7️⃣')).toEqual([{
+      char: '7️⃣',
+      char_set_name: CHAR_TYPE.emoji
+    }])
   })
 })
