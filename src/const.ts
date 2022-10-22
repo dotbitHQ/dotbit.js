@@ -54,7 +54,7 @@ export enum RecordType {
   address = 'address',
   profile = 'profile',
   dweb = 'dweb',
-  custom = 'custom',
+  custom = 'custom_key',
 }
 
 export enum AccountStatus {
