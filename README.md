@@ -61,6 +61,7 @@ console.log(account.account) // jeffx.bit
 ```javascript
 const accounts = await dotbit.accountsOfOwner({
     key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+    coin_type: CoinType.ETH
 })
 
 console.log(accounts[0].account) // thefirst💯registeredbydevteamtoensuredassuccessfullylaunched10.bit

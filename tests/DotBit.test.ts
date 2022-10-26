@@ -3,6 +3,7 @@ import { BitPluginBase } from '../src/types'
 import { BitAccount } from '../src/BitAccount'
 import { BitSubAccount } from '../src/BitSubAccount'
 import { dotbitProd } from './common/index'
+import { CoinType } from '../src/const'
 
 describe('serverInfo', function () {
   it('work', async function () {
@@ -40,6 +41,7 @@ describe('accountsOfOwner', function () {
   it('work', async function () {
     const accounts = await dotbitProd.accountsOfOwner({
       key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+      coin_type: CoinType.ETH
     })
 
     expect(accounts[0]).toBeInstanceOf(BitAccount)
