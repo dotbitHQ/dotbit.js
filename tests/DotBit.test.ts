@@ -67,6 +67,7 @@ describe('reverse', function () {
   it('work', async function () {
     const account = await dotbitProd.reverse({
       key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+      coin_type: CoinType.ETH
     })
     expect(account).toBeInstanceOf(BitAccount)
     expect(account.account).toBe('jeffx.bit')
