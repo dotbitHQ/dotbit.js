@@ -10,11 +10,11 @@ A complete [.bit](https://did.id) SDK and utilities in JavaScript (and TypeScrip
 ## Features
 - Query .bit account info, including **owner, manager, status**, and more.
 - Query .bit account records, including **addresses, profiles, dwebs and custom data**.
-- Enable .bit [Sub-Account](https://www.did.id/sub-account) for a specific account.
-- **Mint a sub-account** of a .bit main account.
-- Query all the sub-accounts of a .bit main account.
-- Manage the **ownership** of a .bit account(sub-account included).
-- Manage the **records** of a .bit account(sub-account included).
+- Enable .bit [SubDID](https://www.did.id/subdid) for a specific account.
+- **Mint a SubDID** of a .bit main account.
+- Query all the SubDIDs of a .bit main account.
+- Manage the **ownership** of a .bit account(SubDID included).
+- Manage the **records** of a .bit account(SubDID included).
 - **Register a .bit account** with CKB. (Coming soon)
 
 ## Installation
@@ -67,10 +67,10 @@ const accounts = await dotbit.accountsOfOwner({
 
 console.log(accounts[0].account) // thefirst💯registeredbydevteamtoensuredassuccessfullylaunched10.bit
 ```
-#### Mint a sub-account in `testnet`:
+#### Mint a SubDID in `testnet`:
 
-> Currently, sub-account is fully available in **testnet**, and need whitelist on **mainnet**.
-> If you would like to distribute sub-accounts on **mainnet**, please email [supermancy@did.id](supermancy@did.id) with a brief description of your project.
+> Currently, SubDID is fully available in **testnet**, and need whitelist on **mainnet**.
+> If you would like to distribute SubDIDs on **mainnet**, please email [supermancy@did.id](supermancy@did.id) with a brief description of your project.
 
 ```javascript
 // import { createInstance, ProviderSigner, BitNetwork } from 'dotbit' // For ES Module

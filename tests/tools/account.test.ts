@@ -16,7 +16,7 @@ describe('isSupportedAccount', function () {
     expect(isSupported).toBe(true)
   })
 
-  it('sub-account', function () {
+  it('SubDID', function () {
     const isSupported = isSupportedAccount('a.phone.bit')
 
     expect(isSupported).toBe(true)
@@ -106,7 +106,7 @@ describe('accountIdHex', function () {
     expect(accountId).toBe('0x5728088435fb8788472a9ca601fbc0b9cbea8be3')
   })
 
-  it('sub-account', function () {
+  it('SubDID', function () {
     const accountId = accountIdHex('superdid.2077.bit')
 
     expect(accountId).toBe('0x85a13eea14c4bc5474e205e136df349b7dbc0442')
@@ -118,7 +118,7 @@ describe('isSubAccount', function () {
     expect(isSubAccount('imac.bit')).toBe(false)
   })
 
-  it('should be true for sub-account', function () {
+  it('should be true for SubDID', function () {
     expect(isSubAccount('superdid.2077.bit')).toBe(true)
   })
 

@@ -97,7 +97,7 @@ export class BitAccount {
     }
 
     const txs = await this.bitBuilder.enableSubAccount(this.account, {
-      key: info.owner_key, // only owner can enable sub-account
+      key: info.owner_key, // only owner can enable SubDID
       coin_type: coinType,
     })
 
@@ -180,7 +180,7 @@ export class BitAccount {
 
     checkResults.result.forEach(result => {
       if (result.status !== CheckSubAccountStatus.ok) {
-        throw new CodedError(`Sub-account ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
+        throw new CodedError(`SubDID ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
       }
     })
 

@@ -6,7 +6,7 @@ export class Networking {
   }
 
   throwOnError (res: any) {
-    // sub-account api style
+    // SubDID api style
     if (res.err_no) {
       throw new CodedError(res.err_msg, res.err_no)
     }

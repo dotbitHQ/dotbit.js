@@ -86,7 +86,7 @@ export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExt
 }
 
 /**
- * Check if a given account is sub-account.
+ * Check if a given account is SubDID.
  * 001.imac.bit vs imac.bit
  * @param account
  */

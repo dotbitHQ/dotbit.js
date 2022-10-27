@@ -3,7 +3,7 @@ import { subAccountWithSigner } from './common/index'
 
 describe('enableSubAccount', function () {
   it('throw error', function () {
-    return expect(() => subAccountWithSigner.enableSubAccount()).toThrow(`'enableSubAccount' is not supported by sub-account ${subAccountWithSigner.account}`)
+    return expect(() => subAccountWithSigner.enableSubAccount()).toThrow(`'enableSubAccount' is not supported by SubDID ${subAccountWithSigner.account}`)
   })
 })
 
