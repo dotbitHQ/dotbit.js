@@ -25,23 +25,23 @@ export class BitSubAccount extends BitAccount {
   // }
 
   enableSubAccount (): null {
-    throw new CodedError(`'enableSubAccount' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new CodedError(`'enableSubAccount' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   subAccounts (params: Omit<SubAccountListParams, 'account'> = { page: 1, size: 100, keyword: '' }): null {
-    throw new CodedError(`'subAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new CodedError(`'subAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   checkSubAccounts (subAccounts: SubAccountMintParams[]): null {
-    throw new CodedError(`'checkSubAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new CodedError(`'checkSubAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   mintSubAccounts (): null {
-    throw new CodedError(`'mintSubAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new CodedError(`'mintSubAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   mintSubAccount (): null {
-    throw new CodedError(`'mintSubAccount' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new CodedError(`'mintSubAccount' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   async #editSubAccount (keyInfo: KeyInfo, editKey: 'manager'|'owner')

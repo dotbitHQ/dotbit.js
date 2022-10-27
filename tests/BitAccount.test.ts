@@ -263,7 +263,7 @@ describe('mintSubAccount', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(accountWithSigner.mintSubAccount(mintParam)).rejects.toThrow('Sub-account 005.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccount(mintParam)).rejects.toThrow('SubDID 005.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
@@ -295,7 +295,7 @@ describe('mintSubAccounts', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(accountWithSigner.mintSubAccounts(mintParams)).rejects.toThrow('Sub-account 006.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccounts(mintParams)).rejects.toThrow('SubDID 006.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
