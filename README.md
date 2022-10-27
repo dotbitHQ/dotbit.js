@@ -53,7 +53,8 @@ dotbit.records('imac.bit').then(console.log)
 ⚠️Notice: Only when .bit alias is set at https://app.did.id/alias by user, reverse record is valid.
 ```javascript
 const account = await dotbit.reverse({
-  key: '0x1D643FAc9a463c9d544506006a6348c234dA485f'
+  key: '0x1D643FAc9a463c9d544506006a6348c234dA485f',
+  coin_type: '60', // See FAQ below to get the defination of coin_type
 })
 console.log(account.account) // jeffx.bit
 ```
@@ -61,6 +62,7 @@ console.log(account.account) // jeffx.bit
 ```javascript
 const accounts = await dotbit.accountsOfOwner({
     key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+    coin_type: '60', // See FAQ below to get the defination of coin_type
 })
 
 console.log(accounts[0].account) // thefirst💯registeredbydevteamtoensuredassuccessfullylaunched10.bit
