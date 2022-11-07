@@ -1,6 +1,6 @@
 {
-  "name": "@dotbit/plugin-template",
-  "version": "0.0.2",
+  "name": "@dotbit/plugin-avatar",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "module": "lib.esm/index.js",
   "types": "lib/index.d.ts",
@@ -11,6 +11,13 @@
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "publish": "pnpm publish --access public"
+  },
+  "dependencies": {
+    "@ethersproject/bignumber": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/strings": "^5.7.0",
+    "@ethersproject/web": "^5.7.1",
+    "ethers": "^5.6.9"
   },
   "peerDependencies": {
     "dotbit": "workspace:^"

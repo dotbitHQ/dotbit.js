@@ -6,7 +6,10 @@
   "license": "MIT",
   "main": "lib/index.js",
   "module": "lib.esm/index.js",
-  "types": "lib/index.d.ts",
+  "types": "src/index.ts",
+  "publishConfig": {
+    "types": "lib/index.d.ts"
+  },
   "scripts": {
     "test": "jest",
     "clear": "rm -rf ./lib/ ./lib.esm/",
@@ -44,8 +47,9 @@
     "@types/jest": "^28.1.2",
     "@types/node": "^18.0.0",
     "bip44-constants": "latest",
-    "eslint": "^8.18.0",
+    "eslint": "8.22.0",
     "eslint-config-blockabc": "^0.15.2",
+    "eslint-plugin-n": "^15.3.0",
     "jest": "^28.1.1",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",
