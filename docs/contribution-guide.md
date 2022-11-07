@@ -1,4 +1,51 @@
-## How to use pnpm to manage packages & monorepos
+## Plugin Guide
+### How to add a plugin
+1. Please copy the template plugin under [packages/plugin-template](../packages/plugin-template) folder.
+2. Rename the folder to your preferred name, and change the package name to `@dotbit/plugin-xxx`.
+3. Finish the plugin code according to dotbit [plugin API](#plugin-api) below.
+4. Add tests under [./tests](../packages/plugin-template/tests).
+5. Wrap them up and commit the code, and finally create a pull request.
+6. Once the codes are merged, your plugin will be published to npm. You can then use your plugin in production.
+
+> **NOTE**: The distributed codes will use ES Module or CommonJS and not compressed. You don't need to include webpack, rollup or other bundle tools.
+> In most cases, you will only need to run the build command: `npm run build`.
+
+### Plugin API
+Please check out the code here: [index.ts](./src/index.ts)
+
+Basically, your plugin should provide 1 required method `onInstall` and 2 optional methods `onInitAccount` and `onUninstall`. Their signatures are below:
+```typescript
+export interface BitPluginBase {
+  version?: string,
+  name?: string,
+  /**
+   * This function will be invoked when plugin installed
+   * @param dotbit {DotBit}
+   */
+  onInstall: (dotbit: DotBit) => void,
+  /**
+   * This function will be invoked when plugin uninstalled
+   * @param dotbit {DotBit}
+   */
+  onUninstall?: (dotbit: DotBit) => void,
+  /**
+   * This function will be invoked when .bit account initialized
+   * @param bitAccount {BitAccount}
+   */
+  onInitAccount?: (bitAccount: BitAccount) => void,
+}
+```
+You can also check out here: [types.ts](../../src/types.ts#L5).
+
+### Publish a plugin
+> Please use this command below, otherwise, you are publishing a private package.
+
+```shell
+pnpm publish --access public
+```
+
+
+## How to use pnpm to manage packages & monorepo
 
 ### FAQ
 #### How to reference workspace packages
