@@ -55,6 +55,7 @@ When publishing the package, it will be automatically converted to regular versi
 
 ### Commands
 - Add a dependency to specific packages: `pnpm i axios --filter avatar`
+- Publish a specific package:`pnpm publish --access publish --filter avatar`
 
 ### Help
 For more usage, please refer to the official docs: [pnpm Workspace](https://pnpm.io/workspaces)

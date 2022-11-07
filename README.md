@@ -109,9 +109,7 @@ import { PluginXXX } from 'dotbit-plugin-xxx'
 import { createInstance } from 'dotbit'
 
 const dotbit = createInstance()
-
 dotbit.installPlugin(new PluginXXX())
-
 dotbit.methodAddedByXXX()
 ```
 
@@ -119,7 +117,8 @@ For detailed usage, please follow the instructions in the specific plugin's READ
 
 #### List of plugins
 - [@dotbit/plugin-template](./packages/plugin-template/README.md): A demo plugin demonstrating the basic structure of a .bit plugin.
-- [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/)
+- [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/).
+- [@dotbit/plugin-avatar](./packages/plugin-avatar/README.md): A plugin for resolving users' avatar.
 
 #### Write your own plugin
 Write a plugin for .bit is easy! 
