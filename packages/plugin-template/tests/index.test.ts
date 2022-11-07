@@ -1,5 +1,6 @@
-import { DotBit } from 'dotbit'
+import { DotBit } from 'dotbit/DotBit'
 import { BitPluginTemplate } from '../src/index'
+import '../src/types'
 
 const dotbit = new DotBit()
 const pluginTemplate = new BitPluginTemplate()

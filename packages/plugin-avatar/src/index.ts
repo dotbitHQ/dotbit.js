@@ -15,7 +15,7 @@ const matchers = [
 ]
 
 // Trim off the ipfs:// prefix and return the default gateway URL
-function getIpfsLink (link: string): string {
+export function getIpfsLink (link: string, gateway = 'https://gateway.ipfs.io'): string {
   if (link.match(/^ipfs:\/\/ipfs\//i)) {
     link = link.substring(12)
   }
@@ -26,7 +26,7 @@ function getIpfsLink (link: string): string {
     throw new Error(`unsupported IPFS format '${link}'`)
   }
 
-  return `https://gateway.ipfs.io/ipfs/${link}`
+  return `${gateway}/ipfs/${link}`
 }
 
 function _parseBytes (result: string, start: number): null | string {
@@ -47,9 +47,23 @@ function _parseString (result: string, start: number): null | string {
   return null
 }
 
+interface BitPluginAvatarOptions {
+  ipfsGateway?: string,
+}
+
 export class BitPluginAvatar implements BitPluginBase {
   version = '0.0.1'
   name = 'BitPluginAvatar'
+
+  ipfs = 'https://gateway.ipfs.io'
+
+  constructor (options?: BitPluginAvatarOptions) {
+    if (options) {
+      if (options.ipfsGateway) {
+        this.ipfs = options.ipfsGateway
+      }
+    }
+  }
 
   onInstall (dotbit: DotBit) {
   }
@@ -58,6 +72,8 @@ export class BitPluginAvatar implements BitPluginBase {
   }
 
   onInitAccount (bitAccount: BitAccount) {
+    const plugin = this
+
     bitAccount.avatar = async function (this: BitAccount) {
       const linkage: Array<{ type: string, content: string }> = [{ type: 'account', content: this.account }]
       const provider = new ethers.providers.AnkrProvider()
@@ -93,7 +109,7 @@ export class BitPluginAvatar implements BitPluginBase {
 
             case 'ipfs':
               linkage.push({ type: 'ipfs', content: avatar })
-              return { linkage, url: getIpfsLink(avatar) }
+              return { linkage, url: getIpfsLink(avatar, plugin.ipfs) }
 
             case 'erc721':
             case 'erc1155': {
@@ -155,7 +171,7 @@ export class BitPluginAvatar implements BitPluginBase {
 
               // Transform IPFS metadata links
               if (metadataUrl.match(/^ipfs:/i)) {
-                metadataUrl = getIpfsLink(metadataUrl)
+                metadataUrl = getIpfsLink(metadataUrl, plugin.ipfs)
               }
 
               linkage.push({ type: 'metadata-url', content: metadataUrl })
