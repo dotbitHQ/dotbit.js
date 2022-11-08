@@ -21,8 +21,13 @@ export enum BitErrorCode {
   InvalidAccountId,
 }
 
-export class CodedError extends Error {
+export class DotbitError extends Error {
   constructor (message: string, public code: number) {
     super(code ? `${code}: ${message}` : message)
   }
 }
+
+/**
+ * @deprecated Please use @DotbitError instead of CodedError
+ */
+export const CodedError = DotbitError

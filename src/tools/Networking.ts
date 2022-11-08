@@ -1,5 +1,5 @@
 import { fetch } from 'cross-fetch'
-import { CodedError } from './CodedError'
+import { DotbitError } from '../errors/DotbitError'
 
 export class Networking {
   constructor (public baseUri: string) {
@@ -8,7 +8,7 @@ export class Networking {
   throwOnError (res: any) {
     // SubDID api style
     if (res.err_no) {
-      throw new CodedError(res.err_msg, res.err_no)
+      throw new DotbitError(res.err_msg, res.err_no)
     }
     else {
       return res.data

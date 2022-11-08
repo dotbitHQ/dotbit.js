@@ -4,7 +4,7 @@ import { Wallet } from 'ethers'
 import { AlgorithmId, CoinType, EvmChainId2CoinType } from '../const'
 import { TxsWithMMJsonSignedOrUnSigned } from '../fetchers/RegisterAPI'
 import { TxsSignedOrUnSigned } from '../fetchers/SubAccountAPI'
-import { BitErrorCode, CodedError } from '../tools/CodedError'
+import { BitErrorCode, DotbitError } from '../errors/DotbitError'
 import { remove0x } from '../tools/common'
 
 function isMMJson (txs: TxsSignedOrUnSigned | TxsWithMMJsonSignedOrUnSigned): txs is TxsWithMMJsonSignedOrUnSigned {
@@ -44,7 +44,7 @@ export abstract class BitSigner {
     const coinType = EvmChainId2CoinType[chainId]
 
     if (!coinType) {
-      throw new CodedError(`Unsupported EVM chainId: ${chainId}`, BitErrorCode.UnsupportedEVMChainId)
+      throw new DotbitError(`Unsupported EVM chainId: ${chainId}`, BitErrorCode.UnsupportedEVMChainId)
     }
 
     return coinType

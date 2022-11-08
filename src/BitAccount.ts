@@ -24,7 +24,7 @@ import {
   toRecordExtended,
   trimAccountSuffix,
 } from './tools/account'
-import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
 
 export interface BitAccountOptions {
   account: string,
@@ -52,7 +52,7 @@ export class BitAccount {
 
   constructor (options: BitAccountOptions) {
     if (!isSupportedAccount(options.account)) {
-      throw new CodedError(`${options.account} is not a valid .bit account`, BitIndexerErrorCode.AccountFormatInvalid)
+      throw new DotbitError(`${options.account} is not a valid .bit account`, BitIndexerErrorCode.AccountFormatInvalid)
     }
 
     this.account = options.account
@@ -68,13 +68,13 @@ export class BitAccount {
 
   private requireSigner () {
     if (!this.signer) {
-      throw new CodedError('signer is required', BitErrorCode.SignerRequired)
+      throw new DotbitError('signer is required', BitErrorCode.SignerRequired)
     }
   }
 
   private requireBitBuilder () {
     if (!this.bitBuilder) {
-      throw new CodedError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
+      throw new DotbitError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
     }
   }
 
@@ -93,7 +93,7 @@ export class BitAccount {
     const address = await this.signer.getAddress()
 
     if (address !== info.owner_key) {
-      throw new CodedError('Permission Denied: only owner can perform this action', BitSubAccountErrorCode.PermissionDenied)
+      throw new DotbitError('Permission Denied: only owner can perform this action', BitSubAccountErrorCode.PermissionDenied)
     }
 
     const txs = await this.bitBuilder.enableSubAccount(this.account, {
@@ -180,7 +180,7 @@ export class BitAccount {
 
     checkResults.result.forEach(result => {
       if (result.status !== CheckSubAccountStatus.ok) {
-        throw new CodedError(`SubDID ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
+        throw new DotbitError(`SubDID ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
       }
     })
 
