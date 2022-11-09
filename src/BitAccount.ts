@@ -136,7 +136,8 @@ export class BitAccount {
 
   /**
    * Mint multiple sub accounts at once
-   * Please wait for 3 minutes between each invocation of this method
+   * Please wait for about 2~3 minutes between each invocation of this method. (We need to wait for previous tx confirmed for 4 blocks)
+   * Please mint no more than 50 sub accounts for every invocation.(The hard limit is 80 due to the block size of nervos network, so 50 would be a safe value)
    * @param params
    */
   async mintSubAccounts (params: SubAccountParams[]) {
