@@ -1,5 +1,5 @@
-import { KeyInfo } from 'dotbit/fetchers/BitIndexer.type'
-import { ChainType, CoinType } from 'dotbit/const'
+import { KeyInfo } from '../fetchers/BitIndexer.type'
+import { ChainType, CoinType } from '../const'
 import { formatsByName } from '@ensdomains/address-encoder'
 import GraphemeSplitter from 'grapheme-splitter'
 
@@ -68,19 +68,19 @@ export function checkKeyInfo (keyInfo: KeyInfo): boolean {
     }
     else {
       console.warn(`invalid ETH address: ${keyInfo.key}`)
-      return false
+      ret = false
     }
   }
   else if (keyInfo.chain_id === ChainType.tron || keyInfo.coin_type === CoinType.TRX) {
     if (isTronAddress(keyInfo.key)) {
-      return true
+      ret = true
     }
     else {
       console.warn(`invalid Tron address: ${keyInfo.key}`)
-      return false
+      ret = false
     }
   }
-  return true
+  return ret
 }
 
 /**

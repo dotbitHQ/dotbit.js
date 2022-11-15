@@ -1,4 +1,4 @@
-import { ChainType, CoinType } from 'dotbit'
+import { ChainType, CoinType } from '../const'
 
 export interface DasServerInfo {
   is_latest_block_number: boolean,
