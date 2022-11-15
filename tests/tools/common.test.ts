@@ -79,7 +79,7 @@ describe('isEthAddress', function () {
     expect(isEthAddress(address)).toBe(true)
   })
 
-  it('wrong address', function () {
+  it('invalid checksum', function () {
     const address = '0x8BA1f109551bD432803012645Ac136ddd64DBA72'
     expect(isEthAddress(address)).toBe(false)
   })
