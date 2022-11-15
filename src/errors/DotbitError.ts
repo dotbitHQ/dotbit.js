@@ -9,7 +9,10 @@ export enum BitIndexerErrorCode {
 }
 
 export enum BitSubAccountErrorCode {
+  AccountIsRegistered = 1001,
+  TooManySubAccountsCount = 10000,
   PermissionDenied = 30011,
+  TaskInProgress = 40008,
 }
 
 export enum BitErrorCode {

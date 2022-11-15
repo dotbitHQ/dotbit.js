@@ -22,7 +22,6 @@ import {
   graphemesAccount,
   toDottedStyle,
   toRecordExtended,
-  trimAccountSuffix,
 } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
 
