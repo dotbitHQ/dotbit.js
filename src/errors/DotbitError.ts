@@ -15,6 +15,12 @@ export enum BitSubAccountErrorCode {
   TaskInProgress = 40008,
 }
 
+export enum BitRegisterApiError {
+  OperationTooFrequent = 11013,
+  EditManagerPermissionDenied = 30011,
+  SameAddress = 30023,
+}
+
 export enum BitErrorCode {
   UnsupportedEVMChainId = 1000,
   SubAccountStatusInvalid,
