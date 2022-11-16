@@ -45,13 +45,36 @@ describe('subAccountList', function () {
       keyword: '001'
     })
 
-    expect(res.list.length).toBe(1)
+    expect(res.list.length).toBeGreaterThanOrEqual(10)
   })
 })
 
 describe('editSubAccount', function () {
-  it('should work', async function () {
-    const res = await subAccountApi.editSubAccount({
+  // it('should work', async function () {
+  //   const res = await subAccountApi.editSubAccount({
+  //     account: '001.imac.bit',
+  //     type: 'blockchain',
+  //     key_info: {
+  //       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+  //       coin_type: CoinType.ETH,
+  //     },
+  //     edit_key: 'manager',
+  //     edit_value: {
+  //       manager: {
+  //         type: 'blockchain',
+  //         key_info: {
+  //           key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+  //           coin_type: CoinType.ETH,
+  //         }
+  //       }
+  //     }
+  //   })
+  //
+  //   expect(res.list[0].sign_list.length).toBe(1)
+  // })
+
+  it('should throw: 30023: same address', function () {
+    const promise = subAccountApi.editSubAccount({
       account: '001.imac.bit',
       type: 'blockchain',
       key_info: {
@@ -69,7 +92,6 @@ describe('editSubAccount', function () {
         }
       }
     })
-
-    expect(res.list[0].sign_list.length).toBe(1)
+    return expect(promise).rejects.toThrow('30023: same address')
   })
 })

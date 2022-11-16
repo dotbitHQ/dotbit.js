@@ -1,3 +1,4 @@
+import { KeyInfo } from '../../src/fetchers/BitIndexer.type'
 import {
   checkKeyInfo,
   isEmptyAddress,
@@ -6,7 +7,7 @@ import {
   pad0x,
   stringVisualLength,
 } from '../../src/tools/common'
-import { ChainType, CoinType } from 'dotbit'
+import { CoinType } from '../../src/const'
 
 describe('pad0x', function () {
   it('starts with 0x', function () {
@@ -109,37 +110,33 @@ describe('isTronAddress', function () {
 
 describe('checkKeyInfo', function () {
   it('ETH keyInfo return true', function () {
-    const keyInfo = {
+    const keyInfo: KeyInfo = {
       key: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
       coin_type: CoinType.ETH,
-      chain_id: ChainType.eth
     }
     expect(checkKeyInfo(keyInfo)).toBe(true)
   })
 
   it('ETH keyInfo return false', function () {
-    const keyInfo = {
+    const keyInfo: KeyInfo = {
       key: '0x8BA1f109551bD432803012645Ac136ddd64DBA72',
       coin_type: CoinType.ETH,
-      chain_id: ChainType.eth
     }
     expect(checkKeyInfo(keyInfo)).toBe(false)
   })
 
   it('Tron keyInfo return true', function () {
-    const keyInfo = {
+    const keyInfo: KeyInfo = {
       key: 'TFY8wxf1TjPNxKwop1ZX3JhzwWREqowmoF',
       coin_type: CoinType.TRX,
-      chain_id: ChainType.tron
     }
     expect(checkKeyInfo(keyInfo)).toBe(true)
   })
 
   it('Tron keyInfo return false', function () {
-    const keyInfo = {
+    const keyInfo: KeyInfo = {
       key: 'tFY8wxf1TjPNxKwop1ZX3JhzwWREqowmoF',
       coin_type: CoinType.TRX,
-      chain_id: ChainType.tron
     }
     expect(checkKeyInfo(keyInfo)).toBe(false)
   })
