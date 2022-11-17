@@ -1,3 +1,4 @@
+import { CoinType } from '../../src/const'
 import { BitIndexer } from '../../src/fetchers/BitIndexer'
 
 const indexer = new BitIndexer({
@@ -62,8 +63,7 @@ describe('accountRecords', () => {
 describe('reverseRecord', () => {
   it('work', async () => {
     const { account } = await indexer.reverseRecord({
-      coin_type: '60', // 60: ETH, 195: TRX, 714: BNB, 966: Matic
-      chain_id: '1', // 1: ETH, 56: BSC, 137: Polygon
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
       key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
     })
 
@@ -72,7 +72,7 @@ describe('reverseRecord', () => {
 
   it('work when without chain_id', async () => {
     const { account } = await indexer.reverseRecord({
-      coin_type: '60', // 60: ETH, 195: TRX, 714: BNB, 966: Matic
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
       key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
     })
     expect(account).toBe('jeffx.bit')
@@ -96,8 +96,7 @@ describe('reverseRecord', () => {
 describe('accountList', () => {
   it('work', async () => {
     const accounts = await indexer.accountList({
-      coin_type: '60', // 60: ETH, 195: TRX, 714: BNB, 966: Matic
-      chain_id: '1', // 1: ETH, 56: BSC, 137: Polygon
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
       key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
     })
     expect(accounts.length).toBeGreaterThanOrEqual(27)
@@ -105,7 +104,7 @@ describe('accountList', () => {
 
   it('work when without chain_id', async () => {
     const accounts = await indexer.accountList({
-      coin_type: '60', // 60: ETH, 195: TRX, 714: BNB, 966: Matic
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
       key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
     })
     expect(accounts.length).toBeGreaterThanOrEqual(27)
@@ -120,10 +119,10 @@ describe('accountList', () => {
 
   it('work for TRON', async () => {
     const accounts = await indexer.accountList({
-      coin_type: '195', // 60: ETH, 195: TRX, 714: BNB, 966: Matic
+      coin_type: CoinType.TRX, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
       key: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX' // address
     })
-    expect(accounts.length).toBeGreaterThanOrEqual(12)
+    expect(accounts.length).toBeGreaterThanOrEqual(5)
   })
 
   it('should be empty', async () => {

@@ -1,5 +1,5 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
-import { ChainType, CoinType } from '../const'
+import { CoinType, EvmChainId } from '../const'
 import { formatsByName } from '@ensdomains/address-encoder'
 import GraphemeSplitter from 'grapheme-splitter'
 
@@ -62,7 +62,7 @@ export function checkKeyInfo (keyInfo: KeyInfo): boolean {
   if (typeof keyInfo.chain_id !== 'undefined') {
     console.warn('chain_id is deprecated, please use coin_type.')
   }
-  if ([ChainType.eth, ChainType.bsc, ChainType.polygon].includes(keyInfo.chain_id) || [CoinType.ETH, CoinType.MATIC, CoinType.BSC].includes(keyInfo.coin_type)) {
+  if ([EvmChainId.ETH, EvmChainId.BSC, EvmChainId.MATIC].includes(Number(keyInfo.chain_id)) || [CoinType.ETH, CoinType.MATIC, CoinType.BSC].includes(keyInfo.coin_type)) {
     if (isEthAddress(keyInfo.key)) {
       ret = true
     }
@@ -71,7 +71,7 @@ export function checkKeyInfo (keyInfo: KeyInfo): boolean {
       ret = false
     }
   }
-  else if (keyInfo.chain_id === ChainType.tron || keyInfo.coin_type === CoinType.TRX) {
+  else if (keyInfo.coin_type === CoinType.TRX) {
     if (isTronAddress(keyInfo.key)) {
       ret = true
     }
