@@ -1,0 +1,23 @@
+{
+  "name": "@dotbit/plugin-web3mq",
+  "version": "0.0.1",
+  "description": "This is an official plugin integrating the brilliant [Web3MQ](https://www.web3messaging.online/) with .bit.",
+  "main": "index.js",
+  "scripts": {
+    "clear": "rm -rf ./lib/ ./lib.esm/",
+    "prepublishOnly": "npm run build",
+    "build": "npm run clear && npm run build:esm & npm run build:commonjs",
+    "build:commonjs": "tsc -p tsconfig.build.json",
+    "build:esm": "tsc -p tsconfig.build.esm.json",
+    "publish": "pnpm publish --access public"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethers": "^5.7.2",
+    "web3-mq": "^1.2.46"
+  },
+  "peerDependencies": {
+    "dotbit": "workspace:^"
+  }
+}
