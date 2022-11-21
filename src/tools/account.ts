@@ -9,7 +9,7 @@ import turkishList from './char_set/tr_list.json'
 import thaiList from './char_set/th_list.json'
 import koreanList from './char_set/ko_list.json'
 import vietnameseList from './char_set/vi_list.json'
-import { ACCOUNT_SUFFIX, CHAR_TYPE, languageToCharType, languages } from '../const'
+import { ACCOUNT_SUFFIX, CHAR_TYPE, languageToCharType, languages, DigitalEmojiUnifiedMap } from '../const'
 
 /**
  * @description: check if the account is supported by .bit
@@ -86,7 +86,7 @@ export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExt
 }
 
 /**
- * Check if a given account is sub-account.
+ * Check if a given account is SubDID.
  * 001.imac.bit vs imac.bit
  * @param account
  */
@@ -113,7 +113,7 @@ export interface ICharInfo {
  * @param charSplit
  * @param language
  */
-function getLanguageGraphemes(charSplit: string[], language: string): ICharInfo[] | null {
+function getLanguageGraphemes (charSplit: string[], language: string): ICharInfo[] | null {
   const languageToCharList = {
     en: englishList,
     tr: turkishList,
@@ -127,7 +127,7 @@ function getLanguageGraphemes(charSplit: string[], language: string): ICharInfo[
 
   for (const char of charSplit) {
     let included = false
-    for (const [index, list]  of [emojiList, numberList, charList].entries()) {
+    for (const [index, list] of [emojiList, numberList, charList].entries()) {
       if (list.includes(char)) {
         charInfos.push({
           char_set_name: charTypes[index],
@@ -159,6 +159,19 @@ function getLanguage (language: string): string {
 }
 
 /**
+ * handles the mapping of digital emoji
+ * @param str
+ */
+export function digitalEmojiUnifiedHandle (str: string): string {
+  const splitter = new GraphemeSplitter()
+  const split = splitter.splitGraphemes(str)
+  const list = split.map((item) => {
+    return DigitalEmojiUnifiedMap[item] || item
+  })
+  return list.join('')
+}
+
+/**
  * split the account by character set.
  * @param account
  * @param addSuffix
@@ -166,10 +179,18 @@ function getLanguage (language: string): string {
  */
 export function graphemesAccount (account: string, addSuffix = false, language = 'en'): ICharInfo[] {
   const splitter = new GraphemeSplitter()
-  const split = splitter.splitGraphemes(account)
+  let split = splitter.splitGraphemes(account)
+  split = split.map((item) => {
+    if (DigitalEmojiUnifiedMap[item]) {
+      return DigitalEmojiUnifiedMap[item]
+    }
+    else {
+      return item
+    }
+  })
 
   language = getLanguage(language)
-  
+
   // rules: https://docs.did.id/register-das/charsets
   let splitArr: ICharInfo[] | null = null
   const languageList = languages.filter(lang => lang !== language)
@@ -177,7 +198,7 @@ export function graphemesAccount (account: string, addSuffix = false, language =
   for (const languageItem of languageList) {
     splitArr = getLanguageGraphemes(split, languageItem)
     if (splitArr !== null) {
-      break;
+      break
     }
   }
 

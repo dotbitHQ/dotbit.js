@@ -1,8 +1,9 @@
 {
-  "name": "@dotbit/plugin-web3mq",
+  "name": "@dotbit/plugin-avatar",
   "version": "0.0.1",
-  "description": "This is an official plugin integrating the brilliant [Web3MQ](https://www.web3messaging.online/) with .bit.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "lib.esm/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "clear": "rm -rf ./lib/ ./lib.esm/",
     "prepublishOnly": "npm run build",
@@ -11,13 +12,15 @@
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "publish": "pnpm publish --access public"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "ethers": "^5.7.2",
-    "web3-mq": "^1.2.46"
+    "@ethersproject/bignumber": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/strings": "^5.7.0",
+    "@ethersproject/web": "^5.7.1",
+    "ethers": "^5.6.9"
   },
   "peerDependencies": {
     "dotbit": "workspace:^"
-  }
+  },
+  "license": "MIT"
 }

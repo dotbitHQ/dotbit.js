@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch'
-import { CodedError } from './CodedError'
+import { DotbitError } from '../errors/DotbitError'
 
 export class JSONRPC {
   id = 0
@@ -23,10 +23,10 @@ export class JSONRPC {
       .then(res => res.json())
       .then(res => {
         if (res.error) {
-          throw new CodedError(res.error.message, res.error.code)
+          throw new DotbitError(res.error.message, res.error.code)
         }
         if (res.result.errno) {
-          throw new CodedError(res.result.errmsg, res.result.errno)
+          throw new DotbitError(res.result.errmsg, res.result.errno)
         }
 
         return res.result

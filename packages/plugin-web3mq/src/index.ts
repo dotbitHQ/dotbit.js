@@ -1,23 +1,19 @@
 import { BitAccount, BitPluginBase, DotBit } from 'dotbit';
-import {Client, PageParams} from 'web3-mq';
-import {
-  getAddressByDid,
-  getUserIdByAddress,
-  hasKeys,
-  init,
-  signMetaMask,
-} from './utils';
-import { KeyPairsType } from 'web3-mq/dist/types';
+import { Client, KeyPairsType, PageParams } from 'web3-mq';
+
+import { init, hasKeys, signMetaMask, getUserIdByAddress, getAddressByDid } from './utils';
+
 import { DID_TYPE_ENUM } from './types';
 
 export class BitPluginWeb3MQ implements BitPluginBase {
   version = '0.0.1';
   name = 'BitPluginWeb3MQ';
-  appKey = ''
+  appKey = '';
 
   constructor(appkey: string) {
-    this.appKey = appkey
+    this.appKey = appkey;
   }
+
   async onInstall(dotbit: DotBit) {
     await init(this.appKey);
     let keys = hasKeys();
@@ -29,8 +25,8 @@ export class BitPluginWeb3MQ implements BitPluginBase {
       dotbit.web3Mq = client;
       dotbit.searchWeb3mqUser = async (
         did: string,
-        didType: DID_TYPE_ENUM = DID_TYPE_ENUM.DOTBIT
-      )  => {
+        didType: DID_TYPE_ENUM = DID_TYPE_ENUM.DOTBIT,
+      ) => {
         switch (didType) {
           case DID_TYPE_ENUM.WEB3_MQ:
             return [{ userid: did }];
@@ -38,18 +34,18 @@ export class BitPluginWeb3MQ implements BitPluginBase {
             return await getUserIdByAddress(client, did);
           case DID_TYPE_ENUM.ENS:
           case DID_TYPE_ENUM.DOTBIT:
-            let address = await getAddressByDid(did, didType);
+            let address = await getAddressByDid(dotbit, did, didType);
             return await getUserIdByAddress(client, address);
         }
       };
-      dotbit.sendMessageToUser = (message: string, userId: string) => {
+      dotbit.sendMessageToUser = async (message: string, userId: string) => {
         return client.message.sendMessage(message, userId);
       };
       dotbit.onMessage = (callback: any) => {
         client.on('message.getList', callback);
         client.on('message.delivered', callback);
       };
-      dotbit.getMessageList = async (page:PageParams, userId: string) => {
+      dotbit.getMessageList = async (page: PageParams, userId: string) => {
         return client.message.getMessageList(page, userId);
       };
     }
@@ -58,8 +54,14 @@ export class BitPluginWeb3MQ implements BitPluginBase {
   onUninstall(dotbit: DotBit) {
     dotbit.web3Mq = null;
   }
-
+  // @ts-ignore
   onInitAccount(bitAccount: BitAccount) {
-    // init account
+    console.log('This function will be invoked when .bit account initialized');
+    //@ts-ignore
+    bitAccount.funcWeb3MQ = () => {
+      console.log('funcWeb3MQ');
+    };
   }
 }
+
+export * from './types';

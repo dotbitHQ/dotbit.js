@@ -1,4 +1,4 @@
-import { DotBit } from 'dotbit/Dotbit'
+import 'dotbit'
 
 declare module 'dotbit/DotBit' {
   interface DotBit {
@@ -6,7 +6,7 @@ declare module 'dotbit/DotBit' {
   }
 }
 
-declare module 'dotbit/BitAccount' {
+declare module 'dotbit' {
   interface BitAccount {
     fly: () => Promise<string>,
   }

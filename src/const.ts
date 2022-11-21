@@ -54,7 +54,7 @@ export enum RecordType {
   address = 'address',
   profile = 'profile',
   dweb = 'dweb',
-  custom = 'custom',
+  custom = 'custom_key',
 }
 
 export enum AccountStatus {
@@ -120,3 +120,26 @@ export const languageToCharType = {
 }
 
 export const languages = ['en', 'tr', 'vi', 'th', 'ko']
+
+export enum DigitalEmojiUnifiedMap {
+  '0⃣️' = '0️⃣',
+  '1⃣️' = '1️⃣',
+  '2⃣️' = '2️⃣',
+  '3⃣️' = '3️⃣',
+  '4⃣️' = '4️⃣',
+  '5⃣️' = '5️⃣',
+  '6⃣️' = '6️⃣',
+  '7⃣️' = '7️⃣',
+  '8⃣️' = '8️⃣',
+  '9⃣️' = '9️⃣',
+  '0⃣' = '0️⃣',
+  '1⃣' = '1️⃣',
+  '2⃣' = '2️⃣',
+  '3⃣' = '3️⃣',
+  '4⃣' = '4️⃣',
+  '5⃣' = '5️⃣',
+  '6⃣' = '6️⃣',
+  '7⃣' = '7️⃣',
+  '8⃣' = '8️⃣',
+  '9⃣' = '9️⃣'
+}

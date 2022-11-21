@@ -1,7 +1,9 @@
 node_modules/
 coverage/
+package/
 .idea/
 lib/
 lib.esm/
 example/browser/dist/
 *.tgz
+pnpm-lock.yaml

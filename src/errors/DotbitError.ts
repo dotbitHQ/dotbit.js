@@ -9,7 +9,16 @@ export enum BitIndexerErrorCode {
 }
 
 export enum BitSubAccountErrorCode {
+  AccountIsRegistered = 1001,
+  TooManySubAccountsCount = 10000,
   PermissionDenied = 30011,
+  TaskInProgress = 40008,
+}
+
+export enum BitRegisterApiError {
+  OperationTooFrequent = 11013,
+  EditManagerPermissionDenied = 30011,
+  SameAddress = 30023,
 }
 
 export enum BitErrorCode {
@@ -21,8 +30,13 @@ export enum BitErrorCode {
   InvalidAccountId,
 }
 
-export class CodedError extends Error {
+export class DotbitError extends Error {
   constructor (message: string, public code: number) {
     super(code ? `${code}: ${message}` : message)
   }
 }
+
+/**
+ * @deprecated Please use @DotbitError instead of CodedError
+ */
+export const CodedError = DotbitError

@@ -1,6 +1,5 @@
 import { JSONRPC } from '../tools/JSON-RPC'
 import {
-  AccountInfo,
   BitAccountInfo,
   BitAccountList,
   BitAccountRecord,

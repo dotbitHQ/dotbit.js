@@ -8,7 +8,7 @@ import {
   SubAccountMintParams,
   TxsSignedOrUnSigned
 } from './fetchers/SubAccountAPI'
-import { BitErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, DotbitError } from './errors/DotbitError'
 
 export class BitSubAccount extends BitAccount {
   isSubAccount = true
@@ -25,23 +25,23 @@ export class BitSubAccount extends BitAccount {
   // }
 
   enableSubAccount (): null {
-    throw new CodedError(`'enableSubAccount' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new DotbitError(`'enableSubAccount' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   subAccounts (params: Omit<SubAccountListParams, 'account'> = { page: 1, size: 100, keyword: '' }): null {
-    throw new CodedError(`'subAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new DotbitError(`'subAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   checkSubAccounts (subAccounts: SubAccountMintParams[]): null {
-    throw new CodedError(`'checkSubAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new DotbitError(`'checkSubAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   mintSubAccounts (): null {
-    throw new CodedError(`'mintSubAccounts' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new DotbitError(`'mintSubAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   mintSubAccount (): null {
-    throw new CodedError(`'mintSubAccount' is not supported by sub-account ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+    throw new DotbitError(`'mintSubAccount' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   async #editSubAccount (keyInfo: KeyInfo, editKey: 'manager'|'owner')

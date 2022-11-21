@@ -22,9 +22,8 @@ import {
   graphemesAccount,
   toDottedStyle,
   toRecordExtended,
-  trimAccountSuffix,
 } from './tools/account'
-import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
 
 export interface BitAccountOptions {
   account: string,
@@ -52,7 +51,7 @@ export class BitAccount {
 
   constructor (options: BitAccountOptions) {
     if (!isSupportedAccount(options.account)) {
-      throw new CodedError(`${options.account} is not a valid .bit account`, BitIndexerErrorCode.AccountFormatInvalid)
+      throw new DotbitError(`${options.account} is not a valid .bit account`, BitIndexerErrorCode.AccountFormatInvalid)
     }
 
     this.account = options.account
@@ -68,13 +67,13 @@ export class BitAccount {
 
   private requireSigner () {
     if (!this.signer) {
-      throw new CodedError('signer is required', BitErrorCode.SignerRequired)
+      throw new DotbitError('signer is required', BitErrorCode.SignerRequired)
     }
   }
 
   private requireBitBuilder () {
     if (!this.bitBuilder) {
-      throw new CodedError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
+      throw new DotbitError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
     }
   }
 
@@ -93,11 +92,11 @@ export class BitAccount {
     const address = await this.signer.getAddress()
 
     if (address !== info.owner_key) {
-      throw new CodedError('Permission Denied: only owner can perform this action', BitSubAccountErrorCode.PermissionDenied)
+      throw new DotbitError('Permission Denied: only owner can perform this action', BitSubAccountErrorCode.PermissionDenied)
     }
 
     const txs = await this.bitBuilder.enableSubAccount(this.account, {
-      key: info.owner_key, // only owner can enable sub-account
+      key: info.owner_key, // only owner can enable SubDID
       coin_type: coinType,
     })
 
@@ -136,7 +135,8 @@ export class BitAccount {
 
   /**
    * Mint multiple sub accounts at once
-   * Please wait for 3 minutes between each invocation of this method
+   * Please wait for about 2~3 minutes between each invocation of this method. (We need to wait for previous tx confirmed for 4 blocks)
+   * Please mint no more than 50 sub accounts for every invocation.(The hard limit is 80 due to the block size of nervos network, so 50 would be a safe value)
    * @param params
    */
   async mintSubAccounts (params: SubAccountParams[]) {
@@ -180,7 +180,7 @@ export class BitAccount {
 
     checkResults.result.forEach(result => {
       if (result.status !== CheckSubAccountStatus.ok) {
-        throw new CodedError(`Sub-account ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
+        throw new DotbitError(`SubDID ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
       }
     })
 
@@ -394,7 +394,8 @@ export class BitAccount {
     return subtype ? profiles.filter(record => record.subtype === subtype.toLowerCase()) : profiles
   }
 
-  async avatar () {
-    // TODO: we can introduce an avatar plugin here
+  avatar (): Promise<{ linkage: Array<{ type: string, content: string }>, url: string } | null>
+  avatar (): any {
+    throw new Error('Please install @dotbit/plugin-avatar to get users avatar')
   }
 }

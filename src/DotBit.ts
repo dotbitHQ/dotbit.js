@@ -6,7 +6,7 @@ import { BitIndexer } from './fetchers/BitIndexer'
 import { KeyInfo } from './fetchers/BitIndexer.type'
 import { BitSigner } from './signers/BitSigner'
 import { isSubAccount } from './tools/account'
-import { BitErrorCode, BitIndexerErrorCode, CodedError } from './tools/CodedError'
+import { BitErrorCode, BitIndexerErrorCode, DotbitError } from './errors/DotbitError'
 import { isEmptyAddress } from './tools/common'
 import { BitPluginBase } from './types'
 
@@ -116,7 +116,7 @@ export class DotBit {
     return bitAccount.info()
       .then(() => true)
       .catch((err) => {
-        if ((err as CodedError).code === BitIndexerErrorCode.AccountNotExist) {
+        if ((err as DotbitError).code === BitIndexerErrorCode.AccountNotExist) {
           return false
         }
         throw err
@@ -125,7 +125,7 @@ export class DotBit {
 
   async accountById (accountId: string): Promise<BitAccount> {
     if (isEmptyAddress(accountId)) {
-      throw new CodedError('Please provide a valid account id, current: ' + accountId, BitErrorCode.InvalidAccountId)
+      throw new DotbitError('Please provide a valid account id, current: ' + accountId, BitErrorCode.InvalidAccountId)
     }
     const bitAccount = await this.bitIndexer.accountInfoById(accountId)
     return this.getAccount(bitAccount.account_info.account)

@@ -10,11 +10,11 @@ A complete [.bit](https://did.id) SDK and utilities in JavaScript (and TypeScrip
 ## Features
 - Query .bit account info, including **owner, manager, status**, and more.
 - Query .bit account records, including **addresses, profiles, dwebs and custom data**.
-- Enable .bit [Sub-Account](https://www.did.id/sub-account) for a specific account.
-- **Mint a sub-account** of a .bit main account.
-- Query all the sub-accounts of a .bit main account.
-- Manage the **ownership** of a .bit account(sub-account included).
-- Manage the **records** of a .bit account(sub-account included).
+- Enable .bit [SubDID](https://www.did.id/subdid) for a specific account.
+- **Mint a SubDID** of a .bit main account.
+- Query all the SubDIDs of a .bit main account.
+- Manage the **ownership** of a .bit account(SubDID included).
+- Manage the **records** of a .bit account(SubDID included).
 - **Register a .bit account** with CKB. (Coming soon)
 
 ## Installation
@@ -53,7 +53,8 @@ dotbit.records('imac.bit').then(console.log)
 ⚠️Notice: Only when .bit alias is set at https://app.did.id/alias by user, reverse record is valid.
 ```javascript
 const account = await dotbit.reverse({
-  key: '0x1D643FAc9a463c9d544506006a6348c234dA485f'
+  key: '0x1D643FAc9a463c9d544506006a6348c234dA485f',
+  coin_type: '60', // See FAQ below to get the defination of coin_type
 })
 console.log(account.account) // jeffx.bit
 ```
@@ -61,14 +62,15 @@ console.log(account.account) // jeffx.bit
 ```javascript
 const accounts = await dotbit.accountsOfOwner({
     key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+    coin_type: '60', // See FAQ below to get the defination of coin_type
 })
 
 console.log(accounts[0].account) // thefirst💯registeredbydevteamtoensuredassuccessfullylaunched10.bit
 ```
-#### Mint a sub-account in `testnet`:
+#### Mint a SubDID in `testnet`:
 
-> Currently, sub-account is fully available in **testnet**, and need whitelist on **mainnet**.
-> If you would like to distribute sub-accounts on **mainnet**, please email [supermancy@did.id](supermancy@did.id) with a brief description of your project.
+> Currently, SubDID is fully available in **testnet**, and need whitelist on **mainnet**.
+> If you would like to distribute SubDIDs on **mainnet**, please email [supermancy@did.id](supermancy@did.id) with a brief description of your project.
 
 ```javascript
 // import { createInstance, ProviderSigner, BitNetwork } from 'dotbit' // For ES Module
@@ -107,9 +109,7 @@ import { PluginXXX } from 'dotbit-plugin-xxx'
 import { createInstance } from 'dotbit'
 
 const dotbit = createInstance()
-
 dotbit.installPlugin(new PluginXXX())
-
 dotbit.methodAddedByXXX()
 ```
 
@@ -117,7 +117,8 @@ For detailed usage, please follow the instructions in the specific plugin's READ
 
 #### List of plugins
 - [@dotbit/plugin-template](./packages/plugin-template/README.md): A demo plugin demonstrating the basic structure of a .bit plugin.
-- [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/)
+- [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/).
+- [@dotbit/plugin-avatar](./packages/plugin-avatar/README.md): A plugin for resolving users' avatar.
 
 #### Write your own plugin
 Write a plugin for .bit is easy! 

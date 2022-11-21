@@ -22,18 +22,18 @@ describe('info', function () {
     const info2 = await accountWithSigner.info()
     const end2 = Date.now()
 
-    expect(end1 - start).toBeGreaterThan(500)
+    expect(end1 - start).toBeGreaterThan(100) // network time
     expect(end2 - end1).toBe(0) // cache effect
     expect(info1).toMatchObject({
       account: 'imac.bit',
       account_alias: 'imac.bit',
       account_id_hex: '0x5728088435fb8788472a9ca601fbc0b9cbea8be3',
-      next_account_id_hex: '0x5732e001baffd23c9d23c430c85dc8600c3d32ba',
+      next_account_id_hex: '0x5728686c791549e76c20e29cce61a025c545f343',
       create_at_unix: 1656672987,
       expired_at_unix: 1688208987,
       status: 0,
       owner_algorithm_id: 5,
-      owner_key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
+      owner_key: '0x1d643fac9a463c9d544506006a6348c234da485f',
     })
   })
 })
@@ -42,7 +42,7 @@ describe('owner', function () {
   it('work', async function () {
     const owner = await accountWithSigner.owner()
     expect(owner).toMatchObject({
-      key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
+      key: '0x1d643fac9a463c9d544506006a6348c234da485f',
       coin_type: CoinType.ETH,
       algorithm_id: AlgorithmId.eip712,
     } as RoleKeyInfo)
@@ -241,8 +241,8 @@ describe('profiles', function () {
 })
 
 describe('enableSubAccount', function () {
-  it('should work', function () {
-    return expect(accountWithSigner.enableSubAccount()).rejects.toThrow('40000: sub account already initialized')
+  it('should throw: only owner', function () {
+    return expect(accountWithSigner.enableSubAccount()).rejects.toThrow('30011: Permission Denied: only owner can perform this action')
   }, 10000)
 })
 
@@ -263,7 +263,7 @@ describe('mintSubAccount', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(accountWithSigner.mintSubAccount(mintParam)).rejects.toThrow('Sub-account 005.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccount(mintParam)).rejects.toThrow('SubDID 005.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
@@ -295,7 +295,7 @@ describe('mintSubAccounts', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(accountWithSigner.mintSubAccounts(mintParams)).rejects.toThrow('Sub-account 006.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccounts(mintParams)).rejects.toThrow('SubDID 006.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
@@ -352,11 +352,11 @@ describe('changeManager', function () {
   //   expect(txs.hash).toBeTruthy()
   // }, 10000)
 
-  it('should throw error: same address', async function () {
+  it('should throw error: edit manager permission denied', async function () {
     await expect(accountWithSigner.changeManager({
       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
       coin_type: CoinType.ETH,
-    })).rejects.toThrow('same address')
+    })).rejects.toThrow('30011: edit manager permission denied')
   }, 10000)
 })
 
@@ -370,12 +370,12 @@ describe('changeOwner', function () {
   //   expect(txs.hash).toBeTruthy()
   // }, 10000)
 
-  it('should throw error: same address', async function () {
+  it('should throw error: transfer owner permission denied', async function () {
     await sleep(1000)
     await expect(accountWithSigner.changeOwner({
       key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
       coin_type: CoinType.ETH,
-    })).rejects.toThrow('same address')
+    })).rejects.toThrow('30011: transfer owner permission denied')
   }, 10000)
 })
 

@@ -1,7 +1,8 @@
 import { CHAR_TYPE } from '../../src/const'
 import {
   accountIdHex,
-  getAccountCharsetTypes,
+  digitalEmojiUnifiedHandle,
+  getAccountCharsetTypes, graphemesAccount,
   isSubAccount,
   isSupportedAccount,
   toDottedStyle,
@@ -15,7 +16,7 @@ describe('isSupportedAccount', function () {
     expect(isSupported).toBe(true)
   })
 
-  it('sub-account', function () {
+  it('SubDID', function () {
     const isSupported = isSupportedAccount('a.phone.bit')
 
     expect(isSupported).toBe(true)
@@ -105,7 +106,7 @@ describe('accountIdHex', function () {
     expect(accountId).toBe('0x5728088435fb8788472a9ca601fbc0b9cbea8be3')
   })
 
-  it('sub-account', function () {
+  it('SubDID', function () {
     const accountId = accountIdHex('superdid.2077.bit')
 
     expect(accountId).toBe('0x85a13eea14c4bc5474e205e136df349b7dbc0442')
@@ -117,7 +118,7 @@ describe('isSubAccount', function () {
     expect(isSubAccount('imac.bit')).toBe(false)
   })
 
-  it('should be true for sub-account', function () {
+  it('should be true for SubDID', function () {
     expect(isSubAccount('superdid.2077.bit')).toBe(true)
   })
 
@@ -178,5 +179,32 @@ describe('getAccountCharsetTypes', function () {
     expect(getAccountCharsetTypes('english .bit')).toEqual({
       [CHAR_TYPE.unknown]: true,
     })
+  })
+})
+
+describe('digitalEmojiUnifiedHandle', function () {
+  it('0⃣️.bit', () => {
+    expect(digitalEmojiUnifiedHandle('0⃣️.bit')).toEqual('0️⃣.bit')
+  })
+
+  it('1️⃣.bit', () => {
+    expect(digitalEmojiUnifiedHandle('1️⃣.bit')).toEqual('1️⃣.bit')
+  })
+
+  it('2⃣.bit', () => {
+    expect(digitalEmojiUnifiedHandle('2⃣.bit')).toEqual('2️⃣.bit')
+  })
+
+  it('mac0012⃣.bit', () => {
+    expect(digitalEmojiUnifiedHandle('mac0012⃣.bit')).toEqual('mac0012️⃣.bit')
+  })
+})
+
+describe('graphemesAccount', function () {
+  it('emoji', function () {
+    expect(graphemesAccount('7️⃣')).toEqual([{
+      char: '7️⃣',
+      char_set_name: CHAR_TYPE.emoji
+    }])
   })
 })
