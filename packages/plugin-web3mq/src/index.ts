@@ -54,7 +54,7 @@ export class BitPluginWeb3MQ implements BitPluginBase {
   onUninstall(dotbit: DotBit) {
     dotbit.web3Mq = null;
   }
-
+  // @ts-ignore
   onInitAccount(bitAccount: BitAccount) {
     console.log('This function will be invoked when .bit account initialized');
     //@ts-ignore
