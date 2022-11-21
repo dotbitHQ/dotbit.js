@@ -17,6 +17,8 @@
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "dev:browser": "npm run build && vite ./example/browser",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "prepublishOnly": "npm run build",
     "slip44": "npm i bip44-constants@latest -D && node scripts/slip44-json.js",
     "character": "node scripts/get_character_list.js"
