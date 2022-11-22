@@ -94,7 +94,7 @@ bitAccount.mintSubAccount({
 }).then(console.log)
 ```
 
-For more complete usages, please check out the examples: [For browser](./example/browser/index.js), [For Node.js](./example/node/index.js).
+For more complete usages, please check out the examples: [For browser](./example/browser/index.js), [For Node.js](./example/node/mint-sub-account.js).
 
 ## Plugins
 .bit has partnerships with the greatest teams & projects in the ecosystems.
