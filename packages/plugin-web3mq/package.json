@@ -21,5 +21,8 @@
   },
   "peerDependencies": {
     "dotbit": "workspace:^"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^4.0.0"
   }
 }

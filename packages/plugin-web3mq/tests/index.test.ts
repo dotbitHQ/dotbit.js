@@ -1,3 +1,8 @@
+/**
+ * @jest-environment jsdom
+ */
+import 'fake-indexeddb/auto';
+
 import { DotBit } from 'dotbit';
 import { TextEncoder } from 'util';
 import { dotbitProd } from '../../../tests/common';
@@ -76,36 +81,32 @@ describe('dotbit.searchWeb3mqUser', () => {
       },
     ]);
   });
-  // test("should work in ETH", async () => {
-  //   expect(
-  //     await dotbitProd.searchWeb3mqUser(ethAddress, DID_TYPE_ENUM.ETH)
-  //   ).toEqual({
-  //     avatar_url: "",
-  //     nickname: "",
+  test('should work in ETH', async () => {
+    expect(await dotbitProd.searchWeb3mqUser(ethAddress, DID_TYPE_ENUM.ETH)).toEqual({
+      avatar_url: '',
+      nickname: '',
+      userid: userid,
+      wallet_address: ethAddress,
+      wallet_type: 'eth',
+    });
+  });
+  // test('should work in DOTBIT', async () => {
+  //   expect(await dotbitProd.searchWeb3mqUser(dotbitAddress, DID_TYPE_ENUM.DOTBIT)).toEqual({
+  //     avatar_url: '',
+  //     nickname: '',
   //     userid: userid,
-  //     wallet_address: ethAddress,
-  //     wallet_type: "eth",
-  //   });
-  // });
-  // test("should work in DOTBIT", async () => {
-  //   expect(
-  //     await dotbitProd.searchWeb3mqUser(dotbitAddress, DID_TYPE_ENUM.DOTBIT)
-  //   ).toEqual({
-  //     avatar_url: "",
-  //     nickname: "",
-  //     userid: userid,
-  //     wallet_address: "",
-  //     wallet_type: "",
+  //     wallet_address: '',
+  //     wallet_type: '',
   //   });
   // });
 });
 
-// describe("dotbit.getMessageList", () => {
-//   test("should work", async () => {
+// describe('dotbit.getMessageList', () => {
+//   test('should work', async () => {
 //     await dotbitProd.getMessageList({ page: 1, size: 20 }, userid);
 //     expect(message).toEqual([
 //       {
-//         content: "hello",
+//         content: 'hello',
 //         id: 1,
 //         senderId: userid,
 //       },
@@ -113,12 +114,12 @@ describe('dotbit.searchWeb3mqUser', () => {
 //   });
 // });
 
-// describe("dotbit.sendMessageToUser", () => {
-//   test("should work", async () => {
-//     await dotbitProd.sendMessageToUser("hello", userid);
+// describe('dotbit.sendMessageToUser', () => {
+//   test('should work', async () => {
+//     await dotbitProd.sendMessageToUser('hello', userid);
 //     expect(message).toEqual([
 //       {
-//         content: "hello",
+//         content: 'hello',
 //         id: 1,
 //         senderId: userid,
 //       },
