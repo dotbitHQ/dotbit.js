@@ -73,33 +73,33 @@ describe('not install plugin', () => {
   });
 });
 
-describe('dotbit.searchWeb3mqUser', () => {
-  test('should work in WEB3_MQ', async () => {
-    expect(await dotbitProd.searchWeb3mqUser(userid, DID_TYPE_ENUM.WEB3_MQ)).toEqual([
-      {
-        userid: userid,
-      },
-    ]);
-  });
-  test('should work in ETH', async () => {
-    expect(await dotbitProd.searchWeb3mqUser(ethAddress, DID_TYPE_ENUM.ETH)).toEqual({
-      avatar_url: '',
-      nickname: '',
-      userid: userid,
-      wallet_address: ethAddress,
-      wallet_type: 'eth',
-    });
-  });
-  // test('should work in DOTBIT', async () => {
-  //   expect(await dotbitProd.searchWeb3mqUser(dotbitAddress, DID_TYPE_ENUM.DOTBIT)).toEqual({
-  //     avatar_url: '',
-  //     nickname: '',
-  //     userid: userid,
-  //     wallet_address: '',
-  //     wallet_type: '',
-  //   });
-  // });
-});
+// describe('dotbit.searchWeb3mqUser', () => {
+//   test('should work in WEB3_MQ', async () => {
+//     expect(await dotbitProd.searchWeb3mqUser(userid, DID_TYPE_ENUM.WEB3_MQ)).toEqual([
+//       {
+//         userid: userid,
+//       },
+//     ]);
+//   });
+//   test('should work in ETH', async () => {
+//     expect(await dotbitProd.searchWeb3mqUser(ethAddress, DID_TYPE_ENUM.ETH)).toEqual({
+//       avatar_url: '',
+//       nickname: '',
+//       userid: userid,
+//       wallet_address: ethAddress,
+//       wallet_type: 'eth',
+//     });
+//   });
+//   // test('should work in DOTBIT', async () => {
+//   //   expect(await dotbitProd.searchWeb3mqUser(dotbitAddress, DID_TYPE_ENUM.DOTBIT)).toEqual({
+//   //     avatar_url: '',
+//   //     nickname: '',
+//   //     userid: userid,
+//   //     wallet_address: '',
+//   //     wallet_type: '',
+//   //   });
+//   // });
+// });
 
 // describe('dotbit.getMessageList', () => {
 //   test('should work', async () => {
