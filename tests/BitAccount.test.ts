@@ -395,13 +395,20 @@ describe('editRecords', function () {
   // what if label and ttl is missing?
   it('should work', async function () {
     const editor = await accountWithSigner.editRecords()
-    const tx = await editor.delete({
+    editor.delete({
       key: 'profile.email',
     }).add({
       key: 'profile.email',
       value: 'recruit@apple.com',
-    }).execute()
+    })
 
-    expect(tx.hash).toBeTruthy()
+    expect(editor.records).toMatchObject([
+      {
+        ttl: '300',
+        label: '',
+        key: 'profile.email',
+        value: 'recruit@apple.com'
+      }
+    ])
   })
 })
