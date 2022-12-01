@@ -31,7 +31,7 @@ const dotbit = createInstance()
 
 // Get all `eth` addresses of a .bit account
 dotbit.addrs('imac.bit', '60').then(console.log)  // Result is the same as below, using coin_type
-dotbit.addrs('imac.bit', 'eth').then(console.log)
+dotbit.addrs('imac.bit', 'eth').then(console.log) // It's recommended using coin_type as above, instead of symbol.
 ```
 
 Developers are encouraged to use `coin_type` instead of plain symbol like 'eth' as `coin_type` is a more standard way to identify a chain/coin, and there will only be `coin_type` on chain in the future. [What is coin_type](https://github.com/dotbitHQ/dotbit.js#what-is-coin_type)
