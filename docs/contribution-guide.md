@@ -38,6 +38,9 @@ export interface BitPluginBase {
 You can also check out here: [types.ts](../../src/types.ts#L5).
 
 ### Publish a plugin
+> As we rely on pnpm to override `types` field in package.json with `publishConfig`, so stick to use pnpm to publish a new version.
+> Otherwise, the `types` field in package.json in npm will not be correct.
+
 > Please use this command below, otherwise, you are publishing a private package.
 
 ```shell
