@@ -27,6 +27,7 @@ export enum BitErrorCode {
   SubAccountDoNotSupportSubAccount,
   SignerRequired,
   BitBuilderRequired,
+  PluginRequired,
   InvalidAccountId,
 }
 

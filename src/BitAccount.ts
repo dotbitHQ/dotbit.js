@@ -65,13 +65,13 @@ export class BitAccount {
 
   status: AccountStatus
 
-  private requireSigner () {
+  protected requireSigner () {
     if (!this.signer) {
       throw new DotbitError('signer is required', BitErrorCode.SignerRequired)
     }
   }
 
-  private requireBitBuilder () {
+  protected requireBitBuilder () {
     if (!this.bitBuilder) {
       throw new DotbitError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
     }
@@ -197,6 +197,10 @@ export class BitAccount {
    */
   mintSubAccount (params: SubAccountParams) {
     return this.mintSubAccounts([params])
+  }
+
+  register (): Promise<void> {
+    throw new DotbitError('Please install plugin `@dotbit/plugin-register`', BitErrorCode.PluginRequired)
   }
 
   async #changeOwnerManager (keyInfo: KeyInfo, isOwner = true) {
@@ -363,6 +367,7 @@ export class BitAccount {
     return this.#addrs(chain)
   }
 
+  // todo: this function need to be detailed.
   async dwebs (protocol?: string) {
     const records = await this.records()
 
@@ -372,6 +377,7 @@ export class BitAccount {
 
   /**
    * Resolve a dweb in a specific sequence
+   * todo: this function need to be detailed.
    */
   async dweb () {
     const dwebs = await this.dwebs()
@@ -396,6 +402,6 @@ export class BitAccount {
 
   avatar (): Promise<{ linkage: Array<{ type: string, content: string }>, url: string } | null>
   avatar (): any {
-    throw new Error('Please install @dotbit/plugin-avatar to get users avatar')
+    throw new DotbitError('Please install @dotbit/plugin-avatar to get users avatar', BitErrorCode.PluginRequired)
   }
 }
