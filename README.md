@@ -49,6 +49,29 @@ dotbit.dwebs('imac.bit').then(console.log)
 dotbit.records('imac.bit').then(console.log)
 ```
 
+#### Query account info
+```javascript
+// Get the account info of a .bit account
+dotbit.accountInfo("imac.bit").then(console.log)
+```
+A sample result would be like:
+```javascript
+{
+  account: 'imac.bit',
+  account_alias: 'imac.bit',
+  account_id_hex: '0x5728088435fb8788472a9ca601fbc0b9cbea8be3',
+  next_account_id_hex: '0x57280ab92f213d74c7a185e9b9d26d0a795108de',
+  create_at_unix: 1671164348,
+  expired_at_unix: 1702700348,
+  status: 0,
+  das_lock_arg_hex: '0x05b2be2887a26f44555835eeacc47d65b88b6b42c205b2be2887a26f44555835eeacc47d65b88b6b42c2',
+  owner_algorithm_id: 5,
+  owner_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
+  manager_algorithm_id: 5,
+  manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2'
+}
+```
+
 #### Query [.bit Alias](https://www.did.id/bit-alias)(Reverse Record)
 ⚠️Notice: Only when .bit alias is set at https://app.did.id/alias by user, reverse record is valid.
 ```javascript
