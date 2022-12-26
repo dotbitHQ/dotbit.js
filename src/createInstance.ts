@@ -4,7 +4,7 @@ import { DotBit, DotBitConfig } from './DotBit'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { BitSigner } from './signers/BitSigner'
 
-interface CreateInstanceConfig {
+export interface CreateInstanceConfig {
   network?: BitNetwork,
   bitIndexerUri?: string,
   remoteTxBuilderConfig?: RemoteTxBuilderConfig,

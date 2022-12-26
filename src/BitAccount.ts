@@ -1,6 +1,13 @@
 import { RecordsEditor } from './builders/RecordsEditor'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
-import { AccountStatus, AlgorithmId2CoinType, CheckSubAccountStatus, CoinType2ChainType, RecordType } from './const'
+import {
+  AccountStatus,
+  AlgorithmId2CoinType,
+  CheckSubAccountStatus,
+  CoinType,
+  CoinType2ChainType, PaymentMethodIDs,
+  RecordType
+} from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import {
   AccountInfo,
@@ -9,7 +16,7 @@ import {
   BitAccountRecordExtended,
   KeyInfo,
 } from './fetchers/BitIndexer.type'
-import { toEditingRecord, TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI'
+import { toEditingRecord } from './fetchers/RegisterAPI'
 import {
   CheckAccountsParams,
   SubAccountListParams, SubAccountMintForAccount, SubAccountMintForAddress,
@@ -24,6 +31,7 @@ import {
   toRecordExtended,
 } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
+import { TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI.type'
 
 export interface BitAccountOptions {
   account: string,
@@ -41,6 +49,15 @@ export interface SubAccountParams {
 
 export interface RoleKeyInfo extends KeyInfo {
   algorithm_id: number,
+}
+
+export interface RegisterParam {
+  keyInfo: KeyInfo,
+  registerYears: number,
+  paymentMethodID: PaymentMethodIDs,
+  crossTo?: CoinType,
+  inviterAccount?: string,
+  channelAccount?: string,
 }
 
 export class BitAccount {
@@ -65,13 +82,13 @@ export class BitAccount {
 
   status: AccountStatus
 
-  private requireSigner () {
+  protected requireSigner () {
     if (!this.signer) {
       throw new DotbitError('signer is required', BitErrorCode.SignerRequired)
     }
   }
 
-  private requireBitBuilder () {
+  protected requireBitBuilder () {
     if (!this.bitBuilder) {
       throw new DotbitError('bitBuilder is required', BitErrorCode.BitBuilderRequired)
     }
@@ -363,6 +380,7 @@ export class BitAccount {
     return this.#addrs(chain)
   }
 
+  // todo: this function need to be detailed.
   async dwebs (protocol?: string) {
     const records = await this.records()
 
@@ -372,6 +390,7 @@ export class BitAccount {
 
   /**
    * Resolve a dweb in a specific sequence
+   * todo: this function need to be detailed.
    */
   async dweb () {
     const dwebs = await this.dwebs()
@@ -396,6 +415,10 @@ export class BitAccount {
 
   avatar (): Promise<{ linkage: Array<{ type: string, content: string }>, url: string } | null>
   avatar (): any {
-    throw new Error('Please install @dotbit/plugin-avatar to get users avatar')
+    throw new DotbitError('Please install @dotbit/plugin-avatar to get users avatar', BitErrorCode.PluginRequired)
+  }
+
+  register (param: RegisterParam): Promise<void> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 }

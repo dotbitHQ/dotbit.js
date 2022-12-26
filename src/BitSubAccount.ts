@@ -1,6 +1,7 @@
 import { BitAccount, BitAccountOptions } from './BitAccount'
 import { BitAccountRecord, KeyInfo } from './fetchers/BitIndexer.type'
-import { EditAccountRecord, toEditingRecord } from './fetchers/RegisterAPI'
+import { toEditingRecord } from './fetchers/RegisterAPI'
+import { EditAccountRecord } from './fetchers/RegisterAPI.type'
 import {
   EditSubAccountEditKey,
   EditSubAccountParams,

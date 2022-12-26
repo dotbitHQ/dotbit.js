@@ -2,8 +2,8 @@ import { MessageTypes, SignTypedDataVersion, TypedDataUtils, TypedMessage } from
 import { JsonRpcSigner } from '@ethersproject/providers'
 import { Wallet } from 'ethers'
 import { AlgorithmId, CoinType, EvmChainId2CoinType } from '../const'
-import { TxsWithMMJsonSignedOrUnSigned } from '../fetchers/RegisterAPI'
 import { TxsSignedOrUnSigned } from '../fetchers/SubAccountAPI'
+import { TxsWithMMJsonSignedOrUnSigned } from '../fetchers/RegisterAPI.type'
 import { BitErrorCode, DotbitError } from '../errors/DotbitError'
 import { remove0x } from '../tools/common'
 
@@ -22,10 +22,18 @@ export function mmJsonHashAndChainIdHex (typedData: TypedMessage<any>, chainId: 
   return mmHash + chainIdHex
 }
 
+export interface SendTransactionParam {
+  to: string,
+  value: string,
+  data: string,
+}
+
 export abstract class BitSigner {
   signer: JsonRpcSigner| Wallet
 
   abstract signTypedData (data: TypedMessage<MessageTypes>): Promise<string>
+
+  abstract sendTransaction (sendTransactionParam: SendTransactionParam): Promise<string>
 
   signPersonal (data: string| Buffer): Promise<string> {
     return this.signer.signMessage(data)

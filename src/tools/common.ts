@@ -1,5 +1,5 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
-import { CoinType, EvmChainId } from '../const'
+import { ChainType, CoinType, EvmChainId, EvmCoinTypes } from '../const'
 import { formatsByName } from '@ensdomains/address-encoder'
 import GraphemeSplitter from 'grapheme-splitter'
 
@@ -91,4 +91,20 @@ export function stringVisualLength (str: string): number {
   const splitter = new GraphemeSplitter()
   const split = splitter.splitGraphemes(str)
   return split.length
+}
+
+/**
+ * compute the chainType of the evm chain by coinType.
+ * categorize all evm chains as ETH chainType.
+ * @param coinType
+ */
+export function computedEvmChainTypeByCoinType (coinType: CoinType): ChainType {
+  let _chainType
+  if (EvmCoinTypes.includes(coinType)) {
+    _chainType = ChainType.eth
+  }
+  else if (CoinType.TRX === coinType) {
+    _chainType = ChainType.tron
+  }
+  return _chainType
 }

@@ -119,6 +119,7 @@ For detailed usage, please follow the instructions in the specific plugin's READ
 - [@dotbit/plugin-template](./packages/plugin-template/README.md): A demo plugin demonstrating the basic structure of a .bit plugin.
 - [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/).
 - [@dotbit/plugin-avatar](./packages/plugin-avatar/README.md): A plugin for resolving users' avatar.
+- [@dotbit/plugin-register](./packages/plugin-register/README.md): A plugin for register .bit account.
 
 #### Write your own plugin
 Write a plugin for .bit is easy! 
