@@ -160,7 +160,7 @@ export enum DigitalEmojiUnifiedMap {
   '9⃣' = '9️⃣'
 }
 
-// ID of the payment method
+// ID of the payment method, source: https://github.com/dotbitHQ/das-register/blob/main/API.md#token-list
 export enum PaymentMethodIDs {
   eth = 'eth_eth',
   bnb = 'bsc_bnb',
