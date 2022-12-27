@@ -20,7 +20,7 @@ await account.register({
   paymentMethodID: PaymentMethodIDs.eth
 })
 ```
-Only ETH, BNB, and MATIC addresses are supported as registration addresses for .bit accounts.
+Only ETH, BNB, and MATIC address are supported as registration address for .bit accounts.
 
 Only ETH, BNB, MATIC and .bit Balance CKB are supported as payment methods for registration of .bit accounts, see `PaymentMethodIDs` for the corresponding parameters.
 
