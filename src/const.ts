@@ -160,7 +160,7 @@ export enum DigitalEmojiUnifiedMap {
   '9⃣' = '9️⃣'
 }
 
-// ID of the payment method, source: https://register-api.did.id/v1/token/list
+// ID of the payment method
 export enum PaymentMethodIDs {
   eth = 'eth_eth',
   bnb = 'bsc_bnb',

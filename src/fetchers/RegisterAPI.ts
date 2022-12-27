@@ -1,5 +1,5 @@
 import { Networking } from '../tools/Networking'
-import { computedEvmChainTypeByCoinType } from '../tools/common'
+import { computeChainTypeByCoinType } from '../tools/common'
 import { graphemesAccount } from '../tools/account'
 import { BitAccountRecord } from './BitIndexer.type'
 import {
@@ -47,7 +47,7 @@ export class RegisterAPI {
     const account = params.account
 
     return this.net.post('account/order/register', {
-      chain_type: computedEvmChainTypeByCoinType(coinType),
+      chain_type: computeChainTypeByCoinType(coinType),
       address,
       account,
       pay_token_id: params.paymentMethodID,
@@ -66,7 +66,7 @@ export class RegisterAPI {
     const coinType = params.keyInfo.coin_type
 
     return this.net.post('balance/pay', {
-      chain_type: computedEvmChainTypeByCoinType(coinType),
+      chain_type: computeChainTypeByCoinType(coinType),
       address,
       evm_chain_id: params.evmChainId,
       order_id: params.orderId
@@ -82,7 +82,7 @@ export class RegisterAPI {
     const coinType = params.keyInfo.coin_type
 
     return this.net.post('account/order/pay/hash', {
-      chain_type: computedEvmChainTypeByCoinType(coinType),
+      chain_type: computeChainTypeByCoinType(coinType),
       address,
       account: params.account,
       order_id: params.orderId,

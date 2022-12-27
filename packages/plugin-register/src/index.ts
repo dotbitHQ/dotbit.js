@@ -1,5 +1,5 @@
 import { version } from '../package.json'
-import { BitAccount, BitPluginBase, DotBit, PaymentMethodIDs, RegisterParam } from 'dotbit'
+import { BitAccount, BitPluginBase, DotBit, PaymentMethodIDs, RegisterParam, RegisterRes } from 'dotbit'
 
 export class BitPluginRegister implements BitPluginBase {
   version = version
@@ -12,7 +12,7 @@ export class BitPluginRegister implements BitPluginBase {
   }
 
   onInitAccount (bitAccount: BitAccount) {
-    bitAccount.register = async function (this: BitAccount, param: RegisterParam): Promise<void> {
+    bitAccount.register = async function (this: BitAccount, param: RegisterParam): Promise<RegisterRes> {
       this.requireSigner()
       this.requireBitBuilder()
 
@@ -47,6 +47,13 @@ export class BitPluginRegister implements BitPluginBase {
         orderId: orderInfo.order_id,
         txHash: trxHash,
       })
+
+      return {
+        ...param,
+        account: this.account,
+        orderId: orderInfo.order_id,
+        txHash: trxHash
+      }
     }
   }
 }

@@ -60,6 +60,12 @@ export interface RegisterParam {
   channelAccount?: string,
 }
 
+export interface RegisterRes extends RegisterParam {
+  account: string,
+  orderId: string,
+  txHash: string,
+}
+
 export class BitAccount {
   account: string
   bitIndexer: BitIndexer
@@ -418,7 +424,7 @@ export class BitAccount {
     throw new DotbitError('Please install @dotbit/plugin-avatar to get users avatar', BitErrorCode.PluginRequired)
   }
 
-  register (param: RegisterParam): Promise<void> {
+  register (param: RegisterParam): Promise<RegisterRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 }

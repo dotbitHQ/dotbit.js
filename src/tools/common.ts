@@ -98,7 +98,7 @@ export function stringVisualLength (str: string): number {
  * categorize all evm chains as ETH chainType.
  * @param coinType
  */
-export function computedEvmChainTypeByCoinType (coinType: CoinType): ChainType {
+export function computeChainTypeByCoinType (coinType: CoinType): ChainType {
   let _chainType
   if (EvmCoinTypes.includes(coinType)) {
     _chainType = ChainType.eth

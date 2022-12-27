@@ -18,8 +18,8 @@ dotbit.installPlugin(pluginTemplate)
 describe('bitAccount.register()', function () {
   jest.setTimeout(60 * 1000)
   it('pay with ETH', async function () {
-    const account = dotbit.account('registeraccounttest009.bit')
-    await account.register({
+    const account = dotbit.account('registeraccounttest010.bit')
+    const res = await account.register({
       keyInfo: {
         key: address,
         coin_type: CoinType.ETH
@@ -27,6 +27,7 @@ describe('bitAccount.register()', function () {
       registerYears: 1,
       paymentMethodID: PaymentMethodIDs.eth
     })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
   })
 
   it('account already register', async function () {
@@ -47,8 +48,8 @@ describe('bitAccount.register()', function () {
   })
 
   it('pay with .bit balance', async function () {
-    const account = dotbit.account('registeraccounttest008.bit')
-    await account.register({
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.register({
       keyInfo: {
         key: address,
         coin_type: CoinType.ETH
@@ -56,6 +57,7 @@ describe('bitAccount.register()', function () {
       registerYears: 1,
       paymentMethodID: PaymentMethodIDs.dotbitBalance
     })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
   })
 })
 
