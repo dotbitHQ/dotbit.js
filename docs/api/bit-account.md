@@ -122,13 +122,49 @@ N/A
 `BitSigner`
 ### Example
 ```javascript
-const account = new BitAccount({account: 'west.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const account = new BitAccount({account: 'west.bit', signer});
+
 // To get the signer of current BitAccount instance
 console.log(account.signer)
 
 // ...
 // The printed result would be like:
-undefined
+EthersSigner {
+  signer: Wallet {
+    _isSigner: true,
+    _signingKey: [Function (anonymous)],
+    _mnemonic: [Function (anonymous)],
+    address: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
+    provider: InfuraProvider {
+      _isProvider: true,
+      _events: [],
+      _emitted: [Object],
+      disableCcipRead: false,
+      formatter: [Formatter],
+      anyNetwork: false,
+      _network: [Object],
+      _maxInternalBlockNumber: -1024,
+      _lastBlockNumber: -2,
+      _maxFilterBlockRange: 10,
+      _pollingInterval: 4000,
+      _fastQueryDate: 0,
+      connection: [Object],
+      _nextId: 42,
+      apiKey: '84842078b09946638c03157f83405213',
+      projectId: '84842078b09946638c03157f83405213',
+      projectSecret: null
+    }
+  }
+}
 ```
 
 ## status
@@ -150,19 +186,32 @@ undefined
 
 ## enableSubAccount()
 To enable sub-accounts of a main account.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 ### Parameters
 N/A
 ### Return Value
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const account = new BitAccount({account: 'imac.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const account = new BitAccount({account: 'imac.bit', signer});
 // To enable sub-accounts of 'imac.bit'.
 const result = await account.enableSubAccount()
 console.log(result)
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## subAccounts(params)
@@ -176,13 +225,28 @@ List the sub accounts of a main account, with pagination and filter.
 Promise<`SubAccountListRes`>
 ### Example
 ```javascript
-const account = new BitAccount({account: 'imac.bit'});
+const account = new BitAccount({account: 'makeafriend.bit'});
 // To list the sub-accounts of a main account, with 100 items per page.
 const subAccounts = await account.subAccounts()
 console.log(subAccounts)
 
 // ...
 // The printed result would be like:
+{ total: 100, list: [
+  ...,
+  {
+    account: 'xxy229.makeafriend.bit',
+    owner: [Object],
+    manager: [Object],
+    registered_at: 1669713664000,
+    expired_at: 1701249664000,
+    status: 0,
+    enable_sub_account: 0,
+    renew_sub_account_price: 0,
+    nonce: 0
+  },
+  ...,
+]}
 ```
 
 
@@ -211,10 +275,25 @@ const result = await account.checkSubAccounts(subAccounts)
 
 // ...
 // The printed result would be like:
+{
+  result: [
+    {
+      account: 'xyz.imac.bit',
+      mint_for_account: '',
+      account_char_str: [Array],
+      register_years: 1,
+      type: 'blockchain',
+      key_info: [Object],
+      status: 1,
+      message: 'account suffix diff: imac.bit'
+    }
+  ]
+}
 ```
 
 ## mintSubAccounts(params)
 To mint multiple sub-accounts for a BitAccount instance.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 > Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email supermancy@did.id with a brief description of your project.
 ### Parameters
 - params: `SubAccountParams[]`
@@ -226,8 +305,16 @@ To mint multiple sub-accounts for a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const account = new BitAccount({account: 'imac.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const account = new BitAccount({account: 'imac.bit', signer});
 const mintParam = [{
   account: '006.imac.bit',
   keyInfo: {
@@ -252,10 +339,14 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## mintSubAccount(params)
 To mint a sub-account for a BitAccount instance.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 > Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email supermancy@did.id with a brief description of your project.
 ### Parameters
 - params: `SubAccountParams`
@@ -267,8 +358,16 @@ To mint a sub-account for a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const account = new BitAccount({account: 'imac.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const account = new BitAccount({account: 'imac.bit', signer});
 const mintParam = {
   account: '005.imac.bit',
   keyInfo: {
@@ -282,10 +381,14 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## changeOwner(keyInfo)
 To change the owner of a BitAccount instance.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
@@ -294,8 +397,16 @@ To change the owner of a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const account = new BitAccount({account: 'west.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const account = new BitAccount({account: 'west.bit', signer});
 const result = await account.changeOwner({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -304,10 +415,14 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## changeManager(keyInfo)
 To change the manager of a BitAccount instance.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
@@ -316,8 +431,16 @@ To change the manager of a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const account = new BitAccount({account: 'west.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const account = new BitAccount({account: 'west.bit', signer});
 const result = await account.changeManager({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -326,10 +449,14 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## updateRecords(records)
 To update all records of a BitAccount instance.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 > Note: The existing records will be erased.
 ### Parameters
 - records: `BitAccountRecord[]`
@@ -341,8 +468,16 @@ To update all records of a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const account = new BitAccount({account: 'west.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const account = new BitAccount({account: 'west.bit', signer});
 const result = await account.updateRecords([{
   key: 'profile.email',
   value: 'hr@apple.com',
@@ -353,20 +488,35 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## editRecords()
 To create a record editor for a BitAccount instance.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
+
 ### Parameters
 N/A
 ### Return Value
 `RecordsEditor`
 ```javascript
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
 const account = new BitAccount({
   account: "imac.bit",
   bitIndexer: new BitIndexer({
     uri: "https://indexer-v1.did.id",
   }),
+  signer,
 });
 
 const editor = await account.editRecords()
@@ -633,7 +783,7 @@ account.addresses("eth").then(console.log);
 ```
 
 ## addrs(chain)
-An alias for API [addresses(chain)](#addresses).
+An alias for API [addresses(chain)](#addresseschain).
 
 ## dwebs(protocol)
 Get all DWebs of a BitAccount instance

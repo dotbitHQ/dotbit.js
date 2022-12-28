@@ -55,6 +55,7 @@ makeafriend.bit
 
 ## changeOwner(keyInfo)
 To change the owner of a SubDID.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
@@ -63,8 +64,16 @@ To change the owner of a SubDID.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit', signer});
 const result = await subAccount.changeOwner({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -73,10 +82,14 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## changeManager(keyInfo)
 To change the manager of a SubDID.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
@@ -85,8 +98,16 @@ To change the manager of a SubDID.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit', signer});
 const result = await subAccount.changeManager({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -95,10 +116,14 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
 
 ## updateRecords(records)
 To update all records of a SubDID.
+> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 > Note: The existing records will be erased.
 ### Parameters
 - records: `BitAccountRecord[]`
@@ -110,8 +135,16 @@ To update all records of a SubDID.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-// --------Need to add signer-------
-const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit'});
+const { EthersSigner } = require('../../lib/index')
+const { ethers, Wallet } = require('ethers')
+
+const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
+
+const provider = new ethers.providers.InfuraProvider()
+const wallet = new Wallet(privateKey, provider)
+const signer = new EthersSigner(wallet)
+
+const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit', signer});
 const result = await subAccount.updateRecords([{
   key: 'profile.email',
   value: 'hr@apple.com',
@@ -122,4 +155,7 @@ console.log(result);
 
 // ...
 // The printed result would be like:
+{
+  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
+}
 ```
