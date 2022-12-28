@@ -9,6 +9,7 @@ import {
   TxsSignedOrUnSigned
 } from './fetchers/SubAccountAPI'
 import { BitErrorCode, DotbitError } from './errors/DotbitError'
+import { isSubAccount } from './tools/account'
 
 export class BitSubAccount extends BitAccount {
   isSubAccount = true
@@ -16,6 +17,9 @@ export class BitSubAccount extends BitAccount {
 
   constructor (options: BitAccountOptions) {
     super(options)
+    if (!isSubAccount(options.account)) {
+      throw new DotbitError(`${options.account} is not a legit SubDID`, BitErrorCode.InvalidAccountId)
+    }
     this.mainAccount = this.account.replace(/^.+?\./, '')
   }
 

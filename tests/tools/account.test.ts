@@ -114,17 +114,31 @@ describe('accountIdHex', function () {
 })
 
 describe('isSubAccount', function () {
-  it('should be false for main-account', function () {
-    expect(isSubAccount('imac.bit')).toBe(false)
-  })
-
-  it('should be true for SubDID', function () {
-    expect(isSubAccount('superdid.2077.bit')).toBe(true)
-  })
-
-  it('should be false for hash-style account', function () {
-    expect(isSubAccount('imac#001.bit')).toBe(false)
-  })
+  it.each`
+  account  | expected
+  ${'imac.bit'}  | ${false}
+  ${'superdid.2077.bit'} | ${true}
+  ${'imac#001.bit'}  | ${false}
+  ${'test.third.level.bit'} | ${true}
+  ${'just.test.fourth.level.bit'} | ${true}
+  ${'🐶.quốcngữ.😊.bit'} | ${true}
+  ${'.third.level.bit'} | ${false}
+  ${'superdid..2077.bit'} | ${false}
+  ${'superdid.2077..bit'} | ${false}
+  ${'empty space.にほんご.bit'} | ${false}
+  ${'hello. a.bit'} | ${false}
+  ${' .check.bit'} | ${false}
+  ${'recheck.check. bit'} | ${false}
+  ${'にほんご🐶.bit'} | ${false}
+  ${'.....bit'} | ${false}
+  ${'non-empty-space.にほんご.bit'} | ${true}
+`(
+    'should return $expected when account is $account',
+    ({ account, expected }) => {
+      const result = isSubAccount(account)
+      expect(result).toBe(expected)
+    },
+  )
 })
 
 describe('getAccountCharsetTypes', function () {
