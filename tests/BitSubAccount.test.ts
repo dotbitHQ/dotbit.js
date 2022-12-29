@@ -1,5 +1,19 @@
 import { CoinType } from '../src/const'
 import { subAccountWithSigner } from './common/index'
+import { BitSubAccount } from '../src/BitSubAccount'
+
+describe('constructor', function () {
+  it('should NOT throw error when pass a legit SubDID', () => {
+    return expect(() => new BitSubAccount({
+      account: 'what.imac.bit',
+    })).not.toThrowError()
+  })
+  it('should throw error when pass a non-legit SubDID', () => {
+    return expect(() => new BitSubAccount({
+      account: 'imac.bit',
+    })).toThrow('1006: imac.bit is not a legit SubDID')
+  })
+})
 
 describe('enableSubAccount', function () {
   it('throw error', function () {

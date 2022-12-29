@@ -87,11 +87,13 @@ export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExt
 
 /**
  * Check if a given account is SubDID.
- * 001.imac.bit vs imac.bit
+ * Multi-level SubDID is supported.
+ * e.g. 111.imac.bit / 222.333.imac.bit
  * @param account
  */
 export function isSubAccount (account: string): boolean {
-  return account.split('.').length >= 3
+  const subAccountPattern = /^([^\.\s]+\.){2,}bit$/
+  return subAccountPattern.test(account)
 }
 
 /**
