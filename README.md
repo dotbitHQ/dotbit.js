@@ -10,7 +10,7 @@
 ![NPM](https://img.shields.io/npm/l/dotbit) ![npm](https://img.shields.io/npm/v/dotbit)
 </div>
 
-> This is the new version of .bit (Previously DAS) JavaScript SDK. If you are looking for the source code of npm package [das-sdk](https://www.npmjs.com/package/das-sdk)(Deprecated), please check out the branch [das-sdk](https://github.com/dotbitHQ/dotbit.js/tree/das-sdk).
+> This is the new version of .bit (previously known as DAS) JavaScript SDK. If you are looking for the source code of the deprecated npm package [das-sdk](https://www.npmjs.com/package/das-sdk), please visit the [das-sdk](https://github.com/dotbitHQ/dotbit.js/tree/das-sdk) branch on GitHub.
 
 ## Table of Contents
 - [Features](#features)
@@ -94,8 +94,7 @@ TBD
 
 ## Plugins
 .bit has partnerships with the greatest teams & projects in the ecosystems.
-
-`dotbit.js` provided a simple yet powerful plugin system, with which we can add more powerful features to this library.
+`Dotbit.js` offers a simple and powerful plugin system that allows us to add advanced features to this library.
 
 #### Usage
 Basically, you can install and use a plugin like the codes below.
@@ -123,23 +122,27 @@ If you want to write a plugin for your or other projects, please follow the same
 
 ## FAQ
 #### What is coin_type?
-`coin_type` is the Coin Types defined in [slip44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md) to distinguish between different Coins/Chains.
-
-For example, `60` is the `coin_type` of ETH, `0` is the `coin_type` of BTC, `714` is the `coin_type` of BNB, etc.
+`coin_type` is a way to distinguish between different coins or blockchain networks using the Coin Types defined in [SLIP 44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
+For example, the `coin_type` for ETH is `60`, the `coin_type` for BTC is `0`, and the `coin_type` for BNB is `714`, etc.
 
 #### Which coin_type does .bit support?
+.bit uses `coin_type` in a few different ways:
+- .bit uses `coin_type` to identify each chain or coin in .bit records. In this case, .bit supports all `coin_type` values defined in [SLIP 44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
+- .bit uses `coin_type` to identify different types of `owner/manager` key information. For example, you can use an ETH address (coin_type: 60) as your .bit owner and a TRON address (coin_type: 195) as your manager. 
 
-.bit use `coin_type` in multiple ways, here are 2 mainly usages:
-- .bit use `coin_type` to identify each chain/coin in .bit records. In this situation, .bit support all `coin_type` defined in slip44.
-- .bit use `coin_type` to identify different types of `owner/manager` key info. You can use ETH address(coin_type: 60) as your .bit owner and TRON address(coin_type: 195) as your manager. For all `coin_type` that .bit supported in `key_info`, please check [const.ts](./src/const.ts)
+For a complete list of `coin_type` values that .bit supports in `key_info`, please see [const.ts](./src/const.ts).
 
 ## Get Help
-Please join our [Discord channel](https://discord.gg/fVppR7z4ht), or raise [issues](https://github.com/dotbitHQ/dotbit.js/issues) on GitHub.
+If you have questions or need help with Dotbit.js, there are several ways to get assistance:
+- Join the .bit community on [Discord channel](https://discord.gg/fVppR7z4ht).
+- File [issues](https://github.com/dotbitHQ/dotbit.js/issues) on the GitHub repository for Dotbit.js.
 
 ## Contribute
-This SDK is still under heavily development. Any contribution including PR is welcome.
+We welcome contributions to Dotbit.js! If you are interested in helping to improve the project, there are several ways you can contribute:
+- Report bugs or suggest improvements by opening an [issue](https://github.com/dotbitHQ/dotbit.js/issues) on the GitHub repository.
+- Submit a pull request with your changes to the code.
 
-Please raise an [issue](https://github.com/dotbitHQ/dotbit.js/issues) if you find any bugs or have any suggestions.
+Please note that Dotbit.js SDK is still under development, so any contribution (including pull requests) is welcome.
 
 ## License
-MIT License (including **all** dependencies).
+Dotbit.js (including **all** dependencies) is protected under the [MIT License](LICENSE). This means that you are free to use, modify, and distribute the software as long as you include the original copyright and license notice. Please refer to the license for the full terms.

@@ -392,7 +392,7 @@ To change the owner of a BitAccount instance.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic)
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
@@ -426,7 +426,7 @@ To change the manager of a BitAccount instance.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic)
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
@@ -594,7 +594,7 @@ N/A
 ### Return Value
 Promise<`RoleKeyInfo`>
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic)
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
   - algorithm_id: `number`
 ### Example
 ```javascript
@@ -624,7 +624,7 @@ N/A
 ### Return Value
 Promise<`RoleKeyInfo`>
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic)
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
   - algorithm_id: `number`
 ### Example
 ```javascript
