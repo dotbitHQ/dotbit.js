@@ -11,11 +11,15 @@ export enum CoinType {
   BSC = '9006',
 }
 
+export const EvmCoinTypes = [CoinType.ETH, CoinType.BSC, CoinType.MATIC]
+
 export enum EvmChainId {
   ETH = 1,
   ETH_GOERILI = 5,
   BSC = 56,
+  BSC_TEST = 97,
   MATIC = 137,
+  MATIC_TEST = 80001,
 }
 
 // legacy custom chain type, should be replaced by CoinType in the future
@@ -33,13 +37,9 @@ export const EvmChainId2CoinType = {
   [EvmChainId.ETH]: CoinType.ETH,
   [EvmChainId.ETH_GOERILI]: CoinType.ETH,
   [EvmChainId.BSC]: CoinType.BSC,
+  [EvmChainId.BSC_TEST]: CoinType.BSC,
   [EvmChainId.MATIC]: CoinType.MATIC,
-}
-
-export const CoinType2EvmChainId = {
-  [CoinType.ETH]: EvmChainId.ETH,
-  [CoinType.MATIC]: EvmChainId.MATIC,
-  [CoinType.BSC]: EvmChainId.BSC,
+  [EvmChainId.MATIC_TEST]: CoinType.MATIC,
 }
 
 export const CoinType2ChainType = {
@@ -58,7 +58,23 @@ export enum RecordType {
 }
 
 export enum AccountStatus {
-  noneExist,
+  notOpenRegister= -1,
+  registerable,
+  registeringPaymentConfirm,
+  registeringLockedAccount,
+  registering,
+  registeringIncludeProposal,
+  registeringConfirmProposal,
+  registered,
+  reservedAccount,
+  onePriceSell,
+  auctionSell,
+  candidateAccount,
+  expired,
+  othersRegistering,
+  unavailableAccount,
+  subAccountNotCreated,
+  onCross
 }
 
 export enum AlgorithmId {
@@ -142,4 +158,14 @@ export enum DigitalEmojiUnifiedMap {
   '7⃣' = '7️⃣',
   '8⃣' = '8️⃣',
   '9⃣' = '9️⃣'
+}
+
+// ID of the payment method, source: https://github.com/dotbitHQ/das-register/blob/main/API.md#token-list
+export enum PaymentMethodIDs {
+  eth = 'eth_eth',
+  bnb = 'bsc_bnb',
+  matic = 'polygon_matic',
+  trx = 'tron_trx',
+  // portalWallet = 'ckb_ckb',
+  dotbitBalance = 'ckb_das',
 }

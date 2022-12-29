@@ -31,7 +31,7 @@
 - Query all the SubDIDs of a .bit main account.
 - Manage the **ownership** of a .bit account(SubDID included).
 - Manage the **records** of a .bit account(SubDID included).
-- **Register a .bit account** with CKB. (Coming soon)
+- **Register a .bit account** with CKB.
 
 ## Getting Started
 
@@ -114,6 +114,7 @@ For detailed usage, please follow the instructions in the specific plugin's READ
 - [@dotbit/plugin-template](./packages/plugin-template/README.md): A demo plugin demonstrating the basic structure of a .bit plugin.
 - [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/).
 - [@dotbit/plugin-avatar](./packages/plugin-avatar/README.md): A plugin for resolving users' avatar.
+- [@dotbit/plugin-register](./packages/plugin-register/README.md): A plugin to register .bit account.
 
 #### Write your own plugin
 Write a plugin for .bit is easy! 

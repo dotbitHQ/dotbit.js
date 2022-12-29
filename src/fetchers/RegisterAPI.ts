@@ -1,56 +1,18 @@
-import { MessageTypes, TypedMessage } from '@metamask/eth-sig-util'
-import { ChainType, EditRecordAction, EvmChainId } from '../const'
 import { Networking } from '../tools/Networking'
+import { computeChainTypeByCoinType } from '../tools/common'
+import { graphemesAccount } from '../tools/account'
 import { BitAccountRecord } from './BitIndexer.type'
-
-export interface SignList {
-  sign_type: number,
-  sign_msg: string,
-}
-
-// todo-open: should be merged with TxsSignedOrUnsigned
-export interface TxsWithMMJsonSignedOrUnSigned {
-  sign_key: string,
-  sign_list: SignList[],
-  mm_json: TypedMessage<MessageTypes>,
-}
-
-// todo-open: should be replaced with owner
-export interface OwnerRawParam {
-  receiver_chain_type: number,
-  receiver_address: string,
-}
-
-export interface ManagerRawParam {
-  manager_address: string,
-  manager_chain_type: number,
-}
-
-export interface EditAccountParams<T> {
-  // todo-open: all chain_type should be deprecated
-  chain_type: ChainType,
-  evm_chain_id: EvmChainId,
-  address: string,
-  account: string,
-  raw_param: T,
-}
-
-// todo-open: this format should be aborted
-export interface EditAccountRecord {
-  type: string, // eg: `profile`
-  key: string, // eg: `twitter`
-  label: string,
-  value: string,
-  ttl: string,
-}
-
-export interface RecordsRawParam {
-  records: EditAccountRecord[],
-}
-
-export type EditAccountManagerParam = EditAccountParams<ManagerRawParam>
-export type EditAccountOwnerParam = EditAccountParams<OwnerRawParam>
-export type EditAccountRecordsParam = EditAccountParams<RecordsRawParam>
+import {
+  EditAccountManagerParam,
+  EditAccountOwnerParam,
+  EditAccountRecord,
+  EditAccountRecordsParam,
+  PayWithDotbitBalanceParam,
+  ReturnTrxHashToServiceParam,
+  SubmitRegisterAccountOrderParam,
+  SubmitRegisterAccountOrderRes,
+  TxsWithMMJsonSignedOrUnSigned
+} from './RegisterAPI.type'
 
 export function toEditingRecord (record: BitAccountRecord): EditAccountRecord {
   return {
@@ -77,6 +39,55 @@ export class RegisterAPI {
 
   editAccountRecords (params: EditAccountRecordsParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
     return this.net.post('account/edit/records', params)
+  }
+
+  submitRegisterAccountOrder (params: SubmitRegisterAccountOrderParam): Promise<SubmitRegisterAccountOrderRes> {
+    const address = params.keyInfo.key
+    const coinType = params.keyInfo.coin_type
+    const account = params.account
+
+    return this.net.post('account/order/register', {
+      chain_type: computeChainTypeByCoinType(coinType),
+      address,
+      account,
+      pay_token_id: params.paymentMethodID,
+      pay_address: address,
+      register_years: params.registerYears,
+      coin_type: coinType,
+      inviter_account: params.inviterAccount,
+      channel_account: params.channelAccount,
+      account_char_str: graphemesAccount(account.split('.')[0], true),
+      cross_coin_type: params.crossTo
+    })
+  }
+
+  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+    const address = params.keyInfo.key
+    const coinType = params.keyInfo.coin_type
+
+    return this.net.post('balance/pay', {
+      chain_type: computeChainTypeByCoinType(coinType),
+      address,
+      evm_chain_id: params.evmChainId,
+      order_id: params.orderId
+    })
+  }
+
+  /**
+   * Return the transaction hash to the backend service.
+   * @param params
+   */
+  returnTrxHashToService (params: ReturnTrxHashToServiceParam): Promise<void> {
+    const address = params.keyInfo.key
+    const coinType = params.keyInfo.coin_type
+
+    return this.net.post('account/order/pay/hash', {
+      chain_type: computeChainTypeByCoinType(coinType),
+      address,
+      account: params.account,
+      order_id: params.orderId,
+      pay_hash: params.txHash
+    })
   }
 
   // todo-open: response should have same signature with SubAccountAPI.sendTransaction

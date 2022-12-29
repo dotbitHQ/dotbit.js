@@ -1,15 +1,19 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
-import {
-  EditAccountManagerParam,
-  EditAccountOwnerParam,
-  EditAccountRecordsParam,
-  RegisterAPI,
-} from '../fetchers/RegisterAPI'
+import { RegisterAPI } from '../fetchers/RegisterAPI'
 import {
   CreateSubAccountsParams, EditSubAccountParams,
   SubAccountAPI,
   TxsSignedOrUnSigned,
 } from '../fetchers/SubAccountAPI'
+import {
+  EditAccountManagerParam,
+  EditAccountOwnerParam,
+  EditAccountRecordsParam,
+  PayWithDotbitBalanceParam,
+  ReturnTrxHashToServiceParam,
+  SubmitRegisterAccountOrderParam,
+  SubmitRegisterAccountOrderRes, TxsWithMMJsonSignedOrUnSigned
+} from '../fetchers/RegisterAPI.type'
 
 export interface RemoteTxBuilderConfig {
   subAccountUri: string,
@@ -47,5 +51,17 @@ export class RemoteTxBuilder {
 
   editSubAccount (params: EditSubAccountParams) {
     return this.subAccountAPI.editSubAccount(params)
+  }
+
+  submitRegisterAccountOrder (params: SubmitRegisterAccountOrderParam): Promise<SubmitRegisterAccountOrderRes> {
+    return this.registerAPI.submitRegisterAccountOrder(params)
+  }
+
+  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+    return this.registerAPI.payWithDotbitBalance(params)
+  }
+
+  returnTrxHashToService (params: ReturnTrxHashToServiceParam): Promise<void> {
+    return this.registerAPI.returnTrxHashToService(params)
   }
 }

@@ -1,7 +1,7 @@
 import { MessageTypes, signTypedData, SignTypedDataVersion, TypedMessage } from '@metamask/eth-sig-util'
-import { Wallet } from 'ethers'
+import { ethers, Wallet } from 'ethers'
 import { remove0x } from '../tools/common'
-import { BitSigner } from './BitSigner'
+import { BitSigner, SendTransactionParam } from './BitSigner'
 
 export class EthersSigner extends BitSigner {
   constructor (public signer: Wallet) {
@@ -16,5 +16,15 @@ export class EthersSigner extends BitSigner {
       data,
       version: SignTypedDataVersion.V4,
     })
+  }
+
+  async sendTransaction (sendTransactionParam: SendTransactionParam): Promise<string> {
+    const _data = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(sendTransactionParam.data))
+    const { hash } = await this.signer.sendTransaction({
+      to: sendTransactionParam.to,
+      value: ethers.BigNumber.from(sendTransactionParam.value),
+      data: _data
+    })
+    return hash
   }
 }

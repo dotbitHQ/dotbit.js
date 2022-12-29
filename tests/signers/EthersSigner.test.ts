@@ -1,6 +1,6 @@
 import { signTypedData, SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 import { Wallet } from 'ethers'
-import { TxsWithMMJsonSignedOrUnSigned } from '../../src/fetchers/RegisterAPI'
+import { TxsWithMMJsonSignedOrUnSigned } from '../../src/fetchers/RegisterAPI.type'
 import { EthersSigner } from '../../src/index'
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'

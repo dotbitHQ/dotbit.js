@@ -2,7 +2,7 @@ import { CheckSubAccountStatus } from '../const'
 import { ICharInfo } from '../tools/account'
 import { Networking } from '../tools/Networking'
 import { BitKeyInfo, KeyInfo } from './BitIndexer.type'
-import { EditAccountRecord } from './RegisterAPI'
+import { EditAccountRecord } from './RegisterAPI.type'
 
 export interface SignList {
   sign_type: number,
