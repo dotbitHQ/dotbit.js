@@ -14,19 +14,28 @@ import {
   SubmitRegisterAccountOrderParam,
   SubmitRegisterAccountOrderRes, TxsWithMMJsonSignedOrUnSigned
 } from '../fetchers/RegisterAPI.type'
+import {
+  CrossChainAPI,
+  CrossChainReturnTrxHashToServiceParam,
+  MintNftSignInfoParam,
+  MintNftSignInfoRes
+} from '../fetchers/CrossChainAPI'
 
 export interface RemoteTxBuilderConfig {
   subAccountUri: string,
   registerUri: string,
+  crossChainUri: string,
 }
 
 export class RemoteTxBuilder {
   subAccountAPI: SubAccountAPI
   registerAPI: RegisterAPI
+  crossChainAPI: CrossChainAPI
 
   constructor (config: RemoteTxBuilderConfig) {
     this.subAccountAPI = new SubAccountAPI(config.subAccountUri)
     this.registerAPI = new RegisterAPI(config.registerUri)
+    this.crossChainAPI = new CrossChainAPI(config.crossChainUri)
   }
 
   enableSubAccount (account: string, keyInfo: KeyInfo): Promise<TxsSignedOrUnSigned> {
@@ -63,5 +72,13 @@ export class RemoteTxBuilder {
 
   returnTrxHashToService (params: ReturnTrxHashToServiceParam): Promise<void> {
     return this.registerAPI.returnTrxHashToService(params)
+  }
+
+  crossChainMintNftSignInfo (params: MintNftSignInfoParam): Promise<MintNftSignInfoRes> {
+    return this.crossChainAPI.mintNftSignInfo(params)
+  }
+
+  crossChainReturnTrxHashToService (params: CrossChainReturnTrxHashToServiceParam): Promise<void> {
+    return this.crossChainAPI.returnTrxHashToService(params)
   }
 }

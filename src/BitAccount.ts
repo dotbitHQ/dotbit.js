@@ -3,6 +3,7 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import {
   AccountStatus,
   AlgorithmId2CoinType,
+  BitNetwork,
   CheckSubAccountStatus,
   CoinType,
   CoinType2ChainType, PaymentMethodIDs,
@@ -52,7 +53,7 @@ export interface RoleKeyInfo extends KeyInfo {
 }
 
 export interface RegisterParam {
-  keyInfo: KeyInfo,
+  keyInfo?: KeyInfo,
   registerYears: number,
   paymentMethodID: PaymentMethodIDs,
   crossTo?: CoinType,
@@ -63,6 +64,12 @@ export interface RegisterParam {
 export interface RegisterRes extends RegisterParam {
   account: string,
   orderId: string,
+  txHash: string,
+}
+
+export interface MintEthNftRes {
+  account: string,
+  keyInfo: KeyInfo,
   txHash: string,
 }
 
@@ -425,6 +432,10 @@ export class BitAccount {
   }
 
   register (param: RegisterParam): Promise<RegisterRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  mintEthNft (network: BitNetwork): Promise<MintEthNftRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 }

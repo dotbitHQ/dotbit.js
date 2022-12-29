@@ -12,8 +12,8 @@ const dotbit = createInstance({
   network: BitNetwork.testnet,
   signer
 })
-const pluginTemplate = new BitPluginRegister()
-dotbit.installPlugin(pluginTemplate)
+const pluginRegister = new BitPluginRegister()
+dotbit.installPlugin(pluginRegister)
 
 describe('bitAccount.register()', function () {
   jest.setTimeout(60 * 1000)
@@ -57,6 +57,22 @@ describe('bitAccount.register()', function () {
       registerYears: 1,
       paymentMethodID: PaymentMethodIDs.dotbitBalance
     })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('Register as an Ethereum NFT', async function () {
+    const account = dotbit.account('registeraccounttest016.bit')
+    const res = await account.register({
+      registerYears: 1,
+      paymentMethodID: PaymentMethodIDs.eth,
+      crossTo: CoinType.ETH
+    })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('Mint to Ethereum', async function () {
+    const account = dotbit.account('registeraccounttest016.bit')
+    const res = await account.mintEthNft(BitNetwork.testnet)
     expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
   })
 })

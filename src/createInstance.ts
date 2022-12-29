@@ -18,6 +18,7 @@ export const DefaultConfig: { [key: string]: CreateInstanceConfig} = {
     remoteTxBuilderConfig: {
       subAccountUri: 'https://subaccount-api.did.id/v1',
       registerUri: 'https://register-api.did.id/v1',
+      crossChainUri: 'https://main-cross-api.did.id/v1',
     },
   },
   [BitNetwork.testnet]: {
@@ -26,6 +27,7 @@ export const DefaultConfig: { [key: string]: CreateInstanceConfig} = {
     remoteTxBuilderConfig: {
       subAccountUri: 'https://test-subaccount-api.did.id/v1',
       registerUri: 'https://test-register-api.did.id/v1',
+      crossChainUri: 'https://test-cross-api.did.id/v1',
     }
   },
 }

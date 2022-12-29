@@ -169,3 +169,20 @@ export enum PaymentMethodIDs {
   // portalWallet = 'ckb_ckb',
   dotbitBalance = 'ckb_das',
 }
+
+// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#pending-hash
+export enum CrossChainDirection {
+  toETH,
+  toCKB
+}
+
+// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#lock-mint-status
+export enum CrossChainLockAccountStatus {
+  lockPending = 0,
+  lockConfirm = 1,
+  lockRejected = 2,
+  mintSign = 3,
+  mintPending = 4,
+  mintConfirm = 5,
+  mintFailed = 6
+}
