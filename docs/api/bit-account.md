@@ -135,36 +135,6 @@ const account = new BitAccount({account: 'west.bit', signer});
 
 // To get the signer of current BitAccount instance
 console.log(account.signer)
-
-// ...
-// The printed result would be like:
-EthersSigner {
-  signer: Wallet {
-    _isSigner: true,
-    _signingKey: [Function (anonymous)],
-    _mnemonic: [Function (anonymous)],
-    address: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
-    provider: InfuraProvider {
-      _isProvider: true,
-      _events: [],
-      _emitted: [Object],
-      disableCcipRead: false,
-      formatter: [Formatter],
-      anyNetwork: false,
-      _network: [Object],
-      _maxInternalBlockNumber: -1024,
-      _lastBlockNumber: -2,
-      _maxFilterBlockRange: 10,
-      _pollingInterval: 4000,
-      _fastQueryDate: 0,
-      connection: [Object],
-      _nextId: 42,
-      apiKey: '84842078b09946638c03157f83405213',
-      projectId: '84842078b09946638c03157f83405213',
-      projectSecret: null
-    }
-  }
-}
 ```
 
 ## status
