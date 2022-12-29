@@ -3,12 +3,12 @@ import { BitAccount } from '../../src/BitAccount'
 import { BitSubAccount } from '../../src/BitSubAccount'
 import { BitIndexer, DotBit, EthersSigner, RemoteTxBuilder } from '../../src/index'
 
-export const bitIndexer = new BitIndexer({
+const bitIndexer = new BitIndexer({
   // uri: 'https://indexer-v1.did.id',
   uri: 'https://test-indexer.did.id',
   // uri: 'https://test-indexer-not-use-in-production-env.did.id',
 })
-export const bitBuilder = new RemoteTxBuilder({
+const bitBuilder = new RemoteTxBuilder({
   subAccountUri: 'https://test-subaccount-api.did.id/v1',
   registerUri: 'https://test-register-api.did.id/v1',
 })
@@ -16,7 +16,7 @@ const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
 const provider = new ethers.providers.InfuraProvider('goerli')
 const wallet = new Wallet(privateKey1, provider)
-export const signer = new EthersSigner(wallet)
+const signer = new EthersSigner(wallet)
 
 const bitIndexerProd = new BitIndexer({
   uri: 'https://indexer-v1.did.id',

@@ -28,6 +28,7 @@ export enum BitErrorCode {
   SignerRequired,
   BitBuilderRequired,
   InvalidAccountId,
+  InvalidSubAccount,
 }
 
 export class DotbitError extends Error {

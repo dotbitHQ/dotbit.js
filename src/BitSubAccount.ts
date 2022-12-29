@@ -18,7 +18,7 @@ export class BitSubAccount extends BitAccount {
   constructor (options: BitAccountOptions) {
     super(options)
     if (!isSubAccount(options.account)) {
-      throw new DotbitError(`${options.account} is not a legit SubDID`, BitErrorCode.InvalidAccountId)
+      throw new DotbitError(`${options.account} is not a legit SubDID`, BitErrorCode.InvalidSubAccount)
     }
     this.mainAccount = this.account.replace(/^.+?\./, '')
   }
