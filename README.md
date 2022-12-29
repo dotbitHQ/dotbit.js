@@ -84,7 +84,7 @@ For more details about each API, you could refer to our [API Documentation](#api
 We also provide code examples here: [For browser](./example/browser/index.js), [For Node.js](./example/node/mint-sub-account.js).
 
 ## CHANGELOG
-TBD
+[CHANGELOG](./CHANGELOG.md)
 
 ## API Documentation
 - [createInstance](/docs/api/create-instance.md)
