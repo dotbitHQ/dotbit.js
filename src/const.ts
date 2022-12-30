@@ -57,6 +57,14 @@ export enum RecordType {
   custom = 'custom_key',
 }
 
+export enum DWebProtocol {
+  ipfs = 'ipfs',
+  ipns = 'ipns',
+  arweave = 'arweave',
+  resilio = 'resilio',
+  skynet = 'skynet'
+}
+
 export enum AccountStatus {
   notOpenRegister= -1,
   registerable,

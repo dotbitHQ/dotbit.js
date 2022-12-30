@@ -5,7 +5,9 @@ import {
   AlgorithmId2CoinType,
   CheckSubAccountStatus,
   CoinType,
-  CoinType2ChainType, PaymentMethodIDs,
+  CoinType2ChainType,
+  PaymentMethodIDs,
+  DWebProtocol,
   RecordType
 } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
@@ -386,30 +388,15 @@ export class BitAccount {
     return this.#addrs(chain)
   }
 
-  // todo: this function need to be detailed.
-  async dwebs (protocol?: string) {
-    const records = await this.records()
-
-    const dwebs = records.filter(record => record.type === RecordType.dweb)
-    return protocol ? dwebs.filter(record => record.subtype === protocol.toLowerCase()) : dwebs
+  async dwebs (protocol?: DWebProtocol): Promise<BitAccountRecordExtended[]> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-dweb', BitErrorCode.PluginRequired)
   }
 
   /**
    * Resolve a dweb in a specific sequence
-   * todo: this function need to be detailed.
    */
-  async dweb () {
-    const dwebs = await this.dwebs()
-
-    if (!dwebs.length) {
-      return null
-    }
-    else if (dwebs.length === 1) {
-      return dwebs[0]
-    }
-    else {
-      ;['ipns', 'ipfs', 'skynet', 'resilio'].find(protocol => dwebs.find(dweb => dweb.subtype === protocol))
-    }
+  async dweb (): Promise<BitAccountRecordExtended> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-dweb', BitErrorCode.PluginRequired)
   }
 
   async profiles (subtype?: string) {

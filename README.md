@@ -115,6 +115,7 @@ For detailed usage, please follow the instructions in the specific plugin's READ
 - [@dotbit/plugin-web3mq](./packages/plugin-web3mq/README.md): A plugin for integrating [Web3MQ](https://www.web3messaging.online/).
 - [@dotbit/plugin-avatar](./packages/plugin-avatar/README.md): A plugin for resolving users' avatar.
 - [@dotbit/plugin-register](./packages/plugin-register/README.md): A plugin to register .bit account.
+- [@dotbit/plugin-dweb](./packages/plugin-dweb/README.md): A plugin to handle DWeb records for .bit accounts.
 
 #### Write your own plugin
 Write a plugin for .bit is easy! 
