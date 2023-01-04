@@ -67,6 +67,12 @@ export interface RegisterRes extends RegisterParam {
   txHash: string,
 }
 
+export interface LockAccountRes {
+  keyInfo: KeyInfo,
+  account: string,
+  txHash: string,
+}
+
 export interface MintEthNftRes {
   account: string,
   keyInfo: KeyInfo,
@@ -432,6 +438,10 @@ export class BitAccount {
   }
 
   register (param: RegisterParam): Promise<RegisterRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  lockAccount (): Promise<LockAccountRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 

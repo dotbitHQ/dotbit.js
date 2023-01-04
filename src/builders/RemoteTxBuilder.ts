@@ -17,6 +17,7 @@ import {
 import {
   CrossChainAPI,
   CrossChainReturnTrxHashToServiceParam,
+  LockAccountParam,
   MintNftSignInfoParam,
   MintNftSignInfoRes
 } from '../fetchers/CrossChainAPI'
@@ -78,7 +79,15 @@ export class RemoteTxBuilder {
     return this.crossChainAPI.mintNftSignInfo(params)
   }
 
+  crossChainLockAccount (params: LockAccountParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+    return this.crossChainAPI.lockAccount(params)
+  }
+
   crossChainReturnTrxHashToService (params: CrossChainReturnTrxHashToServiceParam): Promise<void> {
     return this.crossChainAPI.returnTrxHashToService(params)
+  }
+
+  crossChainSendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{ hash: string }> {
+    return this.crossChainAPI.sendTransaction(params)
   }
 }

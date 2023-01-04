@@ -6,6 +6,7 @@ import {
   BitPluginBase,
   CrossChainDirection,
   DotBit,
+  LockAccountRes,
   MintEthNftRes,
   PaymentMethodIDs,
   RegisterParam,
@@ -43,11 +44,11 @@ export class BitPluginRegister implements BitPluginBase {
         keyInfo: param.keyInfo || keyInfo,
       }
 
-      let trxHash: string
+      let txHash: string
       const orderInfo = await this.bitBuilder.submitRegisterAccountOrder({
         ...param,
         keyInfo: param.keyInfo,
-        account: this.account
+        account
       })
 
       if (param.paymentMethodID === PaymentMethodIDs.dotbitBalance) {
@@ -59,10 +60,10 @@ export class BitPluginRegister implements BitPluginBase {
         })
         const res = await this.signer.signTxList(mmJsonTxs)
         const { hash } = await this.bitBuilder.registerAPI.sendTransaction(res)
-        trxHash = hash
+        txHash = hash
       }
       else {
-        trxHash = await this.signer.sendTransaction({
+        txHash = await this.signer.sendTransaction({
           to: orderInfo.receipt_address,
           value: orderInfo.amount,
           data: orderInfo.order_id,
@@ -70,17 +71,43 @@ export class BitPluginRegister implements BitPluginBase {
       }
 
       await this.bitBuilder.returnTrxHashToService({
-        account: account,
+        account,
         keyInfo: param.keyInfo,
         orderId: orderInfo.order_id,
-        txHash: trxHash,
+        txHash,
       })
 
       return {
         ...param,
-        account: account,
+        account,
         orderId: orderInfo.order_id,
-        txHash: trxHash
+        txHash
+      }
+    }
+
+    bitAccount.lockAccount = async function (): Promise<LockAccountRes> {
+      this.requireSigner()
+      this.requireBitBuilder()
+      const coinType = await this.signer.getCoinType()
+      const address = await this.signer.getAddress()
+      const account = this.account
+      const keyInfo = {
+        key: address,
+        coin_type: coinType
+      }
+
+      const mmJsonTxs = await this.bitBuilder.crossChainLockAccount({
+        key_info: keyInfo,
+        account
+      })
+
+      const res = await this.signer.signTxList(mmJsonTxs)
+      const { hash: txHash } = await this.bitBuilder.crossChainSendTransaction(res)
+
+      return {
+        keyInfo,
+        account,
+        txHash
       }
     }
 

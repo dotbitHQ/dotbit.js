@@ -77,6 +77,21 @@ describe('bitAccount.register()', function () {
   })
 })
 
+describe('.bit account are converted to Ethereum NFT', function () {
+  jest.setTimeout(60 * 1000)
+  it('lockAccount', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.lockAccount()
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('mintEthNft', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.mintEthNft(BitNetwork.testnet)
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+})
+
 describe('not install plugin', () => {
   it('should throw', async () => {
     const dotbit = new DotBit()
