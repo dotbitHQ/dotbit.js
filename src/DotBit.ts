@@ -1,7 +1,7 @@
 import { BitAccount } from './BitAccount'
 import { BitSubAccount } from './BitSubAccount'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
-import { BitNetwork } from './const'
+import { BitNetwork, DWebProtocol } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
 import { KeyInfo } from './fetchers/BitIndexer.type'
 import { BitSigner } from './signers/BitSigner'
@@ -157,7 +157,7 @@ export class DotBit {
     return this.#addrs(account, chain)
   }
 
-  async dwebs (account: string, key?: string) {
+  async dwebs (account: string, key?: DWebProtocol) {
     const bitAccount = this.getAccount(account)
 
     return await bitAccount.dwebs(key)
