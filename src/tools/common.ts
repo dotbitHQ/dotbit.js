@@ -108,3 +108,11 @@ export function computeChainTypeByCoinType (coinType: CoinType): ChainType {
   }
   return _chainType
 }
+
+/**
+ * matches the protocol header of the DWeb.
+ * @param str
+ */
+export function matchDWebProtocol (str: string) {
+  return str.match(/^(ipns|ipfs|sia|arweave|ar|resilio):\/\/(.*)/)
+}

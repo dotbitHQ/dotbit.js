@@ -34,6 +34,7 @@ import {
 } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
 import { TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI.type'
+import { matchDWebProtocol } from './tools/common'
 
 export interface BitAccountOptions {
   account: string,
@@ -389,14 +390,35 @@ export class BitAccount {
   }
 
   async dwebs (protocol?: DWebProtocol): Promise<BitAccountRecordExtended[]> {
-    throw new DotbitError('Please install plugin @dotbit/plugin-dweb', BitErrorCode.PluginRequired)
+    const records = await this.records()
+
+    let dwebs = records.filter(record => record.type === RecordType.dweb)
+    dwebs = dwebs.map((record) => {
+      const matched = matchDWebProtocol(record.value)
+      if (matched) {
+        record.value = matched[2]
+      }
+      return record
+    })
+    return protocol ? dwebs.filter(record => record.subtype === protocol.toLowerCase()) : dwebs
   }
 
   /**
    * Resolve a dweb in a specific sequence
    */
   async dweb (): Promise<BitAccountRecordExtended> {
-    throw new DotbitError('Please install plugin @dotbit/plugin-dweb', BitErrorCode.PluginRequired)
+    const dwebs = await this.dwebs()
+
+    if (!dwebs.length) {
+      return null
+    }
+    else if (dwebs.length === 1) {
+      return dwebs[0]
+    }
+    else {
+      const protocol = [DWebProtocol.ipns, DWebProtocol.ipfs, DWebProtocol.arweave, DWebProtocol.skynet, DWebProtocol.resilio].find(protocol => dwebs.find(dweb => dweb.subtype === protocol))
+      return dwebs.find(dweb => dweb.subtype === protocol)
+    }
   }
 
   async profiles (subtype?: string) {
