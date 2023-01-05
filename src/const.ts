@@ -57,6 +57,14 @@ export enum RecordType {
   custom = 'custom_key',
 }
 
+export enum DWebProtocol {
+  ipfs = 'ipfs',
+  ipns = 'ipns',
+  arweave = 'arweave',
+  resilio = 'resilio',
+  skynet = 'skynet'
+}
+
 // source: https://github.com/dotbitHQ/das-register/blob/main/API.md#account-detail
 export enum AccountStatus {
   notOpenRegister= -1,

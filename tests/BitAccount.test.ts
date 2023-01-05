@@ -1,9 +1,9 @@
 import { BitAccount, RoleKeyInfo } from '../src/BitAccount'
-import { AlgorithmId, CheckSubAccountStatus, CoinType } from '../src/const'
+import { AlgorithmId, CheckSubAccountStatus, CoinType, DWebProtocol } from '../src/const'
 import { SubAccountMintParams } from '../src/fetchers/SubAccountAPI'
 import { sleep } from '../src/tools/common'
 import { accountNotExist, accountWithSigner, accountWithSignerProd, accountWithSignerProdRecords } from './common/index'
-import { graphemesAccount } from '../src'
+import { createInstance, graphemesAccount } from '../src'
 
 describe('constructor', () => {
   expect(() => {
@@ -410,5 +410,32 @@ describe('editRecords', function () {
         value: 'recruit@apple.com'
       }
     ])
+  })
+})
+
+describe('dwebs', function () {
+  jest.setTimeout(60 * 1000)
+  const dotbit = createInstance()
+
+  it('dwebs()', async function () {
+    const account = dotbit.account('web3max.bit')
+    const res = await account.dwebs()
+    expect(res.length > 0).toBeTruthy()
+  })
+
+  it('dwebs(DWebProtocol.ipns)', async function () {
+    const account = dotbit.account('web3max.bit')
+    const res = await account.dwebs(DWebProtocol.ipns)
+    expect(res[0].subtype).toBe(DWebProtocol.ipns)
+  })
+})
+
+describe('dweb', function () {
+  jest.setTimeout(60 * 1000)
+  it('dweb()', async function () {
+    const dotbit = createInstance()
+    const account = dotbit.account('web3max.bit')
+    const res = await account.dweb()
+    expect(res.subtype).toBe(DWebProtocol.ipns)
   })
 })

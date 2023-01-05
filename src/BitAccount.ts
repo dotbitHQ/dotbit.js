@@ -6,7 +6,9 @@ import {
   BitNetwork,
   CheckSubAccountStatus,
   CoinType,
-  CoinType2ChainType, PaymentMethodIDs,
+  CoinType2ChainType,
+  PaymentMethodIDs,
+  DWebProtocol,
   RecordType
 } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
@@ -34,6 +36,7 @@ import {
 import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
 import { TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI.type'
 import { CrossChainAccountStatusRes } from './fetchers/CrossChainAPI'
+import { matchDWebProtocol } from './tools/common'
 
 export interface BitAccountOptions {
   account: string,
@@ -402,19 +405,24 @@ export class BitAccount {
     return this.#addrs(chain)
   }
 
-  // todo: this function need to be detailed.
-  async dwebs (protocol?: string) {
+  async dwebs (protocol?: DWebProtocol): Promise<BitAccountRecordExtended[]> {
     const records = await this.records()
 
-    const dwebs = records.filter(record => record.type === RecordType.dweb)
+    let dwebs = records.filter(record => record.type === RecordType.dweb)
+    dwebs = dwebs.map((record) => {
+      const matched = matchDWebProtocol(record.value)
+      if (matched) {
+        record.value = matched[2]
+      }
+      return record
+    })
     return protocol ? dwebs.filter(record => record.subtype === protocol.toLowerCase()) : dwebs
   }
 
   /**
    * Resolve a dweb in a specific sequence
-   * todo: this function need to be detailed.
    */
-  async dweb () {
+  async dweb (): Promise<BitAccountRecordExtended> {
     const dwebs = await this.dwebs()
 
     if (!dwebs.length) {
@@ -424,7 +432,8 @@ export class BitAccount {
       return dwebs[0]
     }
     else {
-      ;['ipns', 'ipfs', 'skynet', 'resilio'].find(protocol => dwebs.find(dweb => dweb.subtype === protocol))
+      const protocol = [DWebProtocol.ipns, DWebProtocol.ipfs, DWebProtocol.arweave, DWebProtocol.skynet, DWebProtocol.resilio].find(protocol => dwebs.find(dweb => dweb.subtype === protocol))
+      return dwebs.find(dweb => dweb.subtype === protocol)
     }
   }
 
