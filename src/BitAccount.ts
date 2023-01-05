@@ -80,6 +80,8 @@ export interface MintEthNftRes {
   txHash: string,
 }
 
+export interface MintBitAccountRes extends MintEthNftRes {}
+
 export class BitAccount {
   account: string
   bitIndexer: BitIndexer
@@ -451,6 +453,10 @@ export class BitAccount {
   }
 
   mintEthNft (network: BitNetwork): Promise<MintEthNftRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  mintBitAccount (network: BitNetwork): Promise<MintBitAccountRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 }

@@ -7,6 +7,7 @@ import {
   CrossChainDirection,
   DotBit,
   LockAccountRes,
+  MintBitAccountRes,
   MintEthNftRes,
   PaymentMethodIDs,
   RegisterParam,
@@ -15,6 +16,7 @@ import {
 import EthersAdapter from '@gnosis.pm/safe-ethers-lib'
 import GnosisSDK, { EthSignSignature } from '@gnosis.pm/safe-core-sdk'
 import EthNftGnosisAbi from './EthNftGnosisAbi.json'
+import EthNftAbi from './EthNftAbi.json'
 import { ethers } from 'ethers'
 import { CrossChainAccountStatusRes } from 'dotbit/fetchers/CrossChainAPI'
 
@@ -154,7 +156,7 @@ export class BitPluginRegister implements BitPluginBase {
         signerOrProvider: this.signer.signer
       })
       const gnosisContract = new ethers.Contract(CrossEthGnosisAddress, EthNftGnosisAbi, this.signer.signer)
-      const nonce =  (await gnosisContract.uuidNonces(accountIdHex(account))).toNumber()
+      const nonce = (await gnosisContract.uuidNonces(accountIdHex(account))).toNumber()
 
       const gnosisSdk = await GnosisSDK.create({
         ethAdapter,
@@ -176,19 +178,50 @@ export class BitPluginRegister implements BitPluginBase {
 
       gnosisSdk.getOwnersWhoApprovedTx = () => Promise.resolve([]) // We ignore sdk's some internal logic for now.
 
-      const { hash } = await gnosisSdk.executeTransaction(tx)
+      const { hash: txHash } = await gnosisSdk.executeTransaction(tx)
 
       await this.bitBuilder.crossChainReturnTrxHashToService({
-        account: account,
+        account,
         key_info: keyInfo,
-        txHash: hash,
+        txHash,
         direction: CrossChainDirection.toETH
       })
 
       return {
         account,
         keyInfo,
-        txHash: hash
+        txHash
+      }
+    }
+
+    bitAccount.mintBitAccount = async function (this: BitAccount, network = BitNetwork.mainnet): Promise<MintBitAccountRes> {
+      this.requireSigner()
+      this.requireBitBuilder()
+      const coinType = await this.signer.getCoinType()
+      const address = await this.signer.getAddress()
+      const account = this.account
+      const keyInfo = {
+        key: address,
+        coin_type: coinType
+      }
+
+      const CrossEthContract = network === BitNetwork.mainnet ? '0x60eB332Bd4A0E2a9eEB3212cFdD6Ef03Ce4CB3b5' : '0x7eCBEE03609f353d041942FF50CdA2A120ABddd9'
+      const contract = new ethers.Contract(CrossEthContract, EthNftAbi, this.signer.signer)
+      const { hash: txHash } = await contract.recycle(accountIdHex(account), {
+        gasLimit: 90000
+      })
+
+      await this.bitBuilder.crossChainReturnTrxHashToService({
+        account,
+        key_info: keyInfo,
+        txHash,
+        direction: CrossChainDirection.toCKB
+      })
+
+      return {
+        account,
+        keyInfo,
+        txHash
       }
     }
   }

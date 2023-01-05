@@ -98,6 +98,15 @@ describe('.bit account are converted to Ethereum NFT', function () {
   })
 })
 
+describe('convert a .bit ethereum NFT to a .bit account.', function () {
+  jest.setTimeout(60 * 1000)
+  it('mintBitAccount', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.mintBitAccount(BitNetwork.testnet)
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+})
+
 describe('not install plugin', () => {
   it('should throw', async () => {
     const dotbit = new DotBit()

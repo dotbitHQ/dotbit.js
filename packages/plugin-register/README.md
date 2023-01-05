@@ -128,6 +128,42 @@ await account.mintEthNft()
 
 the second step takes about 5 minutes to complete, and the `crossChainAccountStatus` method can be called, when the `status` field is `CrossChainAccountStatus.mintConfirm` indicating that the second step has completed.
 
+### convert a .bit ethereum NFT to a .bit account.
+
+```typescript
+import { createInstance } from 'dotbit'
+import { BitPluginRegister } from '@dotbit/plugin-register'
+
+const dotbit = createInstance()
+
+dotbit.installPlugin(new BitPluginRegister())
+
+const account = dotbit.account('example.bit')
+await account.mintBitAccount()
+```
+
+call the `info` method to see if the casting was successful. When the `status` field is `IndexerAccountStatus.normal`, it means that the casting was successful.
+
+```typescript
+const info = await account.info()
+console.log(info)
+// {
+//   account: 'example.bit',
+//   account_alias: 'example.bit',
+//   account_id_hex: '0x...',
+//   next_account_id_hex: '0x...',
+//   create_at_unix: 1672123931,
+//   expired_at_unix: 1703659931,
+//   status: 0,
+//   das_lock_arg_hex: '0x...',
+//   owner_algorithm_id: 5,
+//   owner_key: '0x...',
+//   manager_algorithm_id: 5,
+//   manager_key: '0x...'
+// }
+```
+
+> ⚠️note: the casting takes about 5 minutes and the `info` method needs to be called repeatedly to ensure that the casting is successful.
 
 ## License
 MIT License (including **all** dependencies).
