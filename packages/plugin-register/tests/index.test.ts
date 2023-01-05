@@ -85,6 +85,12 @@ describe('.bit account are converted to Ethereum NFT', function () {
     expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
   })
 
+  it('crossChainAccountStatus', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.crossChainAccountStatus()
+    expect(res.lock_hash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
   it('mintEthNft', async function () {
     const account = dotbit.account('registeraccounttest011.bit')
     const res = await account.mintEthNft(BitNetwork.testnet)

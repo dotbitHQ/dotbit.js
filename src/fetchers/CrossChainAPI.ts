@@ -1,20 +1,20 @@
 import { Networking } from '../tools/Networking'
 import { BitKeyInfo, KeyInfo } from './BitIndexer.type'
 import { TxsWithMMJsonSignedOrUnSigned } from './RegisterAPI.type'
-import { CrossChainDirection, CrossChainLockAccountStatus } from '../const'
+import { CrossChainDirection, CrossChainAccountStatus } from '../const'
 
 export interface LockAccountParam {
   key_info: KeyInfo,
   account: string,
 }
 
-export interface LockAccountStatusParam extends LockAccountParam {}
+export interface CrossChainAccountStatusParam extends LockAccountParam {}
 
-export interface LockAccountStatusRes {
+export interface CrossChainAccountStatusRes {
   account: string,
   lock_hash: string,
   mint_hash: string,
-  status: CrossChainLockAccountStatus,
+  status: CrossChainAccountStatus,
 }
 
 export interface MintNftSignInfoParam {
@@ -80,7 +80,7 @@ export class CrossChainAPI {
     })
   }
 
-  lockAccountStatus (params: LockAccountStatusParam): Promise<LockAccountStatusRes> {
+  crossChainAccountStatus (params: CrossChainAccountStatusParam): Promise<CrossChainAccountStatusRes> {
     return this.net.post('lock/mint/status', {
       type: 'blockchain',
       account: params.account,

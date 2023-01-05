@@ -45,11 +45,89 @@ await account.register({
   crossTo: CoinType.ETH
 })
 ```
+
+the `info` method is called to see if the registration is successful, when the `status` field is `IndexerAccountStatus.onCrossChain` it means the registration is successful.
+
+```typescript
+const info = await account.info()
+console.log(info)
+// {
+//   account: 'example.bit',
+//   account_alias: 'example.bit',
+//   account_id_hex: '0x...',
+//   next_account_id_hex: '0x...',
+//   create_at_unix: 1672123931,
+//   expired_at_unix: 1703659931,
+//   status: 3,
+//   das_lock_arg_hex: '0x...',
+//   owner_algorithm_id: 5,
+//   owner_key: '0x...',
+//   manager_algorithm_id: 5,
+//   manager_key: '0x...'
+// }
+```
+> ⚠️note: Registration takes about 5 minutes and requires a recurring call to the `info` method to ensure successful registration.
+
 you need to wait for a successful account registration and call `mintEthNft`
 
 ```typescript
 await account.mintEthNft()
 ```
+
+the `crossChainAccountStatus` method is called to determine if the casting was successful. Success is indicated when the `status` field is `CrossChainAccountStatus.mintConfirm`.
+
+> ⚠️note: the casting may take up to 5 minutes to complete and may require repeated calls to the `crossChainAccountStatus` method to confirm the account status.
+
+```typescript
+const status = await account.crossChainAccountStatus()
+console.log(status)
+// {
+//   account: 'example.bit',
+//   lock_hash: '0x...',
+//   mint_hash: '0x...',
+//   status: 5
+// }
+```
+
+### .bit account are converted to ethereum NFT
+
+a registered .bit account needs to be converted to ethereum NFT in two steps, the first of which is to lock the account.
+
+```typescript
+import { createInstance } from 'dotbit'
+import { BitPluginRegister } from '@dotbit/plugin-register'
+
+const dotbit = createInstance()
+
+dotbit.installPlugin(new BitPluginRegister())
+
+const account = dotbit.account('example.bit')
+await account.lockAccount()
+```
+
+the `crossChainAccountStatus` method needs to be called to confirm that the first step is complete. When the `status` field is `CrossChainAccountStatus.mintSign` the first step has completed successfully.
+
+> ⚠️note: the first step may take up to 5 minutes to complete and may require a recurring call to the `crossChainAccountStatus` method to confirm the account status.
+
+```typescript
+const status = await account.crossChainAccountStatus()
+console.log(status)
+// {
+//   account: 'example.bit',
+//   lock_hash: '0x...',
+//   mint_hash: '',
+//   status: 3
+// }
+```
+
+after waiting for the first step to succeed, the second step is to call `mintEthNft`
+
+```typescript
+await account.mintEthNft()
+```
+
+the second step takes about 5 minutes to complete, and the `crossChainAccountStatus` method can be called, when the `status` field is `CrossChainAccountStatus.mintConfirm` indicating that the second step has completed.
+
 
 ## License
 MIT License (including **all** dependencies).

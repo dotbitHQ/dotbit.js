@@ -16,6 +16,7 @@ import EthersAdapter from '@gnosis.pm/safe-ethers-lib'
 import GnosisSDK, { EthSignSignature } from '@gnosis.pm/safe-core-sdk'
 import EthNftGnosisAbi from './EthNftGnosisAbi.json'
 import { ethers } from 'ethers'
+import { CrossChainAccountStatusRes } from 'dotbit/fetchers/CrossChainAPI'
 
 export class BitPluginRegister implements BitPluginBase {
   version = version
@@ -109,6 +110,24 @@ export class BitPluginRegister implements BitPluginBase {
         account,
         txHash
       }
+    }
+
+    bitAccount.crossChainAccountStatus = async function (): Promise<CrossChainAccountStatusRes> {
+      this.requireSigner()
+      const coinType = await this.signer.getCoinType()
+      const address = await this.signer.getAddress()
+      const account = this.account
+      const keyInfo = {
+        key: address,
+        coin_type: coinType
+      }
+
+      const lockAccountStatus = await this.bitBuilder.crossChainAccountStatus({
+        key_info: keyInfo,
+        account
+      })
+
+      return lockAccountStatus
     }
 
     bitAccount.mintEthNft = async function (this: BitAccount, network = BitNetwork.mainnet): Promise<MintEthNftRes> {

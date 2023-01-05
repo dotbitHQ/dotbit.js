@@ -33,6 +33,7 @@ import {
 } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
 import { TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI.type'
+import { CrossChainAccountStatusRes } from './fetchers/CrossChainAPI'
 
 export interface BitAccountOptions {
   account: string,
@@ -442,6 +443,10 @@ export class BitAccount {
   }
 
   lockAccount (): Promise<LockAccountRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  crossChainAccountStatus (): Promise<CrossChainAccountStatusRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 
