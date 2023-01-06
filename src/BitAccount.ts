@@ -3,6 +3,7 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import {
   AccountStatus,
   AlgorithmId2CoinType,
+  BitNetwork,
   CheckSubAccountStatus,
   CoinType,
   CoinType2ChainType,
@@ -34,6 +35,7 @@ import {
 } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
 import { TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI.type'
+import { CrossChainAccountStatusRes } from './fetchers/CrossChainAPI'
 import { matchDWebProtocol } from './tools/common'
 
 export interface BitAccountOptions {
@@ -55,7 +57,7 @@ export interface RoleKeyInfo extends KeyInfo {
 }
 
 export interface RegisterParam {
-  keyInfo: KeyInfo,
+  keyInfo?: KeyInfo,
   registerYears: number,
   paymentMethodID: PaymentMethodIDs,
   crossTo?: CoinType,
@@ -68,6 +70,20 @@ export interface RegisterRes extends RegisterParam {
   orderId: string,
   txHash: string,
 }
+
+export interface LockAccountRes {
+  keyInfo: KeyInfo,
+  account: string,
+  txHash: string,
+}
+
+export interface MintEthNftRes {
+  account: string,
+  keyInfo: KeyInfo,
+  txHash: string,
+}
+
+export interface MintBitAccountRes extends MintEthNftRes {}
 
 export class BitAccount {
   account: string
@@ -434,6 +450,22 @@ export class BitAccount {
   }
 
   register (param: RegisterParam): Promise<RegisterRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  lockAccount (): Promise<LockAccountRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  crossChainAccountStatus (): Promise<CrossChainAccountStatusRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  mintEthNft (network: BitNetwork): Promise<MintEthNftRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  mintBitAccount (network: BitNetwork): Promise<MintBitAccountRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 }

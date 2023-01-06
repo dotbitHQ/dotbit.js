@@ -1,4 +1,4 @@
-import { ChainType, CoinType } from '../const'
+import { CoinType, IndexerAccountStatus } from '../const'
 
 export interface DasServerInfo {
   is_latest_block_number: boolean,
@@ -17,7 +17,7 @@ export interface AccountInfo {
   next_account_id_hex: string,
   create_at_unix: number,
   expired_at_unix: number,
-  status: number,
+  status: IndexerAccountStatus,
   das_lock_arg_hex: string,
   owner_algorithm_id: number,
   owner_key: string,

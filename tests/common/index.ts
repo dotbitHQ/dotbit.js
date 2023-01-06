@@ -11,6 +11,7 @@ const bitIndexer = new BitIndexer({
 const bitBuilder = new RemoteTxBuilder({
   subAccountUri: 'https://test-subaccount-api.did.id/v1',
   registerUri: 'https://test-register-api.did.id/v1',
+  crossChainUri: 'https://test-cross-api.did.id/v1',
 })
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
@@ -24,6 +25,7 @@ const bitIndexerProd = new BitIndexer({
 const bitBuilderProd = new RemoteTxBuilder({
   subAccountUri: 'https://subaccount-api.did.id/v1',
   registerUri: 'https://register-api.did.id/v1',
+  crossChainUri: 'https://main-cross-api.did.id/v1',
 })
 
 export const dotbitProd = new DotBit({
