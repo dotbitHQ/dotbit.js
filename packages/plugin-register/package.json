@@ -15,5 +15,10 @@
   "peerDependencies": {
     "dotbit": "workspace:^"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@gnosis.pm/safe-core-sdk": "^2.1.0",
+    "@gnosis.pm/safe-ethers-lib": "^1.1.0",
+    "ethers": "^5.7.2"
+  }
 }

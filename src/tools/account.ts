@@ -13,10 +13,10 @@ import { ACCOUNT_SUFFIX, CHAR_TYPE, languageToCharType, languages, DigitalEmojiU
 
 /**
  * @description: check if the account is supported by .bit
- * @param account in the format of `xxx.bit`
+ * @param account in the format of `[xxx.]xxx.bit`
  */
 export function isSupportedAccount (account: string): boolean {
-  return /.+\.bit/.test(account) && account.split(/.#/).every(v => Boolean(v.length))
+  return /^([^\.\s]+\.){1,}bit$/.test(account) && account.split(/.#/).every(v => Boolean(v.length))
 }
 
 /**

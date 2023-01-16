@@ -16,10 +16,22 @@ describe('isSupportedAccount', function () {
     expect(isSupported).toBe(true)
   })
 
+  it('do not support abc.bitbit', async () => {
+    const isSupported = isSupportedAccount('abc.bitbit')
+
+    expect(isSupported).toBe(false)
+  })
+
   it('SubDID', function () {
     const isSupported = isSupportedAccount('a.phone.bit')
 
     expect(isSupported).toBe(true)
+  })
+
+  it('do not support abc....phone.bit', function () {
+    const isSupported = isSupportedAccount('abc....phone.bit')
+
+    expect(isSupported).toBe(false)
   })
 
   it('emoji', function () {

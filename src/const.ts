@@ -57,6 +57,15 @@ export enum RecordType {
   custom = 'custom_key',
 }
 
+export enum DWebProtocol {
+  ipfs = 'ipfs',
+  ipns = 'ipns',
+  arweave = 'arweave',
+  resilio = 'resilio',
+  skynet = 'skynet'
+}
+
+// source: https://github.com/dotbitHQ/das-register/blob/main/API.md#account-detail
 export enum AccountStatus {
   notOpenRegister= -1,
   registerable,
@@ -75,6 +84,14 @@ export enum AccountStatus {
   unavailableAccount,
   subAccountNotCreated,
   onCross
+}
+
+// source: https://github.com/dotbitHQ/das-account-indexer/blob/main/API.md#get-account-basic-info
+export enum IndexerAccountStatus {
+  normal,
+  onSale,
+  onAuction,
+  onCrossChain
 }
 
 export enum AlgorithmId {
@@ -168,4 +185,21 @@ export enum PaymentMethodIDs {
   trx = 'tron_trx',
   // portalWallet = 'ckb_ckb',
   dotbitBalance = 'ckb_das',
+}
+
+// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#pending-hash
+export enum CrossChainDirection {
+  toETH,
+  toCKB
+}
+
+// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#lock-mint-status
+export enum CrossChainAccountStatus {
+  lockPending = 0,
+  lockConfirm = 1,
+  lockRejected = 2,
+  mintSign = 3,
+  mintPending = 4,
+  mintConfirm = 5,
+  mintFailed = 6
 }

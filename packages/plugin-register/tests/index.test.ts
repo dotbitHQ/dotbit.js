@@ -12,8 +12,8 @@ const dotbit = createInstance({
   network: BitNetwork.testnet,
   signer
 })
-const pluginTemplate = new BitPluginRegister()
-dotbit.installPlugin(pluginTemplate)
+const pluginRegister = new BitPluginRegister()
+dotbit.installPlugin(pluginRegister)
 
 describe('bitAccount.register()', function () {
   jest.setTimeout(60 * 1000)
@@ -57,6 +57,52 @@ describe('bitAccount.register()', function () {
       registerYears: 1,
       paymentMethodID: PaymentMethodIDs.dotbitBalance
     })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('Register as an Ethereum NFT', async function () {
+    const account = dotbit.account('registeraccounttest016.bit')
+    const res = await account.register({
+      registerYears: 1,
+      paymentMethodID: PaymentMethodIDs.eth,
+      crossTo: CoinType.ETH
+    })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('Mint to Ethereum', async function () {
+    const account = dotbit.account('registeraccounttest016.bit')
+    const res = await account.mintEthNft(BitNetwork.testnet)
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+})
+
+describe('.bit account are converted to Ethereum NFT', function () {
+  jest.setTimeout(60 * 1000)
+  it('lockAccount', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.lockAccount()
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('crossChainAccountStatus', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.crossChainAccountStatus()
+    expect(res.lock_hash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('mintEthNft', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.mintEthNft(BitNetwork.testnet)
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+})
+
+describe('convert a .bit ethereum NFT to a .bit account.', function () {
+  jest.setTimeout(60 * 1000)
+  it('mintBitAccount', async function () {
+    const account = dotbit.account('registeraccounttest011.bit')
+    const res = await account.mintBitAccount(BitNetwork.testnet)
     expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
   })
 })
