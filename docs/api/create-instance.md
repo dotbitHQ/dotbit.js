@@ -26,19 +26,8 @@ DotBit {
   plugins: [],
   network: 'mainnet',
   cacheProvider: undefined,
-  bitIndexer: BitIndexer {
-    rpc: JSONRPC { url: 'https://indexer-v1.did.id', id: 0 }
-  },
-  bitBuilder: RemoteTxBuilder {
-    subAccountAPI: SubAccountAPI {
-      baseUri: 'https://subaccount-api.did.id/v1',
-      net: [Networking]
-    },
-    registerAPI: RegisterAPI {
-      baseUri: 'https://register-api.did.id/v1',
-      net: [Networking]
-    }
-  },
+  bitIndexer: BitIndexer {},
+  bitBuilder: RemoteTxBuilder {},
   signer: undefined
 }
 
@@ -59,19 +48,8 @@ DotBit {
   plugins: [],
   network: 'testnet',
   cacheProvider: undefined,
-  bitIndexer: BitIndexer {
-    rpc: JSONRPC { url: 'https://test-indexer.did.id', id: 0 }
-  },
-  bitBuilder: RemoteTxBuilder {
-    subAccountAPI: SubAccountAPI {
-      baseUri: 'https://test-subaccount-api.did.id/v1',
-      net: [Networking]
-    },
-    registerAPI: RegisterAPI {
-      baseUri: 'https://test-register-api.did.id/v1',
-      net: [Networking]
-    }
-  },
+  bitIndexer: BitIndexer {},
+  bitBuilder: RemoteTxBuilder {},
   signer: undefined
 }
 ```

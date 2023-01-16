@@ -60,21 +60,8 @@ console.log(dotbit);
 DotBit {
   plugins: [],
   network: 'testnet',
-  cacheProvider: undefined,
-  bitIndexer: BitIndexer {
-    rpc: JSONRPC { url: 'https://test-indexer.did.id', id: 0 }
-  },
-  bitBuilder: RemoteTxBuilder {
-    subAccountAPI: SubAccountAPI {
-      baseUri: 'https://test-subaccount-api.did.id/v1',
-      net: [Networking]
-    },
-    registerAPI: RegisterAPI {
-      baseUri: 'https://test-register-api.did.id/v1',
-      net: [Networking]
-    }
-  },
-  signer: undefined
+  bitIndexer: BitIndexer {},
+  bitBuilder: RemoteTxBuilder {},
 }
 ```
 
@@ -271,19 +258,8 @@ dotbit.reverse({
 // The printed result would be like:
 BitAccount {
   account: 'jeffx.bit',
-  bitIndexer: BitIndexer {
-    rpc: JSONRPC { url: 'https://indexer-v1.did.id', id: 1 }
-  },
-  bitBuilder: RemoteTxBuilder {
-    subAccountAPI: SubAccountAPI {
-      baseUri: 'https://subaccount-api.did.id/v1',
-      net: [Networking]
-    },
-    registerAPI: RegisterAPI {
-      baseUri: 'https://register-api.did.id/v1',
-      net: [Networking]
-    }
-  },
+  bitIndexer: BitIndexer {},
+  bitBuilder: RemoteTxBuilder {},
   signer: // Your signer instance
 }
 ```
@@ -314,19 +290,13 @@ dotbit.accountsOfOwner({
   BitAccount {
     account: 'cz-vs-sbf.bit',
     bitIndexer: BitIndexer { rpc: [JSONRPC] },
-    bitBuilder: RemoteTxBuilder {
-      subAccountAPI: [SubAccountAPI],
-      registerAPI: [RegisterAPI]
-    },
+    bitBuilder: RemoteTxBuilder {},
     signer: // Your signer instance
   },
   BitSubAccount {
     account: 'jeff.makeafriend.bit',
     bitIndexer: BitIndexer { rpc: [JSONRPC] },
-    bitBuilder: RemoteTxBuilder {
-      subAccountAPI: [SubAccountAPI],
-      registerAPI: [RegisterAPI]
-    },
+    bitBuilder: RemoteTxBuilder {},
     signer: // Your signer instance
     isSubAccount: true,
     mainAccount: 'makeafriend.bit'
@@ -351,19 +321,8 @@ console.log(result);
 // The printed result would be like:
 BitAccount {
   account: 'west.bit',
-  bitIndexer: BitIndexer {
-    rpc: JSONRPC { url: 'https://indexer-v1.did.id', id: 0 }
-  },
-  bitBuilder: RemoteTxBuilder {
-    subAccountAPI: SubAccountAPI {
-      baseUri: 'https://subaccount-api.did.id/v1',
-      net: [Networking]
-    },
-    registerAPI: RegisterAPI {
-      baseUri: 'https://register-api.did.id/v1',
-      net: [Networking]
-    }
-  },
+  bitIndexer: BitIndexer {},
+  bitBuilder: RemoteTxBuilder {},
   signer: // Your signer instance
 }
 ```
@@ -400,19 +359,8 @@ dotbit.accountById("0x5728088435fb8788472a9ca601fbc0b9cbea8be3").then(console.lo
 // The printed result would be like:
 BitAccount {
   account: 'imac.bit',
-  bitIndexer: BitIndexer {
-    rpc: JSONRPC { url: 'https://indexer-v1.did.id', id: 1 }
-  },
-  bitBuilder: RemoteTxBuilder {
-    subAccountAPI: SubAccountAPI {
-      baseUri: 'https://subaccount-api.did.id/v1',
-      net: [Networking]
-    },
-    registerAPI: RegisterAPI {
-      baseUri: 'https://register-api.did.id/v1',
-      net: [Networking]
-    }
-  },
+  bitIndexer: BitIndexer {},
+  bitBuilder: RemoteTxBuilder {},
   signer: // Your signer instance
 }
 ```
