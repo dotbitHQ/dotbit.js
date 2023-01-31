@@ -11,6 +11,8 @@ import {
   ReturnTrxHashToServiceParam,
   SubmitRegisterAccountOrderParam,
   SubmitRegisterAccountOrderRes,
+  SubmitRenewAccountOrderParam,
+  SubmitRenewAccountOrderRes,
   TxsWithMMJsonSignedOrUnSigned
 } from './RegisterAPI.type'
 
@@ -58,6 +60,21 @@ export class RegisterAPI {
       channel_account: params.channelAccount,
       account_char_str: graphemesAccount(account.split('.')[0], true),
       cross_coin_type: params.crossTo
+    })
+  }
+
+  submitRenewAccountOrder (params: SubmitRenewAccountOrderParam): Promise<SubmitRenewAccountOrderRes> {
+    const address = params.keyInfo.key
+    const coinType = params.keyInfo.coin_type
+    const account = params.account
+
+    return this.net.post('account/order/renew', {
+      chain_type: computeChainTypeByCoinType(coinType),
+      address,
+      account,
+      pay_token_id: params.paymentMethodID,
+      pay_address: address,
+      renew_years: params.renewYears
     })
   }
 

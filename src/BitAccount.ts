@@ -65,6 +65,18 @@ export interface RegisterParam {
   channelAccount?: string,
 }
 
+export interface RenewParam {
+  paymentMethodID: PaymentMethodIDs,
+  renewYears: number,
+}
+
+export interface RenewRes extends RenewParam {
+  keyInfo: KeyInfo,
+  account: string,
+  orderId: string,
+  txHash: string,
+}
+
 export interface RegisterRes extends RegisterParam {
   account: string,
   orderId: string,
@@ -466,6 +478,10 @@ export class BitAccount {
   }
 
   mintBitAccount (network: BitNetwork): Promise<MintBitAccountRes> {
+    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
+  }
+
+  renew (param: RenewParam): Promise<RenewRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 }
