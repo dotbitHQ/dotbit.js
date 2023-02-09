@@ -13,7 +13,7 @@
   "scripts": {
     "test": "jest",
     "clear": "rm -rf ./lib/ ./lib.esm/",
-    "build": "npm run clear && npm run build:esm & npm run build:commonjs",
+    "build": "npm run clear && npm run build:esm && npm run build:commonjs",
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "dev:browser": "npm run build && vite ./example/browser",
