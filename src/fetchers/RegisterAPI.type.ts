@@ -64,6 +64,22 @@ export interface SubmitRegisterAccountOrderRes {
   token_id: string,
 }
 
+export interface SubmitRenewAccountOrderParam {
+  account: string,
+  keyInfo: KeyInfo,
+  paymentMethodID: PaymentMethodIDs,
+  payAddress: string,
+  renewYears: number,
+}
+
+export interface SubmitRenewAccountOrderRes {
+  order_id: string,
+  chain_type?: number,
+  receipt_address: string,
+  amount: string,
+  token_id: string,
+}
+
 export interface PayWithDotbitBalanceParam {
   keyInfo: KeyInfo,
   orderId: string,

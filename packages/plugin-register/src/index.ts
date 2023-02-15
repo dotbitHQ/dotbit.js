@@ -11,7 +11,10 @@ import {
   MintEthNftRes,
   PaymentMethodIDs,
   RegisterParam,
-  RegisterRes
+  RegisterRes,
+  RenewParam,
+  RenewRes,
+  isSubAccount
 } from 'dotbit'
 import EthersAdapter from '@gnosis.pm/safe-ethers-lib'
 import GnosisSDK, { EthSignSignature } from '@gnosis.pm/safe-core-sdk'
@@ -221,6 +224,58 @@ export class BitPluginRegister implements BitPluginBase {
       return {
         account,
         keyInfo,
+        txHash
+      }
+    }
+
+    bitAccount.renew = async function (this: BitAccount, param: RenewParam): Promise<RenewRes> {
+      this.requireSigner()
+      this.requireBitBuilder()
+      const coinType = await this.signer.getCoinType()
+      const address = await this.signer.getAddress()
+      const account = this.account
+      const keyInfo = {
+        key: address,
+        coin_type: coinType
+      }
+
+      if (isSubAccount(account)) {
+        throw new Error('SubDID renewal is not supported for now.')
+      }
+
+      let txHash: string
+      const orderInfo = await this.bitBuilder.submitRenewAccountOrder({
+        account,
+        keyInfo,
+        paymentMethodID: param.paymentMethodID,
+        payAddress: address,
+        renewYears: param.renewYears
+      })
+
+      if (param.paymentMethodID === PaymentMethodIDs.dotbitBalance) {
+        const chainId = await this.signer.getChainId()
+        const mmJsonTxs = await this.bitBuilder.payWithDotbitBalance({
+          keyInfo,
+          orderId: orderInfo.order_id,
+          evmChainId: chainId
+        })
+        const res = await this.signer.signTxList(mmJsonTxs)
+        const { hash } = await this.bitBuilder.registerAPI.sendTransaction(res)
+        txHash = hash
+      }
+      else {
+        txHash = await this.signer.sendTransaction({
+          to: orderInfo.receipt_address,
+          value: orderInfo.amount,
+          data: orderInfo.order_id,
+        })
+      }
+
+      return {
+        ...param,
+        keyInfo,
+        account,
+        orderId: orderInfo.order_id,
         txHash
       }
     }

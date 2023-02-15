@@ -107,6 +107,49 @@ describe('convert a .bit ethereum NFT to a .bit account.', function () {
   })
 })
 
+describe('renew', () => {
+  jest.setTimeout(60 * 1000)
+  it('use ETH to renew.', async () => {
+    const account = dotbit.account('imac.bit')
+    const res = await account.renew({
+      renewYears: 1,
+      paymentMethodID: PaymentMethodIDs.eth
+    })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('use .bitBalance to renew.', async () => {
+    const account = dotbit.account('imac.bit')
+    const res = await account.renew({
+      renewYears: 1,
+      paymentMethodID: PaymentMethodIDs.dotbitBalance
+    })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('renew other people\'s accounts.', async () => {
+    const account = dotbit.account('web3max.bit')
+    const res = await account.renew({
+      renewYears: 1,
+      paymentMethodID: PaymentMethodIDs.dotbitBalance
+    })
+    expect(res.txHash).toMatch(/^0x([A-Fa-f0-9]+)$/)
+  })
+
+  it('should throw', async () => {
+    const account = dotbit.account('001.imac.bit')
+    try {
+      const res = await account.renew({
+        renewYears: 1,
+        paymentMethodID: PaymentMethodIDs.eth
+      })
+    }
+    catch (err) {
+      expect(err.message).toMatch('SubDID renewal is not supported for now.')
+    }
+  })
+})
+
 describe('not install plugin', () => {
   it('should throw', async () => {
     const dotbit = new DotBit()

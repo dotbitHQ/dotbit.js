@@ -12,7 +12,10 @@ import {
   PayWithDotbitBalanceParam,
   ReturnTrxHashToServiceParam,
   SubmitRegisterAccountOrderParam,
-  SubmitRegisterAccountOrderRes, TxsWithMMJsonSignedOrUnSigned
+  SubmitRegisterAccountOrderRes,
+  SubmitRenewAccountOrderParam,
+  SubmitRenewAccountOrderRes,
+  TxsWithMMJsonSignedOrUnSigned
 } from '../fetchers/RegisterAPI.type'
 import {
   CrossChainAPI,
@@ -67,6 +70,10 @@ export class RemoteTxBuilder {
 
   submitRegisterAccountOrder (params: SubmitRegisterAccountOrderParam): Promise<SubmitRegisterAccountOrderRes> {
     return this.registerAPI.submitRegisterAccountOrder(params)
+  }
+
+  submitRenewAccountOrder (params: SubmitRenewAccountOrderParam): Promise<SubmitRenewAccountOrderRes> {
+    return this.registerAPI.submitRenewAccountOrder(params)
   }
 
   payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<TxsWithMMJsonSignedOrUnSigned> {

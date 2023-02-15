@@ -165,5 +165,24 @@ console.log(info)
 
 > ⚠️note: the casting takes about 5 minutes and the `info` method needs to be called repeatedly to ensure that the casting is successful.
 
+### renew .bit account
+
+```typescript
+import { createInstance } from 'dotbit'
+import { BitPluginRegister } from '@dotbit/plugin-register'
+
+const dotbit = createInstance()
+
+dotbit.installPlugin(new BitPluginRegister())
+
+const account = dotbit.account('example.bit')
+await account.renew({
+  renewYears: 1,
+  paymentMethodID: PaymentMethodIDs.eth
+})
+```
+
+> ⚠️note: SubDID renewal is not supported for now.
+
 ## License
 MIT License (including **all** dependencies).
