@@ -34,6 +34,7 @@
     "ckb"
   ],
   "files": [
+    "src",
     "lib",
     "lib.esm"
   ],
