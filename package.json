@@ -19,7 +19,7 @@
     "dev:browser": "npm run build && vite ./example/browser",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npx only-allow pnpm && npm run build",
     "slip44": "npm i bip44-constants@latest -D && node scripts/slip44-json.js",
     "character": "node scripts/get_character_list.js"
   },
