@@ -106,6 +106,12 @@ export class DotBit {
     return accounts.map(account => this.getAccount(account))
   }
 
+  async accountsOfManager (keyInfo: KeyInfo): Promise<BitAccount[]> {
+    const accounts =  await this.bitIndexer.accountList(keyInfo, 'manager')
+
+    return accounts.map(account => this.getAccount(account))
+  }
+
   account (account: string): BitAccount {
     return this.getAccount(account)
   }
