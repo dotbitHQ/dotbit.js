@@ -49,6 +49,18 @@ describe('accountsOfOwner', function () {
   })
 })
 
+describe('accountsOfManager', function () {
+  it('work', async function () {
+    const accounts = await dotbitProd.accountsOfManager({
+      key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+      coin_type: CoinType.ETH,
+    })
+
+    expect(accounts[0]).toBeInstanceOf(BitAccount)
+    expect(accounts.length).toBeGreaterThan(10)
+  })
+})
+
 describe('accountById', function () {
   it('work', async function () {
     const account = await dotbitProd.accountById('0x5728088435fb8788472a9ca601fbc0b9cbea8be3')

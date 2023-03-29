@@ -62,11 +62,13 @@ export class BitIndexer {
   /**
    * Get all accounts whose owner is given key.
    * @param keyInfo
+   * @param role
    */
-  accountList (keyInfo: KeyInfo): Promise<string[]> {
+  accountList (keyInfo: KeyInfo, role: 'manager' | 'owner' = 'owner'): Promise<string[]> {
     return this.request<BitAccountList>('das_accountList', [{
       type: 'blockchain',
       key_info: keyInfo,
+      role,
     }])
       .then(result => result.account_list.map(item => item.account))
   }

@@ -131,4 +131,12 @@ describe('accountList', () => {
     })
     expect(accounts.length).toBe(0)
   })
+
+  it('work when the role is "manager"', async () => {
+    const accounts = await indexer.accountList({
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
+      key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
+    }, 'manager')
+    expect(accounts.length).toBeGreaterThanOrEqual(10)
+  })
 })
