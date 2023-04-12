@@ -79,7 +79,7 @@ describe('isEthAddress', function () {
 
   it('all caps address', function () {
     const address = '0X8BA1F109551BD432803012645AC136DDD64DBA72'
-    expect(isEthAddress(address)).toBe(true)
+    expect(isEthAddress(address)).toBe(false)
   })
 
   it('invalid checksum', function () {

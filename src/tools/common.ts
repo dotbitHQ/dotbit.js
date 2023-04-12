@@ -1,7 +1,8 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
 import { ChainType, CoinType, EvmChainId, EvmCoinTypes } from '../const'
-import { formatsByName } from '@ensdomains/address-encoder'
+import { utils } from 'ethers'
 import GraphemeSplitter from 'grapheme-splitter'
+import TronWeb from 'tronweb'
 
 export function pad0x (str: string): string {
   return str.startsWith('0x') ? str : `0x${str}`
@@ -29,8 +30,7 @@ export function sleep (ms: number) {
  */
 export function isTronAddress (address: string): boolean {
   try {
-    formatsByName.TRX.decoder(address)
-    return true
+    return address.length !== 42 && TronWeb.isAddress(address)
   }
   catch (err) {
     console.warn(`invalid Tron address: ${address}`)
@@ -44,8 +44,7 @@ export function isTronAddress (address: string): boolean {
  */
 export function isEthAddress (address: string): boolean {
   try {
-    formatsByName.ETH.decoder(address)
-    return /^(0x|0X)[0-9a-f]{40}$/i.test(address)
+    return /^(0x|0X)[0-9a-f]{40}$/i.test(address) && utils.isAddress(address)
   }
   catch (err) {
     console.warn(`invalid ETH address: ${address}`)
