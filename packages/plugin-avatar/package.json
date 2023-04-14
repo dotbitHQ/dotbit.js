@@ -6,8 +6,8 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "clear": "rm -rf ./lib/ ./lib.esm/",
-    "prepublishOnly": "npm run build",
-    "build": "npm run clear && npm run build:esm & npm run build:commonjs",
+    "prepublishOnly": "npx only-allow pnpm && npm run build",
+    "build": "npm run clear && npm run build:esm && npm run build:commonjs",
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "publish": "pnpm publish --access public"

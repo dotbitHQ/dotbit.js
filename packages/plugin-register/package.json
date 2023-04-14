@@ -1,13 +1,13 @@
 {
   "name": "@dotbit/plugin-register",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/index.js",
   "module": "lib.esm/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "clear": "rm -rf ./lib/ ./lib.esm/",
-    "prepublishOnly": "npm run build",
-    "build": "npm run clear && npm run build:esm & npm run build:commonjs",
+    "prepublishOnly": "npx only-allow pnpm && npm run build",
+    "build": "npm run clear && npm run build:esm && npm run build:commonjs",
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "publish": "pnpm publish --access public"

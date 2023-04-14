@@ -1,10 +1,10 @@
-import { version } from '../package.json'
 import {
   accountIdHex,
   BitAccount,
   BitNetwork,
   BitPluginBase,
   CrossChainDirection,
+  CrossChainAccountStatusRes,
   DotBit,
   LockAccountRes,
   MintBitAccountRes,
@@ -21,10 +21,9 @@ import GnosisSDK, { EthSignSignature } from '@gnosis.pm/safe-core-sdk'
 import EthNftGnosisAbi from './EthNftGnosisAbi.json'
 import EthNftAbi from './EthNftAbi.json'
 import { ethers } from 'ethers'
-import { CrossChainAccountStatusRes } from 'dotbit/fetchers/CrossChainAPI'
 
 export class BitPluginRegister implements BitPluginBase {
-  version = version
+  version = '0.0.1' // todo: use version replacement
   name = 'BitPluginRegister'
 
   onInstall (dotbit: DotBit) {
