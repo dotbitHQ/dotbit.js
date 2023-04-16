@@ -5,7 +5,6 @@ import { AlgorithmId, CoinType, EvmChainId2CoinType } from '../const'
 import { TxsSignedOrUnSigned } from '../fetchers/SubAccountAPI'
 import { TxsWithMMJsonSignedOrUnSigned } from '../fetchers/RegisterAPI.type'
 import { BitErrorCode, DotbitError } from '../errors/DotbitError'
-import { remove0x } from '../tools/common'
 
 function isMMJson (txs: TxsSignedOrUnSigned | TxsWithMMJsonSignedOrUnSigned): txs is TxsWithMMJsonSignedOrUnSigned {
   return 'mm_json' in txs
@@ -81,7 +80,7 @@ export abstract class BitSigner {
             signItem.sign_msg = signDataRes + mmJsonHashAndChainIdHex(mmJson, mmJson.domain.chainId)
           }
           else {
-            signItem.sign_msg = await this.signData(Buffer.from(remove0x(signItem.sign_msg), 'hex'))
+            signItem.sign_msg = await this.signData(signItem.sign_msg)
           }
         }
       }
@@ -90,7 +89,7 @@ export abstract class BitSigner {
       for (const list of txs.list) {
         for (const signItem of list.sign_list) {
           if (signItem.sign_msg) {
-            signItem.sign_msg = await this.signData(Buffer.from(remove0x(signItem.sign_msg), 'hex'))
+            signItem.sign_msg = await this.signData(signItem.sign_msg)
           }
         }
       }
