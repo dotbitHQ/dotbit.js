@@ -1,6 +1,6 @@
 {
   "name": "@dotbit/plugin-register",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "lib/index.js",
   "module": "lib.esm/index.js",
   "types": "lib/index.d.ts",
@@ -18,8 +18,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@gnosis.pm/safe-core-sdk": "^2.1.0",
-    "@gnosis.pm/safe-ethers-lib": "^1.1.0",
+    "@safe-global/protocol-kit": "^0.1.1",
+    "@safe-global/safe-ethers-lib": "^1.9.2",
     "ethers": "^5.7.2"
   }
 }

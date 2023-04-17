@@ -6,3 +6,4 @@ lib/
 lib.esm/
 example/browser/dist/
 *.tgz
+pnpm-lock.yaml
