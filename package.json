@@ -20,6 +20,7 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prepublishOnly": "npx only-allow pnpm && npm run build",
+    "postversion": "genversion src/version.ts --es6 && git add src/version.ts package.json && git commit --amend --no-edit",
     "slip44": "npm i bip44-constants@latest -D && node scripts/slip44-json.js",
     "character": "node scripts/get_character_list.js"
   },
@@ -54,6 +55,7 @@
     "eslint": "8.22.0",
     "eslint-config-blockabc": "^0.15.2",
     "eslint-plugin-n": "^15.3.0",
+    "genversion": "^3.1.1",
     "jest": "^28.1.1",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",

@@ -9,6 +9,7 @@ import { isSubAccount } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, DotbitError } from './errors/DotbitError'
 import { isEmptyAddress } from './tools/common'
 import { BitPluginBase } from './types'
+import { version } from './version'
 
 interface CacheProvider {
   get: (key: string, options?: any) => any,
@@ -24,6 +25,7 @@ export interface DotBitConfig {
 }
 
 export class DotBit {
+  version = version
   network: BitNetwork
   cacheProvider: CacheProvider
   bitIndexer: BitIndexer

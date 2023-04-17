@@ -4,9 +4,10 @@ import { Client, KeyPairsType, PageParams } from 'web3-mq';
 import { init, hasKeys, signMetaMask, getUserIdByAddress, getAddressByDid } from './utils';
 
 import { DID_TYPE_ENUM } from './types';
+import { version } from './version';
 
 export class BitPluginWeb3MQ implements BitPluginBase {
-  version = '0.0.1';
+  version = version;
   name = 'BitPluginWeb3MQ';
   appKey = '';
 
