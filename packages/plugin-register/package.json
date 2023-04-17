@@ -18,8 +18,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@gnosis.pm/safe-core-sdk": "^2.1.0",
-    "@gnosis.pm/safe-ethers-lib": "^1.1.0",
+    "@safe-global/protocol-kit": "^0.1.1",
+    "@safe-global/safe-ethers-lib": "^1.9.2",
     "ethers": "^5.7.2"
   }
 }

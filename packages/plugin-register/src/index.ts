@@ -16,8 +16,9 @@ import {
   RenewRes,
   isSubAccount
 } from 'dotbit'
-import EthersAdapter from '@gnosis.pm/safe-ethers-lib'
-import GnosisSDK, { EthSignSignature } from '@gnosis.pm/safe-core-sdk'
+import EthersAdapter from '@safe-global/safe-ethers-lib'
+import Safe from '@safe-global/protocol-kit'
+import SafeSignature from '@safe-global/protocol-kit/dist/src/utils/signatures/SafeSignature'
 import EthNftGnosisAbi from './EthNftGnosisAbi.json'
 import EthNftAbi from './EthNftAbi.json'
 import { ethers } from 'ethers'
@@ -161,27 +162,27 @@ export class BitPluginRegister implements BitPluginBase {
       const gnosisContract = new ethers.Contract(CrossEthGnosisAddress, EthNftGnosisAbi, this.signer.signer)
       const nonce = (await gnosisContract.uuidNonces(accountIdHex(account))).toNumber()
 
-      const gnosisSdk = await GnosisSDK.create({
+      const safeSdk = await Safe.create({
         ethAdapter,
         safeAddress: CrossEthGnosisAddress
       })
 
-      const transaction = {
+      const safeTransactionData = {
         to: CrossEthContract,
         value: '0',
         nonce,
         data
       }
 
-      const tx = await gnosisSdk.createTransaction(transaction)
+      const safeTransaction = await safeSdk.createTransaction({ safeTransactionData })
 
       signatures.forEach((signature) => {
-        tx.addSignature(new EthSignSignature(signature.signer, signature.data))
+        safeTransaction.addSignature(new SafeSignature(signature.signer, signature.data))
       })
 
-      gnosisSdk.getOwnersWhoApprovedTx = () => Promise.resolve([]) // We ignore sdk's some internal logic for now.
+      safeSdk.getOwnersWhoApprovedTx = () => Promise.resolve([]) // We ignore sdk's some internal logic for now.
 
-      const { hash: txHash } = await gnosisSdk.executeTransaction(tx)
+      const { hash: txHash } = await safeSdk.executeTransaction(safeTransaction)
 
       await this.bitBuilder.crossChainReturnTrxHashToService({
         account,
