@@ -4,6 +4,7 @@ import { fetchJson } from '@ethersproject/web'
 import { BigNumber } from '@ethersproject/bignumber'
 import { hexConcat, hexDataSlice, hexZeroPad } from '@ethersproject/bytes'
 import { toUtf8String } from '@ethersproject/strings'
+import { version } from './version'
 
 const matcherIpfs = /^(ipfs):\/\/(.*)$/i
 
@@ -52,7 +53,7 @@ interface BitPluginAvatarOptions {
 }
 
 export class BitPluginAvatar implements BitPluginBase {
-  version = '0.0.1'
+  version = version
   name = 'BitPluginAvatar'
 
   ipfs = 'https://gateway.ipfs.io'

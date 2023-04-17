@@ -21,9 +21,10 @@ import GnosisSDK, { EthSignSignature } from '@gnosis.pm/safe-core-sdk'
 import EthNftGnosisAbi from './EthNftGnosisAbi.json'
 import EthNftAbi from './EthNftAbi.json'
 import { ethers } from 'ethers'
+import { version } from './version'
 
 export class BitPluginRegister implements BitPluginBase {
-  version = '0.0.1' // todo: use version replacement
+  version = version
   name = 'BitPluginRegister'
 
   onInstall (dotbit: DotBit) {

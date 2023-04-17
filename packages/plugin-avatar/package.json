@@ -7,6 +7,7 @@
   "scripts": {
     "clear": "rm -rf ./lib/ ./lib.esm/",
     "prepublishOnly": "npx only-allow pnpm && npm run build",
+    "postversion": "genversion src/version.ts --es6 && git add src/version.ts package.json && git commit --amend --no-edit",
     "build": "npm run clear && npm run build:esm && npm run build:commonjs",
     "build:commonjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.build.esm.json",
