@@ -264,7 +264,7 @@ const result = await account.checkSubAccounts(subAccounts)
 ## mintSubAccounts(params)
 To mint multiple sub-accounts for a BitAccount instance.
 > Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
-> Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email supermancy@did.id with a brief description of your project.
+> Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email melissa@did.id with a brief description of your project.
 ### Parameters
 - params: `SubAccountParams[]`
   - account: `string`,
@@ -317,7 +317,7 @@ console.log(result);
 ## mintSubAccount(params)
 To mint a sub-account for a BitAccount instance.
 > Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
-> Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email supermancy@did.id with a brief description of your project.
+> Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email melissa@did.id with a brief description of your project.
 ### Parameters
 - params: `SubAccountParams`
   - account: `string`,
