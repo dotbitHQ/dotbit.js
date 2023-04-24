@@ -38,19 +38,17 @@ To create a BitAccount instance.
 `BitAccount`
 ### Example
 ```javascript
-const { BitAccount } = require('dotbit')
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
 
 // To create a BitAccount instance.
-const account = new BitAccount({account: 'west.bit'});
+const account = dotbit.account({account: 'west.bit'})
 console.log(account);
 
 // ...
 // The printed result would be like:
 BitAccount {
-  account: 'west.bit',
-  bitIndexer: undefined,
-  bitBuilder: undefined,
-  signer: undefined
+  account: 'west.bit'
 }
 ```
 
@@ -62,8 +60,12 @@ N/A
 `string`
 ### Example
 ```javascript
-const account = new BitAccount({account: 'west.bit'});
-// To get the account of 'west.bit'.
+const { createInstance } = require('dotbit')
+
+// create dotbit instance
+const dotbit = createInstance()
+// To create a BitAccount instance.
+const account = dotbit.account({account: 'west.bit'})
 console.log(account.account);
 
 // ...
@@ -79,13 +81,18 @@ N/A
 `BitIndexer`
 ### Example
 ```javascript
-const account = new BitAccount({account: 'west.bit'});
+const { createInstance } = require('dotbit')
+
+// create dotbit instance
+const dotbit = createInstance()
+// To create a BitAccount instance.
+const account = dotbit.account({account: 'west.bit'})
 // To get the indexer of current BitAccount instance
 console.log(account.bitIndexer)
 
 // ...
 // The printed result would be like:
-BitIndexer { rpc: JSONRPC { url: 'https://indexer-v1.did.id', id: 0 } }
+BitIndexer { }
 ```
 
 ## bitBuilder
@@ -96,21 +103,17 @@ N/A
 `RemoteTxBuilder`
 ### Example
 ```javascript
-const account = new BitAccount({account: 'west.bit'});
+const { createInstance } = require('dotbit')
+// create dotbit instance
+const dotbit = createInstance()
+// To create a BitAccount instance.
+const account = dotbit.account({account: 'west.bit'})
 // To get the builder of current BitAccount instance
 console.log(account.bitBuilder)
 
 // ...
 // The printed result would be like:
 RemoteTxBuilder {
-  subAccountAPI: SubAccountAPI {
-    baseUri: 'https://subaccount-api.did.id/v1',
-    net: Networking { baseUri: 'https://subaccount-api.did.id/v1' }
-  },
-  registerAPI: RegisterAPI {
-    baseUri: 'https://register-api.did.id/v1',
-    net: Networking { baseUri: 'https://register-api.did.id/v1' }
-  }
 }
 ```
 
@@ -124,14 +127,17 @@ N/A
 ```javascript
 const { EthersSigner } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
+const { createInstance } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
 const provider = new ethers.providers.InfuraProvider()
 const wallet = new Wallet(privateKey, provider)
 const signer = new EthersSigner(wallet)
-
-const account = new BitAccount({account: 'west.bit', signer});
+const dotbit = createInstance({
+  signer: signer
+})
+const account = dotbit.account({account: 'west.bit'})
 
 // To get the signer of current BitAccount instance
 console.log(account.signer)
@@ -139,19 +145,25 @@ console.log(account.signer)
 
 ## status
 To get the account status of current BitAccount instance.
+
+> To get the full status of a .bit account, check out here: [Account Status Enum](https://github.com/dotbitHQ/das-register/blob/main/API.md#account-detail)
 ### Parameter
 N/A
 ### Return Value
 `AccountStatus`
 ### Example
 ```javascript
-const account = new BitAccount({account: 'west.bit'});
+const { createInstance } = require('dotbit')
+// create dotbit instance
+const dotbit = createInstance()
+// To create a BitAccount instance.
+const account = dotbit.account({account: 'west.bit'})
 // To get the account status of 'west.bit'
 console.log(account.status)
 
 // ...
 // The printed result would be like:
-undefined
+6 // AccountStatus
 ```
 
 ## enableSubAccount()
@@ -195,7 +207,9 @@ List the sub accounts of a main account, with pagination and filter.
 Promise<`SubAccountListRes`>
 ### Example
 ```javascript
-const account = new BitAccount({account: 'makeafriend.bit'});
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'west.bit'})
 // To list the sub-accounts of a main account, with 100 items per page.
 const subAccounts = await account.subAccounts()
 console.log(subAccounts)
@@ -228,7 +242,9 @@ To check if all given sub-accounts could be registered.
 Promise<{result: `SubAccountWithStatus[]`}>
 ### Example
 ```javascript
-const account = new BitAccount({account: 'imac.bit'});
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'west.bit'})
 
 const subAccounts: SubAccountMintParams[] = [{
   account: 'xyz.imac.bit',
@@ -277,14 +293,17 @@ Promise<{ hash?: `string`, hash_list: `string[]` }>
 ```javascript
 const { EthersSigner } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
+const { createInstance } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
 const provider = new ethers.providers.InfuraProvider()
 const wallet = new Wallet(privateKey, provider)
 const signer = new EthersSigner(wallet)
-
-const account = new BitAccount({account: 'imac.bit', signer});
+const dotbit = createInstance({
+  signer: signer
+})
+const account = dotbit.account({account: 'imac.bit'})
 const mintParam = [{
   account: '006.imac.bit',
   keyInfo: {
@@ -330,14 +349,18 @@ Promise<{ hash?: `string`, hash_list: `string[]` }>
 ```javascript
 const { EthersSigner } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
+const { createInstance } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
 const provider = new ethers.providers.InfuraProvider()
 const wallet = new Wallet(privateKey, provider)
 const signer = new EthersSigner(wallet)
+const dotbit = createInstance({
+  signer: signer
+})
 
-const account = new BitAccount({account: 'imac.bit', signer});
+const account = dotbit.account({account: 'imac.bit'})
 const mintParam = {
   account: '005.imac.bit',
   keyInfo: {
@@ -369,6 +392,7 @@ Promise<{ hash?: `string`, hash_list: `string[]` }>
 ```javascript
 const { EthersSigner } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
+const { createInstance } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
@@ -376,7 +400,10 @@ const provider = new ethers.providers.InfuraProvider()
 const wallet = new Wallet(privateKey, provider)
 const signer = new EthersSigner(wallet)
 
-const account = new BitAccount({account: 'west.bit', signer});
+const dotbit = createInstance({
+  signer: signer
+})
+const account = dotbit.account({account: 'west.bit'})
 const result = await account.changeOwner({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -403,14 +430,17 @@ Promise<{ hash?: `string`, hash_list: `string[]` }>
 ```javascript
 const { EthersSigner } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
+const { createInstance } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
 const provider = new ethers.providers.InfuraProvider()
 const wallet = new Wallet(privateKey, provider)
 const signer = new EthersSigner(wallet)
-
-const account = new BitAccount({account: 'west.bit', signer});
+const dotbit = createInstance({
+  signer: signer
+})
+const account = dotbit.account({account: 'west.bit'})
 const result = await account.changeManager({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -440,14 +470,17 @@ Promise<{ hash?: `string`, hash_list: `string[]` }>
 ```javascript
 const { EthersSigner } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
+const { createInstance } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
 const provider = new ethers.providers.InfuraProvider()
 const wallet = new Wallet(privateKey, provider)
 const signer = new EthersSigner(wallet)
-
-const account = new BitAccount({account: 'west.bit', signer});
+const dotbit = createInstance({
+  signer: signer
+})
+const account = dotbit.account({account: 'west.bit'})
 const result = await account.updateRecords([{
   key: 'profile.email',
   value: 'hr@apple.com',
@@ -474,6 +507,7 @@ N/A
 ```javascript
 const { EthersSigner } = require('../../lib/index')
 const { ethers, Wallet } = require('ethers')
+const { createInstance } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
@@ -481,13 +515,10 @@ const provider = new ethers.providers.InfuraProvider()
 const wallet = new Wallet(privateKey, provider)
 const signer = new EthersSigner(wallet)
 
-const account = new BitAccount({
-  account: "imac.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-  signer,
-});
+const dotbit = createInstance({
+  signer: signer,
+})
+const account = dotbit.account({account: 'imac.bit'})
 
 const editor = await account.editRecords()
 editor.delete({
@@ -530,12 +561,9 @@ Promise\<AccountInfo>
 - manager_key: `string`,
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "imac.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'imac.bit'})
 // Get the account info of "imac.bit"
 account.info().then(console.log)
 
@@ -568,13 +596,9 @@ Promise<`RoleKeyInfo`>
   - algorithm_id: `number`
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "west.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
-
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'west.bit'})
 // Get the owner of "west.bit"
 account.owner().then(console.log)
 
@@ -598,13 +622,9 @@ Promise<`RoleKeyInfo`>
   - algorithm_id: `number`
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "west.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
-
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'west.bit'})
 // Get the manager of "west.bit"
 account.manager().then(console.log)
 
@@ -631,13 +651,9 @@ Promise\<BitAccountRecordExtended[]>
 - subtype: `string`,
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "west.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
-
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'west.bit'})
 // Get all records of "west.bit"
 account.records().then(console.log)
 
@@ -696,13 +712,9 @@ Promise\<BitAccountRecordAddress[]>
 - coin_type: `string`,
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "west.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
-
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'west.bit'})
 // Get all addresses of "west.bit"
 account.addresses().then(console.log)
 
@@ -769,12 +781,9 @@ Promise\<BitAccountRecordExtended[]>
 - subtype: `string`,
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "code.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'code.bit'})
 // Get all DWebs of "code.bit"
 account.dwebs().then(console.log)
 
@@ -824,12 +833,9 @@ Promise\<BitAccountRecordExtended>
 - subtype: `string`,
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "code.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'code.bit'})
 // Get the first DWeb of "code.bit"
 account.dweb().then(console.log)
 
@@ -859,12 +865,9 @@ Promise\<`BitAccountRecordExtended[]`>
 - subtype: `string`,
 ### Example
 ```javascript
-const account = new BitAccount({
-  account: "west.bit",
-  bitIndexer: new BitIndexer({
-    uri: "https://indexer-v1.did.id",
-  }),
-});
+const { createInstance } = require('dotbit')
+const dotbit = createInstance()
+const account = dotbit.account({account: 'west.bit'})
 // Get all profiles of "west.bit"
 account.profiles().then(console.log);
 
