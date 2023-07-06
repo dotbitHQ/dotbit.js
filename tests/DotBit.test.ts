@@ -4,6 +4,13 @@ import { CoinType } from '../src/const'
 import { DotBit } from '../src/DotBit'
 import { BitPluginBase } from '../src/types'
 import { dotbitProd } from './common/index'
+import { BitIndexer } from '../src/fetchers/BitIndexer'
+
+const dotbitTest = new DotBit({
+  bitIndexer: new BitIndexer({
+    uri: 'https://test-indexer.did.id',
+  })
+})
 
 describe('serverInfo', function () {
   it('work', async function () {
@@ -192,4 +199,54 @@ describe('addrs', function () {
     const addrs = await dotbitProd.addrs('imac.bit', 'eth')
     expect(addrs.length).toBe(1)
   }, 10000)
+})
+
+describe('verifyAddrsByAccount', function () {
+  it('should work', async function () {
+    const isValid = await dotbitTest.verifyAddrsByAccount(
+      '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
+      'leonx.bit',
+      'leon.leonx.bit',
+    )
+    expect(isValid).toBe(true)
+  })
+  it('should work', async function () {
+    const isValid = await dotbitTest.verifyAddrsByAccount(
+      '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
+      'leonx.bit',
+    )
+    expect(isValid).toBe(true)
+  })
+  it('should work', async function () {
+    const isValid = await dotbitTest.verifyAddrsByAccount(
+      '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
+      'leonx.bit',
+      'leon123123.leonx.bit',
+    )
+    expect(isValid).toBe(false)
+  })
+  it('should work', async function () {
+    const isValid = await dotbitTest.verifyAddrsByAccount(
+      '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
+      '123.bit',
+      '123.123.bit',
+    )
+    expect(isValid).toBe(false)
+  })
+  it('should work', async function () {
+    const isValid = await dotbitTest.verifyAddrsByAccount(
+      '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
+      '123.bit',
+    )
+    expect(isValid).toBe(false)
+  })
+  it('should work', async function () {
+    const isValid = await dotbitTest.verifyAddrsByAccount(
+      '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
+      'leonx.bit',
+      null,
+      1
+    )
+    expect(isValid).toBe(true)
+  })
 })
