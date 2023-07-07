@@ -72,4 +72,21 @@ export class BitIndexer {
     }])
       .then(result => result.account_list.map(item => item.account))
   }
+
+  /**
+   * Check if the address has the specified SubDID under the designated account.
+   * @param address
+   * @param account
+   * @param subAccount
+   * @param verifyType default 0 === "owner", 1 === "manager"
+   */
+  subAccountVerify (address: string, account: string, subAccount?: string, verifyType?: number): Promise<boolean> {
+    return this.request('das_subAccountVerify', [{
+      address,
+      account,
+      sub_account: subAccount,
+      verify_type: verifyType ? 1 : 0,
+    }])
+      .then(result => result.is_subdid)
+  }
 }
