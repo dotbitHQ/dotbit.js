@@ -722,18 +722,18 @@ Get the avatar of a given account.
 
 For details, please refer to the documentation of [@dotbit/plugin-avatar](https://github.com/mozwell/dotbit.js/blob/main/packages/plugin-avatar/README.md)
 
-## verifyAddrsByAccount(address, account, subAccount, verifyType)
-Check if the given address has the specified SubDID under the account.
+## verifyAddrsByAccount(address, mainAccount, subAccount, verifyType)
+Verify whether the provided address has associated SubDIDs within the given main account, serving as a gateway for community member participation.
 ### Parameters
 - address: `string` Address to be verified.
-- account: `string` Specified .bit account.
+- mainAccount: `string` Specified .bit account.
 - (Optional)subAccount: `string` Specified SubDID. `subAccount` is an optional field. If subAccount is empty, it will default to checking if the given address has at least one SubDID under any specified account.
 - (Optional)verifyType: `number` The `verifyType` is an optional field with a default value of 0, where 0 represents that the `address` is the owner address of the SubDID, and 1 represents that the `address` is the manager address of the SubDID.
 ### Return Value
 Promise\<`boolean`>
 ### Example
 ```javascript
-// Check if the owner address has the SubDID 'leon.leonx.bit' under the account 'leonx.bit'.
+// Check if the owner address has the SubDID 'leon.leonx.bit' under the main account 'leonx.bit'.
 dotbit.verifyAddrsByAccount(
   '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
   'leonx.bit',
@@ -743,7 +743,7 @@ dotbit.verifyAddrsByAccount(
 // The printed result would be like:
 true
 
-// Check if the manager address has any SubDID under the account 'leonx.bit'.
+// Check if the manager address has any SubDID under the main account 'leonx.bit'.
 dotbit.verifyAddrsByAccount(
   '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
   'leonx.bit',

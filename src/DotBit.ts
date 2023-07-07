@@ -192,11 +192,11 @@ export class DotBit {
   /**
    * Check if the address has the specified SubDID under the designated account.
    * @param address
-   * @param account
+   * @param mainAccount
    * @param subAccount
    * @param verifyType default 0 === "owner", 1 === "manager"
    */
-  async verifyAddrsByAccount (address: string, account: string, subAccount?: string, verifyType?: number){
-    return await this.bitIndexer.subAccountVerify(address, account, subAccount, verifyType)
+  async verifyAddrsByAccount (address: string, mainAccount: string, subAccount?: string, verifyType?: number){
+    return await this.bitIndexer.subAccountVerify(address, mainAccount, subAccount, verifyType)
   }
 }
