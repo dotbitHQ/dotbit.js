@@ -74,7 +74,7 @@ export class BitIndexer {
   }
 
   /**
-   * Check if the address has the specified SubDID under the designated account.
+   * Verify whether the provided address has associated SubDIDs within the given main account, serving as a gateway for community member participation.
    * @param address
    * @param account
    * @param subAccount
