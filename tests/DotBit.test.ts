@@ -210,6 +210,7 @@ describe('verifyAddrsByAccount', function () {
     )
     expect(isValid).toBe(true)
   })
+
   it('should work', async function () {
     const isValid = await dotbitTest.verifyAddrsByAccount(
       '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
@@ -217,6 +218,7 @@ describe('verifyAddrsByAccount', function () {
     )
     expect(isValid).toBe(true)
   })
+
   it('should work', async function () {
     const isValid = await dotbitTest.verifyAddrsByAccount(
       '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
@@ -225,6 +227,7 @@ describe('verifyAddrsByAccount', function () {
     )
     expect(isValid).toBe(false)
   })
+
   it('should work', async function () {
     const isValid = await dotbitTest.verifyAddrsByAccount(
       '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
@@ -233,6 +236,7 @@ describe('verifyAddrsByAccount', function () {
     )
     expect(isValid).toBe(false)
   })
+
   it('should work', async function () {
     const isValid = await dotbitTest.verifyAddrsByAccount(
       '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
@@ -240,6 +244,7 @@ describe('verifyAddrsByAccount', function () {
     )
     expect(isValid).toBe(false)
   })
+
   it('should work', async function () {
     const isValid = await dotbitTest.verifyAddrsByAccount(
       '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
@@ -248,5 +253,13 @@ describe('verifyAddrsByAccount', function () {
       1
     )
     expect(isValid).toBe(true)
+  })
+})
+
+describe('validDotbitAliasAddresses', function () {
+  it('should work', async function () {
+    const addresses = await dotbitProd.validDotbitAliasAddresses('imac.bit')
+    expect(addresses).toBeInstanceOf(Array)
+    expect(addresses.length).toBe(0)
   })
 })

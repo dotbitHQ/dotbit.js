@@ -26,6 +26,7 @@
 - [profiles(account, key)](#profilesaccount-key)
 - [avatar(account)](#avataraccount)
 - [verifyAddrsByAccount(address, account, subAccount, verifyType)](#verifyaddrsbyaccountaddress-account-subaccount-verifytype)
+- [validDotbitAliasAddresses(account)](#validdotbitaliasaddressesaccount)
 
 ## constructor(config)
 To create a new DotBit instance.
@@ -753,4 +754,26 @@ dotbit.verifyAddrsByAccount(
 
 // The printed result would be like:
 true
+```
+
+## validDotbitAliasAddresses (account)
+Query the valid alias address using the .bit alias.
+### Parameters
+- account: `string`. a .bit alias.
+### Return Value
+Promise\<`BitKeyInfo[]`>
+### Example
+```javascript
+dotbit.validDotbitAliasAddresses('imac.bit').then(console.log)
+
+// The printed result would be like:
+[
+  {
+    "type":"blockchain",
+    "key_info":{
+      "coin_type":"60",
+      "key":"0x15a33588908cf8edb27d1abe3852bf287abd3891"
+    }
+  }
+]
 ```
