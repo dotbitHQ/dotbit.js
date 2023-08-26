@@ -26,7 +26,7 @@
 - [profiles(account, key)](#profilesaccount-key)
 - [avatar(account)](#avataraccount)
 - [verifyAddrsByAccount(address, account, subAccount, verifyType)](#verifyaddrsbyaccountaddress-account-subaccount-verifytype)
-- [validDotbitAliasAddresses(account)](#validdotbitaliasaddressesaccount)
+- [validDotbitAliasAddresses(account)](#validdotbitaliasaddresses-account)
 
 ## constructor(config)
 To create a new DotBit instance.
