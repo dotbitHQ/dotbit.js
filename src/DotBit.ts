@@ -196,7 +196,15 @@ export class DotBit {
    * @param subAccount
    * @param verifyType default 0 === "owner", 1 === "manager"
    */
-  async verifyAddrsByAccount (address: string, mainAccount: string, subAccount?: string, verifyType?: number){
+  async verifyAddrsByAccount (address: string, mainAccount: string, subAccount?: string, verifyType?: number) {
     return await this.bitIndexer.subAccountVerify(address, mainAccount, subAccount, verifyType)
+  }
+
+  /**
+   * Query the valid alias address using the .bit alias.
+   * @param account
+   */
+  async validDotbitAliasAddresses (account: string) {
+    return await this.bitIndexer.validDotbitAliasAddresses(account)
   }
 }

@@ -3,6 +3,7 @@ import {
   BitAccountInfo,
   BitAccountList,
   BitAccountRecord,
+  BitKeyInfo,
   DasAccountRecords,
   DasServerInfo,
   KeyInfo,
@@ -88,5 +89,14 @@ export class BitIndexer {
       verify_type: verifyType ? 1 : 0,
     }])
       .then(result => result.is_subdid)
+  }
+
+  /**
+   * Query the valid alias address using the .bit alias.
+   * @param account
+   */
+  validDotbitAliasAddresses (account: string): Promise<BitKeyInfo[]> {
+    return this.request('das_accountReverseAddress', [{ account }])
+      .then(result => result.list)
   }
 }
