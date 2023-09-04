@@ -28,6 +28,9 @@ export class JSONRPC {
         if (res.result.errno) {
           throw new DotbitError(res.result.errmsg, res.result.errno)
         }
+        if (res.result.err_msg) {
+          throw new DotbitError(res.result.err_msg, res.result.err_no)
+        }
 
         return res.result
       })
