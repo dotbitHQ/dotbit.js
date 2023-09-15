@@ -27,6 +27,7 @@
 - [avatar(account)](#avataraccount)
 - [verifyAddrsByAccount(address, account, subAccount, verifyType)](#verifyaddrsbyaccountaddress-account-subaccount-verifytype)
 - [validDotbitAliasAddresses(account)](#validdotbitaliasaddresses-account)
+- [batchAccountInfo(accounts)](#batchaccountinfo-accounts)
 
 ## constructor(config)
 To create a new DotBit instance.
@@ -482,6 +483,7 @@ Promise\<AccountInfo>
 - owner_key: `string`,
 - manager_algorithm_id: `number`,
 - manager_key: `string`,
+- enable_sub_account: `number`,
 ### Example
 ```javascript
 // Get the account info of "imac.bit"
@@ -501,7 +503,8 @@ dotbit.accountInfo("imac.bit").then(console.log)
   owner_algorithm_id: 5,
   owner_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
   manager_algorithm_id: 5,
-  manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2'
+  manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
+  enable_sub_account: 0
 }
 ```
 
@@ -777,3 +780,26 @@ dotbit.validDotbitAliasAddresses('imac.bit').then(console.log)
   }
 ]
 ```
+
+## batchAccountInfo (accounts)
+Batch query of account information. Currently, only information about whether the account can be registered is returned. A maximum of 50 accounts can be queried at a time.
+### Parameters
+- accounts: `string[]`. List of accounts to be queried.
+### Return Value
+Promise\<`BatchAccountInfo[]`>
+### Example
+```javascript
+dotbit.batchAccountInfo(['imac.bit', 'imac-1.bit']).then(console.log)
+
+// The printed result would be like:
+[
+  {
+    "account": "imac.bit",
+    "can_register": false
+  },
+  {
+    "account": "imac-1.bit",
+    "can_register": true
+  },
+  ...
+]

@@ -1,5 +1,6 @@
 import { JSONRPC } from '../tools/JSON-RPC'
 import {
+  BatchAccountInfo,
   BitAccountInfo,
   BitAccountList,
   BitAccountRecord,
@@ -97,6 +98,15 @@ export class BitIndexer {
    */
   validDotbitAliasAddresses (account: string): Promise<BitKeyInfo[]> {
     return this.request('das_accountReverseAddress', [{ account }])
+      .then(result => result.list)
+  }
+
+  /**
+   * Batch query of account information. Currently, only information about whether the account can be registered is returned. A maximum of 50 accounts can be queried at a time.
+   * @param accounts
+   */
+  batchAccountInfo (accounts: string[]): Promise<BatchAccountInfo[]> {
+    return this.request('das_batchRegisterInfo', [{ batch_account: accounts }])
       .then(result => result.list)
   }
 }

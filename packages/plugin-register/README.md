@@ -63,7 +63,8 @@ console.log(info)
 //   owner_algorithm_id: 5,
 //   owner_key: '0x...',
 //   manager_algorithm_id: 5,
-//   manager_key: '0x...'
+//   manager_key: '0x...',
+//   enable_sub_account: 0
 // }
 ```
 > ⚠️note: Registration takes about 5 minutes and requires a recurring call to the `info` method to ensure successful registration.
@@ -159,7 +160,8 @@ console.log(info)
 //   owner_algorithm_id: 5,
 //   owner_key: '0x...',
 //   manager_algorithm_id: 5,
-//   manager_key: '0x...'
+//   manager_key: '0x...',
+//   enable_sub_account: 0
 // }
 ```
 

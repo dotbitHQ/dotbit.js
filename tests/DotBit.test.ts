@@ -263,3 +263,11 @@ describe('validDotbitAliasAddresses', function () {
     expect(addresses.length).toBe(0)
   })
 })
+
+describe('batchAccountInfo', function () {
+  it('should work', async function () {
+    const list = await dotbitProd.batchAccountInfo(['imac.bit', 'imac-1.bit'])
+    expect(list).toBeInstanceOf(Array)
+    expect(list.length).toBe(2)
+  })
+})

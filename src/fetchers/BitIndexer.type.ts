@@ -23,6 +23,7 @@ export interface AccountInfo {
   owner_key: string,
   manager_algorithm_id: number,
   manager_key: string,
+  enable_sub_account: 0,
 }
 
 export interface BitAccountInfo {
@@ -69,4 +70,9 @@ export interface BitAccountList {
   account_list: Array<{
     account: string,
   }>,
+}
+
+export interface BatchAccountInfo {
+  account: string,
+  can_register: boolean,
 }

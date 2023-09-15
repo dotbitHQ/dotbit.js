@@ -207,4 +207,12 @@ export class DotBit {
   async validDotbitAliasAddresses (account: string) {
     return await this.bitIndexer.validDotbitAliasAddresses(account)
   }
+
+  /**
+   * Batch query of account information. Currently, only information about whether the account can be registered is returned. A maximum of 50 accounts can be queried at a time.
+   * @param accounts
+   */
+  async batchAccountInfo (accounts: string[]) {
+    return await this.bitIndexer.batchAccountInfo(accounts)
+  }
 }

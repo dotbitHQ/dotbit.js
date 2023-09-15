@@ -1,6 +1,6 @@
 {
   "name": "dotbit",
-  "version": "0.4.24",
+  "version": "0.4.25",
   "description": "A complete .bit SDK and utilities in TypeScript",
   "author": "Jeff Jing <https://github.com/zgayjjf>",
   "license": "MIT",

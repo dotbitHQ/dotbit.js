@@ -34,6 +34,7 @@ describe('info', function () {
       status: 0,
       owner_algorithm_id: 5,
       owner_key: '0x1d643fac9a463c9d544506006a6348c234da485f',
+      enable_sub_account: 0
     })
   })
 })

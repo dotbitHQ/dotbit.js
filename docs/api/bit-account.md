@@ -559,6 +559,7 @@ Promise\<AccountInfo>
 - owner_key: `string`,
 - manager_algorithm_id: `number`,
 - manager_key: `string`,
+- enable_sub_account: `number`,
 ### Example
 ```javascript
 const { createInstance } = require('dotbit')
@@ -581,7 +582,8 @@ account.info().then(console.log)
   owner_algorithm_id: 5,
   owner_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
   manager_algorithm_id: 5,
-  manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2'
+  manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
+  enable_sub_account: 0
 }
 ```
 
