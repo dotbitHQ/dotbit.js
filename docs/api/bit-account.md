@@ -42,7 +42,7 @@ const { createInstance } = require('dotbit')
 const dotbit = createInstance()
 
 // To create a BitAccount instance.
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 console.log(account);
 
 // ...
@@ -65,7 +65,7 @@ const { createInstance } = require('dotbit')
 // create dotbit instance
 const dotbit = createInstance()
 // To create a BitAccount instance.
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 console.log(account.account);
 
 // ...
@@ -86,7 +86,7 @@ const { createInstance } = require('dotbit')
 // create dotbit instance
 const dotbit = createInstance()
 // To create a BitAccount instance.
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // To get the indexer of current BitAccount instance
 console.log(account.bitIndexer)
 
@@ -107,7 +107,7 @@ const { createInstance } = require('dotbit')
 // create dotbit instance
 const dotbit = createInstance()
 // To create a BitAccount instance.
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // To get the builder of current BitAccount instance
 console.log(account.bitBuilder)
 
@@ -137,7 +137,7 @@ const signer = new EthersSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 
 // To get the signer of current BitAccount instance
 console.log(account.signer)
@@ -157,7 +157,7 @@ const { createInstance } = require('dotbit')
 // create dotbit instance
 const dotbit = createInstance()
 // To create a BitAccount instance.
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // To get the account status of 'west.bit'
 console.log(account.status)
 
@@ -209,7 +209,7 @@ Promise<`SubAccountListRes`>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // To list the sub-accounts of a main account, with 100 items per page.
 const subAccounts = await account.subAccounts()
 console.log(subAccounts)
@@ -244,7 +244,7 @@ Promise<{result: `SubAccountWithStatus[]`}>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 
 const subAccounts: SubAccountMintParams[] = [{
   account: 'xyz.imac.bit',
@@ -303,7 +303,7 @@ const signer = new EthersSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
-const account = dotbit.account({account: 'imac.bit'})
+const account = dotbit.account('imac.bit')
 const mintParam = [{
   account: '006.imac.bit',
   keyInfo: {
@@ -360,7 +360,7 @@ const dotbit = createInstance({
   signer: signer
 })
 
-const account = dotbit.account({account: 'imac.bit'})
+const account = dotbit.account('imac.bit')
 const mintParam = {
   account: '005.imac.bit',
   keyInfo: {
@@ -403,7 +403,7 @@ const signer = new EthersSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 const result = await account.changeOwner({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -440,7 +440,7 @@ const signer = new EthersSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 const result = await account.changeManager({
   key: '0x1d643fac9a463c9d544506006a6348c234da485f',
   coin_type: "60" // The coin type of ETH
@@ -480,7 +480,7 @@ const signer = new EthersSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 const result = await account.updateRecords([{
   key: 'profile.email',
   value: 'hr@apple.com',
@@ -518,7 +518,7 @@ const signer = new EthersSigner(wallet)
 const dotbit = createInstance({
   signer: signer,
 })
-const account = dotbit.account({account: 'imac.bit'})
+const account = dotbit.account('imac.bit')
 
 const editor = await account.editRecords()
 editor.delete({
@@ -564,7 +564,7 @@ Promise\<AccountInfo>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'imac.bit'})
+const account = dotbit.account('imac.bit')
 // Get the account info of "imac.bit"
 account.info().then(console.log)
 
@@ -600,7 +600,7 @@ Promise<`RoleKeyInfo`>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // Get the owner of "west.bit"
 account.owner().then(console.log)
 
@@ -626,7 +626,7 @@ Promise<`RoleKeyInfo`>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // Get the manager of "west.bit"
 account.manager().then(console.log)
 
@@ -655,7 +655,7 @@ Promise\<BitAccountRecordExtended[]>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // Get all records of "west.bit"
 account.records().then(console.log)
 
@@ -716,7 +716,7 @@ Promise\<BitAccountRecordAddress[]>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // Get all addresses of "west.bit"
 account.addresses().then(console.log)
 
@@ -785,7 +785,7 @@ Promise\<BitAccountRecordExtended[]>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'code.bit'})
+const account = dotbit.account('code.bit')
 // Get all DWebs of "code.bit"
 account.dwebs().then(console.log)
 
@@ -837,7 +837,7 @@ Promise\<BitAccountRecordExtended>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'code.bit'})
+const account = dotbit.account('code.bit')
 // Get the first DWeb of "code.bit"
 account.dweb().then(console.log)
 
@@ -869,7 +869,7 @@ Promise\<`BitAccountRecordExtended[]`>
 ```javascript
 const { createInstance } = require('dotbit')
 const dotbit = createInstance()
-const account = dotbit.account({account: 'west.bit'})
+const account = dotbit.account('west.bit')
 // Get all profiles of "west.bit"
 account.profiles().then(console.log);
 
