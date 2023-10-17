@@ -5,4 +5,4 @@
 
 ## 0.4.26
 
-- fixed the account method documentation error in the BitAccount class [#58](https://github.com/dotbitHQ/dotbit.js/pull/58)
+- fixed the account method documentation error in the BitAccount class [commit](https://github.com/dotbitHQ/dotbit.js/commit/04278174d076461aad17dac48aa1e0dc25ccc5b1)
