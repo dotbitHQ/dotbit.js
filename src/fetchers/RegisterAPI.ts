@@ -9,11 +9,12 @@ import {
   EditAccountRecordsParam,
   PayWithDotbitBalanceParam,
   ReturnTrxHashToServiceParam,
+  SignTxListParams,
+  SignTxListRes,
   SubmitRegisterAccountOrderParam,
   SubmitRegisterAccountOrderRes,
   SubmitRenewAccountOrderParam,
-  SubmitRenewAccountOrderRes,
-  TxsWithMMJsonSignedOrUnSigned
+  SubmitRenewAccountOrderRes
 } from './RegisterAPI.type'
 
 export function toEditingRecord (record: BitAccountRecord): EditAccountRecord {
@@ -31,15 +32,15 @@ export class RegisterAPI {
     this.net = new Networking(baseUri)
   }
 
-  editAccountManager (params: EditAccountManagerParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  editAccountManager (params: EditAccountManagerParam): Promise<SignTxListParams> {
     return this.net.post('account/edit/manager', params)
   }
 
-  editAccountOwner (params: EditAccountOwnerParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  editAccountOwner (params: EditAccountOwnerParam): Promise<SignTxListParams> {
     return this.net.post('account/edit/owner', params)
   }
 
-  editAccountRecords (params: EditAccountRecordsParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  editAccountRecords (params: EditAccountRecordsParam): Promise<SignTxListParams> {
     return this.net.post('account/edit/records', params)
   }
 
@@ -78,7 +79,7 @@ export class RegisterAPI {
     })
   }
 
-  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<SignTxListParams> {
     const address = params.keyInfo.key
     const coinType = params.keyInfo.coin_type
 
@@ -107,12 +108,11 @@ export class RegisterAPI {
     })
   }
 
-  // todo-open: response should have same signature with SubAccountAPI.sendTransaction
-  sendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{hash: string}> {
+  sendTransaction (params: SignTxListRes): Promise<{hash: string}> {
     return this.net.post('transaction/send', {
       sign_key: params.sign_key,
       sign_list: params.sign_list,
-    } as Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>)
+    })
   }
 }
 

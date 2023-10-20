@@ -1,7 +1,7 @@
 import { Networking } from '../tools/Networking'
 import { BitKeyInfo, KeyInfo } from './BitIndexer.type'
-import { TxsWithMMJsonSignedOrUnSigned } from './RegisterAPI.type'
 import { CrossChainDirection, CrossChainAccountStatus } from '../const'
+import { SignTxListParams, SignTxListRes } from './RegisterAPI.type'
 
 export interface LockAccountParam {
   key_info: KeyInfo,
@@ -72,7 +72,7 @@ export class CrossChainAPI {
     this.net = new Networking(baseUri)
   }
 
-  lockAccount (params: LockAccountParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  lockAccount (params: LockAccountParam): Promise<SignTxListParams> {
     return this.net.post('lock/account', {
       type: 'blockchain',
       account: params.account,
@@ -129,7 +129,7 @@ export class CrossChainAPI {
     })
   }
 
-  sendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{ hash: string }> {
+  sendTransaction (params: SignTxListRes): Promise<{ hash: string }> {
     return this.net.post('transaction/send', params)
   }
 }

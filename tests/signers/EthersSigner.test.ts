@@ -1,7 +1,7 @@
-import { signTypedData, SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
+import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import { Wallet } from 'ethers'
-import { TxsWithMMJsonSignedOrUnSigned } from '../../src/fetchers/RegisterAPI.type'
-import { EthersSigner, TxsSignedOrUnSigned } from '../../src/index'
+import { SignTxListParams } from '../../src/fetchers/RegisterAPI.type'
+import { EthersSigner } from '../../src/index'
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
@@ -293,7 +293,7 @@ const typedDataFromBitFull = {
   }
 }
 
-const mmJsonChangeManager: TxsWithMMJsonSignedOrUnSigned = {
+const mmJsonChangeManager: SignTxListParams = {
   sign_key: '15020ef9cb836761b1b0b58943e8b971',
   sign_list: [
     {
@@ -427,17 +427,13 @@ const mmJsonChangeManager: TxsWithMMJsonSignedOrUnSigned = {
   }
 }
 
-const updateSubAccount: TxsSignedOrUnSigned = {
+const updateSubAccount: SignTxListParams = {
   action: 'update_sub_account',
   sign_key: 'ecd9bd0c4c9b9ac7b205ca778f12c85b',
-  list: [
+  sign_list: [
     {
-      sign_list: [
-        {
-          sign_type: 3,
-          sign_msg: 'From .bit: 4a77fe629bf14b9324f6db2feafc1adeed37c3e0746879723e76a2ff6b00b866'
-        }
-      ]
+      sign_type: 3,
+      sign_msg: 'From .bit: 4a77fe629bf14b9324f6db2feafc1adeed37c3e0746879723e76a2ff6b00b866'
     }
   ]
 }
@@ -544,6 +540,6 @@ describe('signTxList', function () {
 
   it('work for string', async function () {
     const res = await signer.signTxList(updateSubAccount)
-    expect(res.list[0].sign_list[0].sign_msg).toBe('0x54a74d77ef7f315dd888e49656b2629d4a4ad287ec806ee70b047fd171f0d76e2e58c927f56d5f077847210397c18b00bf01c1c8145c59bfb88ebdd4a7f1f5d31c')
+    expect(res.sign_list[0].sign_msg).toBe('0x54a74d77ef7f315dd888e49656b2629d4a4ad287ec806ee70b047fd171f0d76e2e58c927f56d5f077847210397c18b00bf01c1c8145c59bfb88ebdd4a7f1f5d31c')
   })
 })

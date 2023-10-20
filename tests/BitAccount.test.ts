@@ -1,5 +1,5 @@
 import { BitAccount, RoleKeyInfo } from '../src/BitAccount'
-import { AlgorithmId, CheckSubAccountStatus, CoinType, DWebProtocol } from '../src/const'
+import { SIGN_TYPE, CheckSubAccountStatus, CoinType, DWebProtocol } from '../src/const'
 import { SubAccountMintParams } from '../src/fetchers/SubAccountAPI'
 import { sleep } from '../src/tools/common'
 import { accountNotExist, accountWithSigner, accountWithSignerProd, accountWithSignerProdRecords } from './common/index'
@@ -45,7 +45,7 @@ describe('owner', function () {
     expect(owner).toMatchObject({
       key: '0x1d643fac9a463c9d544506006a6348c234da485f',
       coin_type: CoinType.ETH,
-      algorithm_id: AlgorithmId.eip712,
+      algorithm_id: SIGN_TYPE.eth712,
     } as RoleKeyInfo)
   })
 })
@@ -56,7 +56,7 @@ describe('manager', function () {
     expect(manager).toMatchObject({
       key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
       coin_type: CoinType.ETH,
-      algorithm_id: AlgorithmId.eip712,
+      algorithm_id: SIGN_TYPE.eth712,
     } as RoleKeyInfo)
   })
 })

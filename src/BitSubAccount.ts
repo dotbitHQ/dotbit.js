@@ -1,13 +1,12 @@
 import { BitAccount, BitAccountOptions } from './BitAccount'
 import { BitAccountRecord, KeyInfo } from './fetchers/BitIndexer.type'
 import { toEditingRecord } from './fetchers/RegisterAPI'
-import { EditAccountRecord } from './fetchers/RegisterAPI.type'
+import { EditAccountRecord, SignTxListRes } from './fetchers/RegisterAPI.type'
 import {
   EditSubAccountEditKey,
   EditSubAccountParams,
   SubAccountListParams,
-  SubAccountMintParams,
-  TxsSignedOrUnSigned
+  SubAccountMintParams
 } from './fetchers/SubAccountAPI'
 import { BitErrorCode, DotbitError } from './errors/DotbitError'
 import { isSubAccount } from './tools/account'
@@ -64,7 +63,7 @@ export class BitSubAccount extends BitAccount {
       },
     }
 
-    let mmJsonTxs: TxsSignedOrUnSigned
+    let mmJsonTxs: SignTxListRes
     if (editKey === 'owner') {
       value = value as KeyInfo
       mmJsonTxs = await this.bitBuilder.editSubAccount({
@@ -102,9 +101,9 @@ export class BitSubAccount extends BitAccount {
       })
     }
 
-    const res = await this.signer.signTxList(mmJsonTxs)
+    const signatureList = await this.signer.signTxList(mmJsonTxs)
 
-    return await this.bitBuilder.subAccountAPI.sendTransaction(res)
+    return await this.bitBuilder.subAccountAPI.sendTransaction(signatureList)
   }
 
   /**

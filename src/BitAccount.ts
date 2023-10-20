@@ -2,7 +2,7 @@ import { RecordsEditor } from './builders/RecordsEditor'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import {
   AccountStatus,
-  AlgorithmId2CoinType,
+  SignType2CoinType,
   BitNetwork,
   CheckSubAccountStatus,
   CoinType,
@@ -34,7 +34,7 @@ import {
   toRecordExtended,
 } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
-import { TxsWithMMJsonSignedOrUnSigned } from './fetchers/RegisterAPI.type'
+import { SignTxListParams } from './fetchers/RegisterAPI.type'
 import { CrossChainAccountStatusRes } from './fetchers/CrossChainAPI'
 import { matchDWebProtocol } from './tools/common'
 
@@ -154,9 +154,9 @@ export class BitAccount {
       coin_type: coinType,
     })
 
-    await this.signer.signTxList(txs)
+    const signatureList = await this.signer.signTxList(txs)
 
-    return await this.bitBuilder.subAccountAPI.sendTransaction(txs)
+    return await this.bitBuilder.subAccountAPI.sendTransaction(signatureList)
   }
 
   /**
@@ -240,9 +240,9 @@ export class BitAccount {
 
     const txs = await this.bitBuilder.mintSubAccounts(mintSubAccountsParams)
 
-    await this.signer.signTxList(txs)
+    const signatureList = await this.signer.signTxList(txs)
 
-    return await this.bitBuilder.subAccountAPI.sendTransaction(txs)
+    return await this.bitBuilder.subAccountAPI.sendTransaction(signatureList)
   }
 
   /**
@@ -260,7 +260,7 @@ export class BitAccount {
     const signerChainType = CoinType2ChainType[signerCoinType]
     const newChainType = CoinType2ChainType[keyInfo.coin_type]
 
-    let mmJsonTxs: TxsWithMMJsonSignedOrUnSigned
+    let mmJsonTxs: SignTxListParams
     if (isOwner) {
       mmJsonTxs = await this.bitBuilder.changeOwner({
         chain_type: signerChainType,
@@ -286,9 +286,9 @@ export class BitAccount {
       })
     }
 
-    const res = await this.signer.signTxList(mmJsonTxs)
+    const signatureList = await this.signer.signTxList(mmJsonTxs)
 
-    return await this.bitBuilder.registerAPI.sendTransaction(res)
+    return await this.bitBuilder.registerAPI.sendTransaction(signatureList)
   }
 
   /**
@@ -332,8 +332,8 @@ export class BitAccount {
       },
     })
 
-    const res = await this.signer.signTxList(txs)
-    return await this.bitBuilder.registerAPI.sendTransaction(res)
+    const signatureList = await this.signer.signTxList(txs)
+    return await this.bitBuilder.registerAPI.sendTransaction(signatureList)
   }
 
   /**
@@ -360,7 +360,7 @@ export class BitAccount {
     const info = await this.info()
     return {
       key: info.owner_key,
-      coin_type: AlgorithmId2CoinType[info.owner_algorithm_id],
+      coin_type: SignType2CoinType[info.owner_algorithm_id],
       algorithm_id: info.owner_algorithm_id,
     }
   }
@@ -369,7 +369,7 @@ export class BitAccount {
     const info = await this.info()
     return {
       key: info.manager_key,
-      coin_type: AlgorithmId2CoinType[info.manager_algorithm_id],
+      coin_type: SignType2CoinType[info.manager_algorithm_id],
       algorithm_id: info.manager_algorithm_id,
     }
   }

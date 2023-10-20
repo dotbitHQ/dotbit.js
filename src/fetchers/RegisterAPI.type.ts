@@ -2,16 +2,25 @@ import { MessageTypes, TypedMessage } from '@metamask/eth-sig-util'
 import { ChainType, CoinType, EvmChainId, PaymentMethodIDs } from '../const'
 import { KeyInfo } from './BitIndexer.type'
 
-export interface SignList {
+export interface SignInfo {
   sign_type: number,
   sign_msg: string,
 }
 
-// todo-open: should be merged with TxsSignedOrUnsigned
-export interface TxsWithMMJsonSignedOrUnSigned {
+export interface SignTxListParams {
+  action?: string,
+  sub_action?: string,
   sign_key: string,
-  sign_list: SignList[],
-  mm_json: TypedMessage<MessageTypes>,
+  sign_list: SignInfo[],
+  mm_json?: TypedMessage<MessageTypes>,
+}
+
+export interface SignTxListRes {
+  action?: string,
+  sub_action?: string,
+  sign_key: string,
+  sign_list: SignInfo[],
+  sign_address?: string,
 }
 
 // todo-open: should be replaced with owner

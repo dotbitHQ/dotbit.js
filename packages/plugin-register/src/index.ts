@@ -65,8 +65,8 @@ export class BitPluginRegister implements BitPluginBase {
           orderId: orderInfo.order_id,
           evmChainId: chainId
         })
-        const res = await this.signer.signTxList(mmJsonTxs)
-        const { hash } = await this.bitBuilder.registerAPI.sendTransaction(res)
+        const signatureList = await this.signer.signTxList(mmJsonTxs)
+        const { hash } = await this.bitBuilder.registerAPI.sendTransaction(signatureList)
         txHash = hash
       }
       else {
@@ -108,8 +108,8 @@ export class BitPluginRegister implements BitPluginBase {
         account
       })
 
-      const res = await this.signer.signTxList(mmJsonTxs)
-      const { hash: txHash } = await this.bitBuilder.crossChainSendTransaction(res)
+      const signatureList = await this.signer.signTxList(mmJsonTxs)
+      const { hash: txHash } = await this.bitBuilder.crossChainSendTransaction(signatureList)
 
       return {
         keyInfo,
@@ -260,8 +260,8 @@ export class BitPluginRegister implements BitPluginBase {
           orderId: orderInfo.order_id,
           evmChainId: chainId
         })
-        const res = await this.signer.signTxList(mmJsonTxs)
-        const { hash } = await this.bitBuilder.registerAPI.sendTransaction(res)
+        const signatureList = await this.signer.signTxList(mmJsonTxs)
+        const { hash } = await this.bitBuilder.registerAPI.sendTransaction(signatureList)
         txHash = hash
       }
       else {

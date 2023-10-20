@@ -1,9 +1,9 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
 import { RegisterAPI } from '../fetchers/RegisterAPI'
 import {
-  CreateSubAccountsParams, EditSubAccountParams,
+  CreateSubAccountsParams,
+  EditSubAccountParams,
   SubAccountAPI,
-  TxsSignedOrUnSigned,
 } from '../fetchers/SubAccountAPI'
 import {
   EditAccountManagerParam,
@@ -11,11 +11,12 @@ import {
   EditAccountRecordsParam,
   PayWithDotbitBalanceParam,
   ReturnTrxHashToServiceParam,
+  SignTxListParams,
+  SignTxListRes,
   SubmitRegisterAccountOrderParam,
   SubmitRegisterAccountOrderRes,
   SubmitRenewAccountOrderParam,
-  SubmitRenewAccountOrderRes,
-  TxsWithMMJsonSignedOrUnSigned
+  SubmitRenewAccountOrderRes
 } from '../fetchers/RegisterAPI.type'
 import {
   CrossChainAPI,
@@ -44,11 +45,11 @@ export class RemoteTxBuilder {
     this.crossChainAPI = new CrossChainAPI(config.crossChainUri)
   }
 
-  enableSubAccount (account: string, keyInfo: KeyInfo): Promise<TxsSignedOrUnSigned> {
+  enableSubAccount (account: string, keyInfo: KeyInfo): Promise<SignTxListParams> {
     return this.subAccountAPI.initSubAccount(account, keyInfo)
   }
 
-  mintSubAccounts (params: CreateSubAccountsParams): Promise<TxsSignedOrUnSigned> {
+  mintSubAccounts (params: CreateSubAccountsParams): Promise<SignTxListParams> {
     return this.subAccountAPI.createSubAccounts(params)
   }
 
@@ -76,7 +77,7 @@ export class RemoteTxBuilder {
     return this.registerAPI.submitRenewAccountOrder(params)
   }
 
-  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<SignTxListParams> {
     return this.registerAPI.payWithDotbitBalance(params)
   }
 
@@ -88,7 +89,7 @@ export class RemoteTxBuilder {
     return this.crossChainAPI.mintNftSignInfo(params)
   }
 
-  crossChainLockAccount (params: LockAccountParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  crossChainLockAccount (params: LockAccountParam): Promise<SignTxListParams> {
     return this.crossChainAPI.lockAccount(params)
   }
 
@@ -100,7 +101,7 @@ export class RemoteTxBuilder {
     return this.crossChainAPI.returnTrxHashToService(params)
   }
 
-  crossChainSendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{ hash: string }> {
+  crossChainSendTransaction (params: SignTxListRes): Promise<{ hash: string }> {
     return this.crossChainAPI.sendTransaction(params)
   }
 }

@@ -1,14 +1,9 @@
 import { MessageTypes, SignTypedDataVersion, TypedDataUtils, TypedMessage } from '@metamask/eth-sig-util'
 import { JsonRpcSigner } from '@ethersproject/providers'
 import { Wallet } from 'ethers'
-import { AlgorithmId, CoinType, EvmChainId2CoinType } from '../const'
-import { TxsSignedOrUnSigned } from '../fetchers/SubAccountAPI'
-import { TxsWithMMJsonSignedOrUnSigned } from '../fetchers/RegisterAPI.type'
+import { SIGN_TYPE, CoinType, EvmChainId2CoinType } from '../const'
 import { BitErrorCode, DotbitError } from '../errors/DotbitError'
-
-function isMMJson (txs: TxsSignedOrUnSigned | TxsWithMMJsonSignedOrUnSigned): txs is TxsWithMMJsonSignedOrUnSigned {
-  return 'mm_json' in txs
-}
+import { SignTxListParams, SignTxListRes } from '../fetchers/RegisterAPI.type'
 
 /**
  * get mmJson hash and chainId hex
@@ -66,34 +61,25 @@ export abstract class BitSigner {
     }
   }
 
-  // todo-open: TxsSignedOrUnSigned and TxsWithMMJsonSignedOrUnSigned is pretty much the same, while they are from different api. We need to unify them in backend.
-  async signTxList (txs: TxsSignedOrUnSigned): Promise<TxsSignedOrUnSigned>
-  async signTxList (txs: TxsWithMMJsonSignedOrUnSigned): Promise<TxsWithMMJsonSignedOrUnSigned>
-  async signTxList (txs: TxsSignedOrUnSigned | TxsWithMMJsonSignedOrUnSigned): Promise<TxsSignedOrUnSigned | TxsWithMMJsonSignedOrUnSigned> {
-    if (isMMJson(txs)) {
-      for (const signItem of txs.sign_list) {
-        if (signItem.sign_msg) {
-          if (signItem.sign_type === AlgorithmId.eip712) {
-            const mmJson = JSON.parse(JSON.stringify(txs.mm_json))
-            mmJson.message.digest = signItem.sign_msg
-            const signDataRes = await this.signTypedData(mmJson)
-            signItem.sign_msg = signDataRes + mmJsonHashAndChainIdHex(mmJson, mmJson.domain.chainId)
-          }
-          else {
-            signItem.sign_msg = await this.signData(signItem.sign_msg)
-          }
+  async signTxList (txs: SignTxListParams): Promise<SignTxListRes> {
+    for (const signItem of txs.sign_list) {
+      if (signItem.sign_type === SIGN_TYPE.noSign) {
+        continue
+      }
+      if (signItem.sign_type === SIGN_TYPE.eth712 && !!txs.mm_json) {
+        const mmJson = JSON.parse(JSON.stringify(txs.mm_json))
+        mmJson.message.digest = signItem.sign_msg
+        const signDataRes = await this.signData(mmJson, true)
+        if (signDataRes && mmJson.domain.chainId) {
+          signItem.sign_msg = signDataRes + mmJsonHashAndChainIdHex(mmJson, mmJson.domain.chainId)
         }
       }
-    }
-    else {
-      for (const list of txs.list) {
-        for (const signItem of list.sign_list) {
-          if (signItem.sign_msg) {
-            signItem.sign_msg = await this.signData(signItem.sign_msg)
-          }
-        }
+      else {
+        signItem.sign_msg = await this.signData(signItem.sign_msg)
       }
     }
+
+    delete txs.mm_json
 
     return txs
   }

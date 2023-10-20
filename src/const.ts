@@ -94,17 +94,22 @@ export enum IndexerAccountStatus {
   onCrossChain
 }
 
-export enum AlgorithmId {
-  ethPersonalSign = 3,
-  tronSign = 4,
-  eip712 = 5,
-  ed2519 = 6,
+export enum SIGN_TYPE {
+  noSign,
+  ckbMulti,
+  ckbSingle,
+  eth,
+  tron,
+  eth712,
+  ed25519,
+  doge,
+  webauthn,
 }
 
-export const AlgorithmId2CoinType = {
-  [AlgorithmId.ethPersonalSign]: CoinType.ETH,
-  [AlgorithmId.eip712]: CoinType.ETH,
-  [AlgorithmId.tronSign]: CoinType.TRX,
+export const SignType2CoinType = {
+  [SIGN_TYPE.eth]: CoinType.ETH,
+  [SIGN_TYPE.eth712]: CoinType.ETH,
+  [SIGN_TYPE.tron]: CoinType.TRX,
 }
 
 export enum SubAccountEnabledStatus {
