@@ -22,17 +22,6 @@ export enum EvmChainId {
   MATIC_TEST = 80001,
 }
 
-// legacy custom chain type, should be replaced by CoinType in the future
-export enum ChainType {
-  ckb,
-  eth,
-  btc,
-  tron,
-  fiat,
-  bsc = 56,
-  polygon = 137
-}
-
 export const EvmChainId2CoinType = {
   [EvmChainId.ETH]: CoinType.ETH,
   [EvmChainId.ETH_GOERILI]: CoinType.ETH,
@@ -40,14 +29,6 @@ export const EvmChainId2CoinType = {
   [EvmChainId.BSC_TEST]: CoinType.BSC,
   [EvmChainId.MATIC]: CoinType.MATIC,
   [EvmChainId.MATIC_TEST]: CoinType.MATIC,
-}
-
-export const CoinType2ChainType = {
-  [CoinType.ETH]: ChainType.eth,
-  [CoinType.TRX]: ChainType.tron,
-  [CoinType.CKB]: ChainType.ckb,
-  [CoinType.MATIC]: ChainType.polygon,
-  [CoinType.BSC]: ChainType.bsc,
 }
 
 export enum RecordType {

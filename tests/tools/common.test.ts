@@ -1,7 +1,6 @@
 import { KeyInfo } from '../../src/fetchers/BitIndexer.type'
 import {
   checkKeyInfo,
-  computeChainTypeByCoinType,
   isEmptyAddress,
   isEthAddress,
   isTronAddress,
@@ -9,7 +8,7 @@ import {
   pad0x,
   stringVisualLength
 } from '../../src/tools/common'
-import { CoinType, EvmChainId } from '../../src/const'
+import { CoinType } from '../../src/const'
 
 describe('pad0x', function () {
   it('starts with 0x', function () {
@@ -155,28 +154,6 @@ describe('stringVisualLength', function () {
 
   it('😊💣', function () {
     expect(stringVisualLength('😊💣')).toBe(2)
-  })
-})
-
-describe('computeChainTypeByCoinType', function () {
-  it(CoinType.ETH, function () {
-    expect(computeChainTypeByCoinType(CoinType.ETH)).toBe(EvmChainId.ETH)
-  })
-
-  it(CoinType.TRX, function () {
-    expect(computeChainTypeByCoinType(CoinType.TRX)).toBe(undefined)
-  })
-
-  it(CoinType.BSC, function () {
-    expect(computeChainTypeByCoinType(CoinType.BSC)).toBe(EvmChainId.BSC)
-  })
-
-  it(CoinType.MATIC, function () {
-    expect(computeChainTypeByCoinType(CoinType.MATIC)).toBe(EvmChainId.MATIC)
-  })
-
-  it(CoinType.CKB, function () {
-    expect(computeChainTypeByCoinType(CoinType.CKB)).toBe(undefined)
   })
 })
 

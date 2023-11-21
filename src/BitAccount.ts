@@ -6,7 +6,6 @@ import {
   BitNetwork,
   CheckSubAccountStatus,
   CoinType,
-  CoinType2ChainType,
   PaymentMethodIDs,
   DWebProtocol,
   RecordType
@@ -257,31 +256,33 @@ export class BitAccount {
     const signerAddress = await this.signer.getAddress()
     const signerCoinType = await this.signer.getCoinType()
     const signerChainId = await this.signer.getChainId()
-    const signerChainType = CoinType2ChainType[signerCoinType]
-    const newChainType = CoinType2ChainType[keyInfo.coin_type]
 
     let mmJsonTxs: SignTxListParams
     if (isOwner) {
       mmJsonTxs = await this.bitBuilder.changeOwner({
-        chain_type: signerChainType,
+        keyInfo: {
+          coin_type: signerCoinType,
+          key: signerAddress
+        },
         evm_chain_id: signerChainId,
-        address: signerAddress,
         account: this.account,
         raw_param: {
           receiver_address: keyInfo.key,
-          receiver_chain_type: newChainType,
+          receiver_coin_type: keyInfo.coin_type,
         },
       })
     }
     else {
       mmJsonTxs = await this.bitBuilder.changeManager({
-        chain_type: signerChainType,
+        keyInfo: {
+          coin_type: signerCoinType,
+          key: signerAddress
+        },
         evm_chain_id: signerChainId,
-        address: signerAddress,
         account: this.account,
         raw_param: {
           manager_address: keyInfo.key,
-          manager_chain_type: newChainType,
+          manager_coin_type: keyInfo.coin_type,
         },
       })
     }
@@ -320,12 +321,13 @@ export class BitAccount {
     const signerAddress = await this.signer.getAddress()
     const signerCoinType = await this.signer.getCoinType()
     const signerChainId = await this.signer.getChainId()
-    const signerChainType = CoinType2ChainType[signerCoinType]
 
     const txs = await this.bitBuilder.editRecords({
-      chain_type: signerChainType,
+      keyInfo: {
+        coin_type: signerCoinType,
+        key: signerAddress
+      },
       evm_chain_id: signerChainId,
-      address: signerAddress,
       account: this.account,
       raw_param: {
         records: records.map(toEditingRecord)

@@ -80,6 +80,8 @@ export abstract class BitSigner {
     }
 
     delete txs.mm_json
+    // @ts-expect-error
+    delete txs.list
 
     return txs
   }

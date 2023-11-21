@@ -1,5 +1,5 @@
 import { MessageTypes, TypedMessage } from '@metamask/eth-sig-util'
-import { ChainType, CoinType, EvmChainId, PaymentMethodIDs } from '../const'
+import { CoinType, EvmChainId, PaymentMethodIDs } from '../const'
 import { KeyInfo } from './BitIndexer.type'
 
 export interface SignInfo {
@@ -25,20 +25,18 @@ export interface SignTxListRes {
 
 // todo-open: should be replaced with owner
 export interface OwnerRawParam {
-  receiver_chain_type: number,
+  receiver_coin_type: CoinType,
   receiver_address: string,
 }
 
 export interface ManagerRawParam {
   manager_address: string,
-  manager_chain_type: number,
+  manager_coin_type: CoinType,
 }
 
 export interface EditAccountParams<T> {
-  // todo-open: all chain_type should be deprecated
-  chain_type: ChainType,
+  keyInfo: KeyInfo,
   evm_chain_id: EvmChainId,
-  address: string,
   account: string,
   raw_param: T,
 }
@@ -57,8 +55,8 @@ export interface RecordsRawParam {
 }
 
 export interface SubmitRegisterAccountOrderParam {
-  account: string,
   keyInfo: KeyInfo,
+  account: string,
   registerYears: number,
   paymentMethodID: PaymentMethodIDs,
   crossTo?: CoinType,
@@ -74,8 +72,8 @@ export interface SubmitRegisterAccountOrderRes {
 }
 
 export interface SubmitRenewAccountOrderParam {
-  account: string,
   keyInfo: KeyInfo,
+  account: string,
   paymentMethodID: PaymentMethodIDs,
   payAddress: string,
   renewYears: number,
@@ -83,10 +81,9 @@ export interface SubmitRenewAccountOrderParam {
 
 export interface SubmitRenewAccountOrderRes {
   order_id: string,
-  chain_type?: number,
+  token_id: string,
   receipt_address: string,
   amount: string,
-  token_id: string,
 }
 
 export interface PayWithDotbitBalanceParam {
