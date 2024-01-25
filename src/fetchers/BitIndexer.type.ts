@@ -66,10 +66,15 @@ export interface BitKeyInfo {
   key_info: KeyInfo,
 }
 
+export interface BitAccountListItem {
+  account: string,
+  display_name: string,
+  registered_at: number,
+  expired_at: number,
+}
+
 export interface BitAccountList {
-  account_list: Array<{
-    account: string,
-  }>,
+  account_list: BitAccountListItem[],
 }
 
 export interface BatchAccountInfo {

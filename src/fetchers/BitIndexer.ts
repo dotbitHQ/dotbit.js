@@ -3,6 +3,7 @@ import {
   BatchAccountInfo,
   BitAccountInfo,
   BitAccountList,
+  BitAccountListItem,
   BitAccountRecord,
   BitKeyInfo,
   DasAccountRecords,
@@ -66,13 +67,13 @@ export class BitIndexer {
    * @param keyInfo
    * @param role
    */
-  accountList (keyInfo: KeyInfo, role: 'manager' | 'owner' = 'owner'): Promise<string[]> {
+  accountList (keyInfo: KeyInfo, role: 'manager' | 'owner' = 'owner'): Promise<BitAccountListItem[]> {
     return this.request<BitAccountList>('das_accountList', [{
       type: 'blockchain',
       key_info: keyInfo,
       role,
     }])
-      .then(result => result.account_list.map(item => item.account))
+      .then(result => result.account_list)
   }
 
   /**

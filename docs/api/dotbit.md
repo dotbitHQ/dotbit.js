@@ -278,7 +278,7 @@ List all .bit accounts (including SubDID accounts) of a given blockchain owner a
   - key: `string`. The address on a certain blockchain
   - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
-Promise<BitAccount[]>
+Promise<BitAccountListItem[]>
 ### Example
 ```javascript
 // To get all BitAccount instances of Ethereum addresss '0x1d643fac9a463c9d544506006a6348c234da485f'
@@ -291,19 +291,11 @@ dotbit.accountsOfOwner({
 // The printed result would be like:
 [
   ...,
-  BitAccount {
-    account: 'cz-vs-sbf.bit',
-    bitIndexer: BitIndexer { rpc: [JSONRPC] },
-    bitBuilder: RemoteTxBuilder {},
-    signer: // Your signer instance
-  },
-  BitSubAccount {
-    account: 'jeff.makeafriend.bit',
-    bitIndexer: BitIndexer { rpc: [JSONRPC] },
-    bitBuilder: RemoteTxBuilder {},
-    signer: // Your signer instance
-    isSubAccount: true,
-    mainAccount: 'makeafriend.bit'
+  {
+    "account": "gaoyuanyuan.bit",
+    "display_name": "gaoyuanyuan.bit",
+    "registered_at": 1626962335,
+    "expired_at": 1721570335
   }
 ]
 ```
@@ -315,7 +307,7 @@ List all .bit accounts (including SubDID accounts) of a given blockchain manager
   - key: `string`. The address on a certain blockchain
   - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
-Promise<BitAccount[]>
+Promise<BitAccountListItem[]>
 ### Example
 ```javascript
 // To get all BitAccount instances of Ethereum addresss '0x1d643fac9a463c9d544506006a6348c234da485f'
@@ -328,20 +320,12 @@ dotbit.accountsOfManager({
 // The printed result would be like:
 [
   ...,
-  BitAccount {
-    account: 'cz-vs-sbf.bit',
-    bitIndexer: BitIndexer { rpc: [JSONRPC] },
-    bitBuilder: RemoteTxBuilder {},
-    signer: // Your signer instance
-  },
-  BitSubAccount {
-    account: 'jeff.makeafriend.bit',
-    bitIndexer: BitIndexer { rpc: [JSONRPC] },
-    bitBuilder: RemoteTxBuilder {},
-    signer: // Your signer instance
-    isSubAccount: true,
-    mainAccount: 'makeafriend.bit'
-  }
+    {
+      "account": "gaoyuanyuan.bit",
+      "display_name": "gaoyuanyuan.bit",
+      "registered_at": 1626962335,
+      "expired_at": 1721570335
+    }
 ]
 ```
 
