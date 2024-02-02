@@ -54,11 +54,7 @@ export interface DasAccountRecords {
 
 export interface KeyInfo {
   'key': string, // address
-  'coin_type'?: CoinType, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
-  /**
-   * @deprecated Please use coin_type alone
-   */
-  'chain_id'?: string, //  1: ETH, 56: BSC, 137: Polygon
+  'coin_type': CoinType, // 60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB
 }
 
 export interface BitKeyInfo {

@@ -125,7 +125,7 @@ If you want to write a plugin for your or other projects, please follow the same
 ## FAQ
 #### What is coin_type?
 `coin_type` is a way to distinguish between different coins or blockchain networks using the Coin Types defined in [SLIP 44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
-For example, the `coin_type` for ETH is `60`, the `coin_type` for BTC is `0`, and the `coin_type` for BNB is `714`, etc.
+For example, the `coin_type` for ETH is `60`, the `coin_type` for BTC is `0`, and the `coin_type` for BNB is `9006`, etc.
 
 #### Which coin_type does .bit support?
 .bit uses `coin_type` in a few different ways:

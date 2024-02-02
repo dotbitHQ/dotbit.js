@@ -4,6 +4,7 @@ export enum BitNetwork {
 }
 
 export enum CoinType {
+  DOGE = '3',
   ETH = '60',
   TRX = '195',
   CKB = '309',

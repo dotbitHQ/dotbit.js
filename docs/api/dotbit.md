@@ -247,7 +247,7 @@ To get the .bit alias for a given blockchain address
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<BitAccount>
 ### Example
@@ -276,7 +276,7 @@ List all .bit accounts (including SubDID accounts) of a given blockchain owner a
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<BitAccountListItem[]>
 ### Example
@@ -305,7 +305,7 @@ List all .bit accounts (including SubDID accounts) of a given blockchain manager
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<BitAccountListItem[]>
 ### Example

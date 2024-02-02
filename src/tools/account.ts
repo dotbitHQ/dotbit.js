@@ -193,7 +193,7 @@ export function graphemesAccount (account: string, addSuffix = false, language =
 
   language = getLanguage(language)
 
-  // rules: https://docs.did.id/register-das/charsets
+  // rules: https://community.d.id/c/knowledge-base-bit/charsets
   let splitArr: ICharInfo[] | null = null
   const languageList = languages.filter(lang => lang !== language)
   languageList.unshift(language)

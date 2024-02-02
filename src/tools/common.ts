@@ -58,10 +58,7 @@ export function isEthAddress (address: string): boolean {
  */
 export function checkKeyInfo (keyInfo: KeyInfo): boolean {
   let ret
-  if (typeof keyInfo.chain_id !== 'undefined') {
-    console.warn('chain_id is deprecated, please use coin_type.')
-  }
-  if ([EvmChainId.ETH, EvmChainId.BSC, EvmChainId.MATIC].includes(Number(keyInfo.chain_id)) || [CoinType.ETH, CoinType.MATIC, CoinType.BSC].includes(keyInfo.coin_type)) {
+  if ([CoinType.ETH, CoinType.MATIC, CoinType.BSC].includes(keyInfo.coin_type)) {
     if (isEthAddress(keyInfo.key)) {
       ret = true
     }
