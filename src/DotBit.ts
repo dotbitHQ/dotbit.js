@@ -3,7 +3,7 @@ import { BitSubAccount } from './BitSubAccount'
 import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import { BitNetwork, DWebProtocol } from './const'
 import { BitIndexer } from './fetchers/BitIndexer'
-import { KeyInfo } from './fetchers/BitIndexer.type'
+import { BitAccountListItem, KeyInfo } from './fetchers/BitIndexer.type'
 import { BitSigner } from './signers/BitSigner'
 import { isSubAccount } from './tools/account'
 import { BitErrorCode, BitIndexerErrorCode, DotbitError } from './errors/DotbitError'
@@ -102,16 +102,16 @@ export class DotBit {
     return this.reverse(keyInfo)
   }
 
-  async accountsOfOwner (keyInfo: KeyInfo): Promise<BitAccount[]> {
+  async accountsOfOwner (keyInfo: KeyInfo): Promise<BitAccountListItem[]> {
     const accounts =  await this.bitIndexer.accountList(keyInfo)
 
-    return accounts.map(account => this.getAccount(account))
+    return accounts
   }
 
-  async accountsOfManager (keyInfo: KeyInfo): Promise<BitAccount[]> {
+  async accountsOfManager (keyInfo: KeyInfo): Promise<BitAccountListItem[]> {
     const accounts =  await this.bitIndexer.accountList(keyInfo, 'manager')
 
-    return accounts.map(account => this.getAccount(account))
+    return accounts
   }
 
   account (account: string): BitAccount {

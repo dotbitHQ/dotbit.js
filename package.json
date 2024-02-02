@@ -1,6 +1,6 @@
 {
   "name": "dotbit",
-  "version": "0.4.26",
+  "version": "0.4.28",
   "description": "A complete .bit SDK and utilities in TypeScript",
   "author": "Jeff Jing <https://github.com/zgayjjf>",
   "license": "MIT",
@@ -66,7 +66,7 @@
     "@ethersproject/providers": "^5.7.2",
     "@metamask/eth-sig-util": "^5.0.2",
     "blake2b": "^2.1.4",
-    "cross-fetch": "^3.1.5",
+    "cross-fetch": "^4.0.0",
     "ethers": "^5.6.9",
     "grapheme-splitter": "^1.0.4",
     "jest-environment-jsdom": "^29.3.1",
