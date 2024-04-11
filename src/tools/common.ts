@@ -2,7 +2,7 @@ import { KeyInfo } from '../fetchers/BitIndexer.type'
 import { ChainType, CoinType, EvmChainId, EvmCoinTypes } from '../const'
 import { utils } from 'ethers'
 import GraphemeSplitter from 'grapheme-splitter'
-import TronWeb from 'tronweb'
+import { validate } from 'multicoin-address-validator'
 
 export function pad0x (str: string): string {
   return str.startsWith('0x') ? str : `0x${str}`
@@ -30,7 +30,7 @@ export function sleep (ms: number) {
  */
 export function isTronAddress (address: string): boolean {
   try {
-    return address.length !== 42 && TronWeb.isAddress(address)
+    return address.length !== 42 && validate(address, 'Tron')
   }
   catch (err) {
     console.warn(`invalid Tron address: ${address}`)

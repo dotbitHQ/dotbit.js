@@ -1,6 +1,6 @@
 {
   "name": "dotbit",
-  "version": "0.4.28",
+  "version": "0.4.29",
   "description": "A complete .bit SDK and utilities in TypeScript",
   "author": "Jeff Jing <https://github.com/zgayjjf>",
   "license": "MIT",
@@ -70,7 +70,7 @@
     "ethers": "^5.6.9",
     "grapheme-splitter": "^1.0.4",
     "jest-environment-jsdom": "^29.3.1",
-    "tronweb": "^5.1.0",
+    "multicoin-address-validator": "^0.5.16",
     "type-fest": "^2.16.0"
   }
 }
