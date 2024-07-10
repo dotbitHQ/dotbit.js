@@ -7,7 +7,7 @@ import {
   BitAccountRecord,
   BitKeyInfo,
   DasAccountRecords,
-  DasServerInfo,
+  DasServerInfo, DobInfo, DobListParams, DobListRes,
   KeyInfo,
 } from './BitIndexer.type'
 
@@ -77,7 +77,7 @@ export class BitIndexer {
   }
 
   /**
-   * Verify whether the provided address has associated SubDIDs within the given main account, serving as a gateway for community member participation.
+   * Verify whether the provided address has associated Second-level DIDs within the given main account, serving as a gateway for community member participation.
    * @param address
    * @param account
    * @param subAccount
@@ -109,5 +109,23 @@ export class BitIndexer {
   batchAccountInfo (accounts: string[]): Promise<BatchAccountInfo[]> {
     return this.request('das_batchRegisterInfo', [{ batch_account: accounts }])
       .then(result => result.list)
+  }
+
+  /**
+   * Get DOB list
+   * @param keyInfo
+   * @param didType
+   * @param page
+   * @param size
+   */
+  dobList ({ keyInfo, didType, page, size }: DobListParams): Promise<DobInfo[]> {
+    return this.request<DobListRes>('das_didCellList', [{
+      type: 'blockchain',
+      key_info: keyInfo,
+      did_type: didType,
+      page,
+      size
+    }])
+      .then(result => result.did_list)
   }
 }

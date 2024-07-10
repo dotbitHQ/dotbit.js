@@ -2,7 +2,7 @@ import { CoinType } from '../../src/const'
 import { BitIndexer } from '../../src/fetchers/BitIndexer'
 
 const indexer = new BitIndexer({
-  uri: 'https://indexer-v1.did.id'
+  uri: 'https://indexer-v1.d.id'
 })
 
 describe('serverInfo', () => {
@@ -63,30 +63,16 @@ describe('accountRecords', () => {
 describe('reverseRecord', () => {
   it('work', async () => {
     const { account } = await indexer.reverseRecord({
-      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB
       key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
     })
 
-    expect(account).toBe('jeffx.bit')
-  })
-
-  it('work when without chain_id', async () => {
-    const { account } = await indexer.reverseRecord({
-      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
-      key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
-    })
-    expect(account).toBe('jeffx.bit')
-  })
-
-  it('work when without chain_id & coin_type', async () => {
-    const { account } = await indexer.reverseRecord({
-      key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
-    })
     expect(account).toBe('jeffx.bit')
   })
 
   it('should be empty', async () => {
     const { account } = await indexer.reverseRecord({
+      coin_type: CoinType.ETH,
       key: '0x0000000000000000000000000000000000000001' // address
     })
     expect(account).toBe('')
@@ -96,22 +82,7 @@ describe('reverseRecord', () => {
 describe('accountList', () => {
   it('work', async () => {
     const accounts = await indexer.accountList({
-      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
-      key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
-    })
-    expect(accounts.length).toBeGreaterThanOrEqual(27)
-  })
-
-  it('work when without chain_id', async () => {
-    const accounts = await indexer.accountList({
-      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
-      key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
-    })
-    expect(accounts.length).toBeGreaterThanOrEqual(27)
-  })
-
-  it('work when without chain_id & coin_type', async () => {
-    const accounts = await indexer.accountList({
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB
       key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
     })
     expect(accounts.length).toBeGreaterThanOrEqual(27)
@@ -119,7 +90,7 @@ describe('accountList', () => {
 
   it('work for TRON', async () => {
     const accounts = await indexer.accountList({
-      coin_type: CoinType.TRX, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
+      coin_type: CoinType.TRX, // 60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB
       key: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX' // address
     })
     expect(accounts.length).toBeGreaterThanOrEqual(5)
@@ -127,6 +98,7 @@ describe('accountList', () => {
 
   it('should be empty', async () => {
     const accounts = await indexer.accountList({
+      coin_type: CoinType.ETH,
       key: '0x0000000000000000000000000000000000000001' // address
     })
     expect(accounts.length).toBe(0)
@@ -134,7 +106,7 @@ describe('accountList', () => {
 
   it('work when the role is "manager"', async () => {
     const accounts = await indexer.accountList({
-      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 714: BNB, 966: Matic
+      coin_type: CoinType.ETH, // 60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB
       key: '0x1D643FAc9a463c9d544506006a6348c234dA485f' // address
     }, 'manager')
     expect(accounts.length).toBeGreaterThanOrEqual(10)

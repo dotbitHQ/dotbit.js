@@ -2,22 +2,7 @@ import { CheckSubAccountStatus } from '../const'
 import { ICharInfo } from '../tools/account'
 import { Networking } from '../tools/Networking'
 import { BitKeyInfo, KeyInfo } from './BitIndexer.type'
-import { EditAccountRecord } from './RegisterAPI.type'
-
-export interface SignList {
-  sign_type: number,
-  sign_msg: string,
-}
-
-export interface TxsList {
-  sign_list: SignList[],
-}
-
-export interface TxsSignedOrUnSigned {
-  action: string,
-  sign_key: string,
-  list: TxsList[],
-}
+import { EditAccountRecord, SignTxListParams, SignTxListRes } from './RegisterAPI.type'
 
 export interface SubAccount extends BitKeyInfo {
   account: string,
@@ -50,10 +35,10 @@ export interface SubAccountWithStatus extends SubAccount {
 export interface CreateSubAccountsParams extends CheckAccountsParams {}
 
 export interface SubAccountListParams {
-  'account': string,
-  'page': number,
-  'size': number,
-  'keyword': string,
+  account: string,
+  page: number,
+  size: number,
+  keyword: string,
 }
 
 export interface SubAccountListItem {
@@ -102,7 +87,7 @@ export class SubAccountAPI {
     this.net = new Networking(baseUri)
   }
 
-  initSubAccount (account: string, keyInfo: KeyInfo): Promise<TxsSignedOrUnSigned> {
+  initSubAccount (account: string, keyInfo: KeyInfo): Promise<SignTxListParams> {
     return this.net.post('sub/account/init', {
       account,
       type: 'blockchain',
@@ -110,7 +95,7 @@ export class SubAccountAPI {
     })
   }
 
-  sendTransaction (tx: TxsSignedOrUnSigned): Promise<{ hash?: string, hash_list: string[] }> {
+  sendTransaction (tx: SignTxListRes): Promise<{ hash?: string, hash_list: string[] }> {
     return this.net.post('transaction/send', tx)
   }
 
@@ -122,11 +107,11 @@ export class SubAccountAPI {
     return this.net.post('sub/account/check', params)
   }
 
-  createSubAccounts (params: CreateSubAccountsParams): Promise<TxsSignedOrUnSigned> {
+  createSubAccounts (params: CreateSubAccountsParams): Promise<SignTxListParams> {
     return this.net.post('sub/account/create', params)
   }
 
-  editSubAccount (params: EditSubAccountParams): Promise<TxsSignedOrUnSigned> {
+  editSubAccount (params: EditSubAccountParams): Promise<SignTxListParams> {
     return this.net.post('sub/account/edit', params)
   }
 }

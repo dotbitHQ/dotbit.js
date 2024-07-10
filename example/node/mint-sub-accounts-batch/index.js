@@ -1,20 +1,14 @@
-const { createInstance, EthersSigner, CoinType, sleep } = require('../../../lib/index')
-const { ethers, Wallet } = require('ethers')
+const { createInstance, EvmSigner, CoinType, sleep } = require('../../../lib/index')
+const { Wallet, QuickNodeProvider } = require('ethers')
 const fs = require('fs')
 const path = require('path')
-const { default: ENS, getEnsAddress } = require('@ensdomains/ensjs')
 
 const account = `${process.env.NAME}.bit` // your account
 const address = process.env.ADDRESS
 const privateKey = process.env.PRIVATE_KEY
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
-
-const ens = new ENS({
-  provider: new ethers.providers.JsonRpcProvider('https://web3.ens.domains/v1/mainnet'),
-  ensAddress: getEnsAddress('1'),
-})
+const signer = new EvmSigner(wallet)
 
 const dotbit = createInstance({
   signer,
@@ -36,7 +30,7 @@ async function main () {
     const accountsToMint = []
     for (let [name, key, years] of accountPartial) {
       if (key.endsWith('.eth')) {
-        key = await ens.name(key).getAddress()
+        key = await provider.resolveName(key)
       }
       else if (key.endsWith('.bit')) {
         const bitAccount = await dotbit.account(key)

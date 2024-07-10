@@ -2,7 +2,7 @@ const fetch = require('cross-fetch')
 const fs = require('fs')
 const path = require('path')
 
-fetch('https://register-api.did.id/v1/character/set/list', {
+fetch('https://register-api.d.id/v1/character/set/list', {
   method: 'POST',
   body: JSON.stringify({}),
   headers: {

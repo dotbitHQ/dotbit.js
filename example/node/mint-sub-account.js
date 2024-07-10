@@ -1,11 +1,11 @@
-const { createInstance, EthersSigner, CoinType } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
+const { createInstance, EvmSigner, CoinType } = require('../../lib/index')
+const { Wallet, QuickNodeProvider } = require('ethers')
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
-const provider = new ethers.providers.InfuraProvider('goerli')
+const provider = new QuickNodeProvider('holesky')
 const wallet = new Wallet(privateKey1, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const dotbit = createInstance({
   network: 'testnet',

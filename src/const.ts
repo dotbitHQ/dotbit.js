@@ -4,6 +4,7 @@ export enum BitNetwork {
 }
 
 export enum CoinType {
+  DOGE = '3',
   ETH = '60',
   TRX = '195',
   CKB = '309',
@@ -15,39 +16,20 @@ export const EvmCoinTypes = [CoinType.ETH, CoinType.BSC, CoinType.MATIC]
 
 export enum EvmChainId {
   ETH = 1,
-  ETH_GOERILI = 5,
+  ETH_HOLESKY = 17000,
   BSC = 56,
   BSC_TEST = 97,
   MATIC = 137,
   MATIC_TEST = 80001,
 }
 
-// legacy custom chain type, should be replaced by CoinType in the future
-export enum ChainType {
-  ckb,
-  eth,
-  btc,
-  tron,
-  fiat,
-  bsc = 56,
-  polygon = 137
-}
-
 export const EvmChainId2CoinType = {
   [EvmChainId.ETH]: CoinType.ETH,
-  [EvmChainId.ETH_GOERILI]: CoinType.ETH,
+  [EvmChainId.ETH_HOLESKY]: CoinType.ETH,
   [EvmChainId.BSC]: CoinType.BSC,
   [EvmChainId.BSC_TEST]: CoinType.BSC,
   [EvmChainId.MATIC]: CoinType.MATIC,
   [EvmChainId.MATIC_TEST]: CoinType.MATIC,
-}
-
-export const CoinType2ChainType = {
-  [CoinType.ETH]: ChainType.eth,
-  [CoinType.TRX]: ChainType.tron,
-  [CoinType.CKB]: ChainType.ckb,
-  [CoinType.MATIC]: ChainType.polygon,
-  [CoinType.BSC]: ChainType.bsc,
 }
 
 export enum RecordType {
@@ -94,17 +76,22 @@ export enum IndexerAccountStatus {
   onCrossChain
 }
 
-export enum AlgorithmId {
-  ethPersonalSign = 3,
-  tronSign = 4,
-  eip712 = 5,
-  ed2519 = 6,
+export enum SIGN_TYPE {
+  noSign,
+  ckbMulti,
+  ckbSingle,
+  eth,
+  tron,
+  eth712,
+  ed25519,
+  doge,
+  webauthn,
 }
 
-export const AlgorithmId2CoinType = {
-  [AlgorithmId.ethPersonalSign]: CoinType.ETH,
-  [AlgorithmId.eip712]: CoinType.ETH,
-  [AlgorithmId.tronSign]: CoinType.TRX,
+export const SignType2CoinType = {
+  [SIGN_TYPE.eth]: CoinType.ETH,
+  [SIGN_TYPE.eth712]: CoinType.ETH,
+  [SIGN_TYPE.tron]: CoinType.TRX,
 }
 
 export enum SubAccountEnabledStatus {
@@ -185,21 +172,4 @@ export enum PaymentMethodIDs {
   trx = 'tron_trx',
   // portalWallet = 'ckb_ckb',
   dotbitBalance = 'ckb_das',
-}
-
-// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#pending-hash
-export enum CrossChainDirection {
-  toETH,
-  toCKB
-}
-
-// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#lock-mint-status
-export enum CrossChainAccountStatus {
-  lockPending = 0,
-  lockConfirm = 1,
-  lockRejected = 2,
-  mintSign = 3,
-  mintPending = 4,
-  mintConfirm = 5,
-  mintFailed = 6
 }

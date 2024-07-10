@@ -37,7 +37,7 @@ BitSubAccount {
 ```
 
 ## mainAccount
-To get the main account of a SubDID.
+To get the main account of a Second-level DID.
 ### Parameters
 N/A
 ### Return Value
@@ -54,24 +54,24 @@ makeafriend.bit
 ```
 
 ## changeOwner(keyInfo)
-To change the owner of a SubDID.
+To change the owner of a Second-level DID.
 > Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit', signer});
 const result = await subAccount.changeOwner({
@@ -88,24 +88,24 @@ console.log(result);
 ```
 
 ## changeManager(keyInfo)
-To change the manager of a SubDID.
+To change the manager of a Second-level DID.
 > Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
+const { EvmSigner } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit', signer});
 const result = await subAccount.changeManager({
@@ -122,7 +122,7 @@ console.log(result);
 ```
 
 ## updateRecords(records)
-To update all records of a SubDID.
+To update all records of a Second-level DID.
 > Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
 > Note: The existing records will be erased.
 ### Parameters
@@ -135,14 +135,14 @@ To update all records of a SubDID.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
+const { EvmSigner } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const subAccount = new BitSubAccount({account: 'jeff.makeafriend.bit', signer});
 const result = await subAccount.updateRecords([{

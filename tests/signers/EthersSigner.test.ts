@@ -1,12 +1,12 @@
-import { signTypedData, SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
+import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util'
 import { Wallet } from 'ethers'
-import { TxsWithMMJsonSignedOrUnSigned } from '../../src/fetchers/RegisterAPI.type'
-import { EthersSigner, TxsSignedOrUnSigned } from '../../src/index'
+import { SignTxListParams } from '../../src/fetchers/RegisterAPI.type'
+import { EvmSigner } from '../../src/index'
 
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
 const wallet = new Wallet(privateKey1)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const typedDataFromMetamask = {
   domain: {
@@ -39,32 +39,10 @@ const typedDataFromMetamask = {
   primaryType: 'Mail',
   types: {
     EIP712Domain: [
-      {
-        name: 'name',
-        type: 'string'
-      },
-      {
-        name: 'version',
-        type: 'string'
-      },
-      {
-        name: 'chainId',
-        type: 'uint256'
-      },
-      {
-        name: 'verifyingContract',
-        type: 'address'
-      }
-    ],
-    Group: [
-      {
-        name: 'name',
-        type: 'string'
-      },
-      {
-        name: 'members',
-        type: 'Person[]'
-      }
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' }
     ],
     Mail: [
       {
@@ -95,6 +73,12 @@ const typedDataFromMetamask = {
 
 const typedDataFromBit = {
   types: {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' }
+    ],
     Action: [
       {
         name: 'action',
@@ -187,22 +171,10 @@ const typedDataFromBit = {
 const typedDataFromBitFull = {
   types: {
     EIP712Domain: [
-      {
-        name: 'chainId',
-        type: 'uint256'
-      },
-      {
-        name: 'name',
-        type: 'string'
-      },
-      {
-        name: 'verifyingContract',
-        type: 'address'
-      },
-      {
-        name: 'version',
-        type: 'string'
-      }
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' }
     ],
     Action: [
       {
@@ -293,7 +265,7 @@ const typedDataFromBitFull = {
   }
 }
 
-const mmJsonChangeManager: TxsWithMMJsonSignedOrUnSigned = {
+const mmJsonChangeManager: SignTxListParams = {
   sign_key: '15020ef9cb836761b1b0b58943e8b971',
   sign_list: [
     {
@@ -304,22 +276,10 @@ const mmJsonChangeManager: TxsWithMMJsonSignedOrUnSigned = {
   mm_json: {
     types: {
       EIP712Domain: [
-        {
-          name: 'chainId',
-          type: 'uint256'
-        },
-        {
-          name: 'name',
-          type: 'string'
-        },
-        {
-          name: 'verifyingContract',
-          type: 'address'
-        },
-        {
-          name: 'version',
-          type: 'string'
-        }
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' }
       ],
       Action: [
         {
@@ -390,7 +350,7 @@ const mmJsonChangeManager: TxsWithMMJsonSignedOrUnSigned = {
     },
     primaryType: 'Transaction',
     domain: {
-      chainId: 5,
+      chainId: 17000,
       name: 'da.systems',
       verifyingContract: '0x0000000000000000000000000000000020210722',
       version: '1'
@@ -427,17 +387,13 @@ const mmJsonChangeManager: TxsWithMMJsonSignedOrUnSigned = {
   }
 }
 
-const updateSubAccount: TxsSignedOrUnSigned = {
+const updateSubAccount: SignTxListParams = {
   action: 'update_sub_account',
   sign_key: 'ecd9bd0c4c9b9ac7b205ca778f12c85b',
-  list: [
+  sign_list: [
     {
-      sign_list: [
-        {
-          sign_type: 3,
-          sign_msg: 'From .bit: 4a77fe629bf14b9324f6db2feafc1adeed37c3e0746879723e76a2ff6b00b866'
-        }
-      ]
+      sign_type: 3,
+      sign_msg: 'From .bit: 4a77fe629bf14b9324f6db2feafc1adeed37c3e0746879723e76a2ff6b00b866'
     }
   ]
 }
@@ -454,23 +410,23 @@ describe('signData', function () {
     expect(sig).toBe('0x35594648433fec30670dbb952dfee533d6875c871cf0193fa5bd204ba1248df21e3bfaa08aea1bea0d79ec6097b4eb741721b90be4850b5242fa64c09edc242c1c')// wu 0x
   })
 
-  // same with app.did.id
+  // same with https://d.id/bit/reg
   it('signTypedData from MetaMask', async function () {
     const sig = await signer.signData(typedDataFromMetamask, true)
     expect(sig).toBe('0x3e6af6088752b89149fdbce440877476f1abb2f1c94ddb284829c9ae5f14339117c155af8005583a13b043e85d8a6cfb29787b9e91d6fd1c3b0a3d45906e31a51b')
   })
 
-  // same with app.did.id
+  // same with https://d.id/bit/reg
   it('signTypedData from .bit full', async function () {
     const sig = await signer.signData(typedDataFromBitFull, true)
-    expect(sig).toBe('0x48f3a06a0b3e4763c91a4a5e087b42812814d41ca819ed4dc0e512869b19c02d6924eca590cef5dcf79721a5a7f9cfb647ce2843d684721d5d6b9dbb7de41e331c')
+    expect(sig).toBe('0xdf6f5835ccf3abd2c98a3a1991211754411a685e3818f61950672d5b36278d0a3269b9258d38c7af95544ba77503abf53c003eaa110a82574588c5660939db8d1c')
   })
 
   // todo: why? with or without EIP712Domain(typedDataFromBit or typedDataFromBitFull), the sig is different
-  // same with app.did.id
+  // same with https://d.id/bit/reg
   it('signTypedData from .bit', async function () {
     const sig = await signer.signData(typedDataFromBit, true)
-    expect(sig).toBe('0x38304e2ee76f4faeb6c3ff0b83d7f29a213c4bf03a410a3ccd62450e23777a624629449267d225f9263c656fb2e471c1decb0854f88d2c69c84879a6ff27bdc71b')
+    expect(sig).toBe('0xdf6f5835ccf3abd2c98a3a1991211754411a685e3818f61950672d5b36278d0a3269b9258d38c7af95544ba77503abf53c003eaa110a82574588c5660939db8d1c')
   })
 })
 
@@ -493,7 +449,7 @@ describe('eth-sig-util', function () {
       version: SignTypedDataVersion.V4,
     })
 
-    expect(sig).toBe('0x48f3a06a0b3e4763c91a4a5e087b42812814d41ca819ed4dc0e512869b19c02d6924eca590cef5dcf79721a5a7f9cfb647ce2843d684721d5d6b9dbb7de41e331c')
+    expect(sig).toBe('0xdf6f5835ccf3abd2c98a3a1991211754411a685e3818f61950672d5b36278d0a3269b9258d38c7af95544ba77503abf53c003eaa110a82574588c5660939db8d1c')
   })
 
   // todo: why? with or without EIP712Domain(typedDataFromBit or typedDataFromBitFull), the sig is different
@@ -505,33 +461,6 @@ describe('eth-sig-util', function () {
       version: SignTypedDataVersion.V4,
     })
 
-    expect(sig).toBe('0x38304e2ee76f4faeb6c3ff0b83d7f29a213c4bf03a410a3ccd62450e23777a624629449267d225f9263c656fb2e471c1decb0854f88d2c69c84879a6ff27bdc71b')
-  })
-})
-
-describe('signer._signTypedData', function () {
-  it('signTypedData from MetaMask, with multiple primaryTypes, error', async function () {
-    await expect(signer.signer._signTypedData(typedDataFromMetamask.domain, typedDataFromMetamask.types, typedDataFromMetamask.message)).rejects.toThrow('ambiguous primary types or unused types: "EIP712Domain", "Group", "Mail"')
-  })
-
-  it('signTypedData from .bit full, with multiple primaryTypes, error', async function () {
-    await expect(signer.signer._signTypedData(typedDataFromBitFull.domain, typedDataFromBitFull.types, typedDataFromBitFull.message)).rejects.toThrow('ambiguous primary types or unused types: "EIP712Domain", "Transaction"')
-  })
-
-  // same with app.did.id
-  it('signTypedData from MetaMask, without multiple types', async function () {
-    const types = Object.assign({}, typedDataFromMetamask.types)
-    delete types.EIP712Domain
-    delete types.Group
-    const sig = await signer.signer._signTypedData(typedDataFromMetamask.domain, types, typedDataFromMetamask.message)
-    expect(sig).toBe('0x3e6af6088752b89149fdbce440877476f1abb2f1c94ddb284829c9ae5f14339117c155af8005583a13b043e85d8a6cfb29787b9e91d6fd1c3b0a3d45906e31a51b')
-  })
-
-  // todo: the ethers' result is different from metamask
-  // different with app.did.id
-  it('signTypedData from .bit', async function () {
-    const sig = await signer.signer._signTypedData(typedDataFromBit.domain, typedDataFromBit.types, typedDataFromBit.message)
-
     expect(sig).toBe('0xdf6f5835ccf3abd2c98a3a1991211754411a685e3818f61950672d5b36278d0a3269b9258d38c7af95544ba77503abf53c003eaa110a82574588c5660939db8d1c')
   })
 })
@@ -539,11 +468,11 @@ describe('signer._signTypedData', function () {
 describe('signTxList', function () {
   it('work for mmJson', async function () {
     const res = await signer.signTxList(mmJsonChangeManager)
-    expect(res.sign_list[0].sign_msg).toBe('0x99e335b373fa2bf1f025e4df89bfad75cc5608f9336441ae6e910c5a20fbde2f30f03ed49cee4eb7ea6bd03708206adfa60f2df7a5df83c3bc54a7e5d043fe491c3c08cabb37989ee799f37990f09f951dd8ed5a4b1afade04f0ff1a41ecd44b840000000000000005')
+    expect(res.sign_list[0].sign_msg).toBe('0xdd42512aaf989cabc5f52709d5cedcfe1185e4e0586998b4b714c423f0589bc954cce616584703b3d27246a0f248c8fd1ab6bf4f5b64c4b9d4197fd2917f6a151bbc79818da2e7bf6d51680d699f81a36125971caba20aceb37dd621f8e65847d40000000000004268')
   })
 
   it('work for string', async function () {
     const res = await signer.signTxList(updateSubAccount)
-    expect(res.list[0].sign_list[0].sign_msg).toBe('0x54a74d77ef7f315dd888e49656b2629d4a4ad287ec806ee70b047fd171f0d76e2e58c927f56d5f077847210397c18b00bf01c1c8145c59bfb88ebdd4a7f1f5d31c')
+    expect(res.sign_list[0].sign_msg).toBe('0x54a74d77ef7f315dd888e49656b2629d4a4ad287ec806ee70b047fd171f0d76e2e58c927f56d5f077847210397c18b00bf01c1c8145c59bfb88ebdd4a7f1f5d31c')
   })
 })

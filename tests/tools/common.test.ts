@@ -1,7 +1,6 @@
 import { KeyInfo } from '../../src/fetchers/BitIndexer.type'
 import {
   checkKeyInfo,
-  computeChainTypeByCoinType,
   isEmptyAddress,
   isEthAddress,
   isTronAddress,
@@ -9,7 +8,7 @@ import {
   pad0x,
   stringVisualLength
 } from '../../src/tools/common'
-import { CoinType, EvmChainId } from '../../src/const'
+import { CoinType } from '../../src/const'
 
 describe('pad0x', function () {
   it('starts with 0x', function () {
@@ -158,37 +157,15 @@ describe('stringVisualLength', function () {
   })
 })
 
-describe('computeChainTypeByCoinType', function () {
-  it(CoinType.ETH, function () {
-    expect(computeChainTypeByCoinType(CoinType.ETH)).toBe(EvmChainId.ETH)
-  })
-
-  it(CoinType.TRX, function () {
-    expect(computeChainTypeByCoinType(CoinType.TRX)).toBe(undefined)
-  })
-
-  it(CoinType.BSC, function () {
-    expect(computeChainTypeByCoinType(CoinType.BSC)).toBe(EvmChainId.BSC)
-  })
-
-  it(CoinType.MATIC, function () {
-    expect(computeChainTypeByCoinType(CoinType.MATIC)).toBe(EvmChainId.MATIC)
-  })
-
-  it(CoinType.CKB, function () {
-    expect(computeChainTypeByCoinType(CoinType.CKB)).toBe(undefined)
-  })
-})
-
 describe('matchDWebProtocol', function () {
   it('ipfs://QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx', function () {
     const matched = matchDWebProtocol('ipfs://QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx')
-    expect(matched[2]).toBe('QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx')
+    expect(matched?.[2]).toBe('QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx')
   })
 
   it('ipns://k51qzi5uqu5dgqjy1i78mz3oumplzt0cye32w9m8ix8hg9chpz5trvj8luwv0c', function () {
     const matched = matchDWebProtocol('ipns://k51qzi5uqu5dgqjy1i78mz3oumplzt0cye32w9m8ix8hg9chpz5trvj8luwv0c')
-    expect(matched[1]).toBe('ipns')
+    expect(matched?.[1]).toBe('ipns')
   })
 
   it('QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx', function () {

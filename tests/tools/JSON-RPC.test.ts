@@ -1,6 +1,6 @@
 import { JSONRPC } from '../../src/tools/JSON-RPC'
 
-const jsonrpc = new JSONRPC('https://indexer-v1.did.id')
+const jsonrpc = new JSONRPC('https://indexer-v1.d.id')
 
 describe('request', function () {
   it('works', async function () {

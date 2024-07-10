@@ -6,7 +6,7 @@ export class Networking {
   }
 
   throwOnError (res: any) {
-    // SubDID api style
+    // Second-level DID api style
     if (res.err_no) {
       throw new DotbitError(res.err_msg, res.err_no)
     }

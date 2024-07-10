@@ -1,31 +1,29 @@
-import { ethers, Wallet } from 'ethers'
+import { QuickNodeProvider, Wallet } from 'ethers'
 import { BitAccount } from '../../src/BitAccount'
 import { BitSubAccount } from '../../src/BitSubAccount'
-import { BitIndexer, DotBit, EthersSigner, RemoteTxBuilder } from '../../src/index'
+import { BitIndexer, DotBit, EvmSigner, RemoteTxBuilder } from '../../src/index'
 
 const bitIndexer = new BitIndexer({
-  // uri: 'https://indexer-v1.did.id',
-  uri: 'https://test-indexer.did.id',
-  // uri: 'https://test-indexer-not-use-in-production-env.did.id',
+  // uri: 'https://indexer-v1.d.id',
+  uri: 'https://test-indexer.d.id',
+  // uri: 'https://test-indexer-not-use-in-production-env.d.id',
 })
 const bitBuilder = new RemoteTxBuilder({
-  subAccountUri: 'https://test-subaccount-api.did.id/v1',
-  registerUri: 'https://test-register-api.did.id/v1',
-  crossChainUri: 'https://test-cross-api.did.id/v1',
+  subAccountUri: 'https://test-subaccount-api.d.id/v1',
+  registerUri: 'https://test-register-api.d.id/v1'
 })
 const address = '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
 const privateKey1 = '87d8a2bccdfc9984295748fa2058136c8131335f59930933e9d4b3e74d4fca42'
-const provider = new ethers.providers.InfuraProvider('goerli')
+const provider = new QuickNodeProvider('holesky')
 const wallet = new Wallet(privateKey1, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const bitIndexerProd = new BitIndexer({
-  uri: 'https://indexer-v1.did.id',
+  uri: 'https://indexer-v1.d.id',
 })
 const bitBuilderProd = new RemoteTxBuilder({
-  subAccountUri: 'https://subaccount-api.did.id/v1',
-  registerUri: 'https://register-api.did.id/v1',
-  crossChainUri: 'https://main-cross-api.did.id/v1',
+  subAccountUri: 'https://subaccount-api.d.id/v1',
+  registerUri: 'https://register-api.d.id/v1'
 })
 
 export const dotbitProd = new DotBit({

@@ -1,8 +1,9 @@
 import './polyfill'
 import { createInstance } from '../../lib.esm/index.js'
-import { ProviderSigner } from '../../lib.esm/signers/ProviderSigner'
+import { EvmSigner } from '../../lib.esm/signers/EvmSigner'
 import { CoinType } from '../../lib.esm/const'
 import { typedDataFromMetamask } from './typedData'
+import { BrowserProvider } from 'ethers'
 
 const $ = document.querySelector.bind(document)
 const $inputAccount = $('#input-account')
@@ -15,7 +16,8 @@ const $buttonSignTypedData = $('#btn-sign-typed-data')
 const $codeOutput = $('#code-output')
 
 async function main () {
-  const signer = new ProviderSigner(window.ethereum)
+  const provider = new BrowserProvider(window.ethereum)
+  const signer = new EvmSigner(await provider.getSigner())
   const dotbit = window.dotbit = createInstance({ signer })
 
   const addresses = await window.ethereum.send('eth_requestAccounts')

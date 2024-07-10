@@ -28,6 +28,7 @@
 - [verifyAddrsByAccount(address, account, subAccount, verifyType)](#verifyaddrsbyaccountaddress-account-subaccount-verifytype)
 - [validDotbitAliasAddresses(account)](#validdotbitaliasaddresses-account)
 - [batchAccountInfo(accounts)](#batchaccountinfo-accounts)
+- [dobList(keyInfo, didType, page, size)](#doblist-keyinfo-didtype-page-size)
 
 ## constructor(config)
 To create a new DotBit instance.
@@ -49,11 +50,11 @@ const { DotBit } = require('dotbit');
 const config = {
   network: "testnet",
   bitIndexer: new BitIndexer({
-    uri: "https://test-indexer.did.id",
+    uri: "https://test-indexer.d.id",
   }),
   bitBuilder: new RemoteTxBuilder({
-    subAccountUri: "https://test-subaccount-api.did.id/v1",
-    registerUri: "https://test-register-api.did.id/v1",
+    subAccountUri: "https://test-subaccount-api.d.id/v1",
+    registerUri: "https://test-register-api.d.id/v1",
   }),
 };
 const dotbit = new DotBit(config);
@@ -114,7 +115,7 @@ console.log(dotbit.bitIndexer)
 
 // ...
 // The printed result would be like:
-BitIndexer { rpc: JSONRPC { url: 'https://indexer-v1.did.id', id: 0 } }
+BitIndexer { rpc: JSONRPC { url: 'https://indexer-v1.d.id', id: 0 } }
 ```
 
 ## bitBuilder
@@ -132,12 +133,12 @@ console.log(dotbit.bitBuilder)
 // The printed result would be like:
 RemoteTxBuilder {
   subAccountAPI: SubAccountAPI {
-    baseUri: 'https://subaccount-api.did.id/v1',
-    net: Networking { baseUri: 'https://subaccount-api.did.id/v1' }
+    baseUri: 'https://subaccount-api.d.id/v1',
+    net: Networking { baseUri: 'https://subaccount-api.d.id/v1' }
   },
   registerAPI: RegisterAPI {
-    baseUri: 'https://register-api.did.id/v1',
-    net: Networking { baseUri: 'https://register-api.did.id/v1' }
+    baseUri: 'https://register-api.d.id/v1',
+    net: Networking { baseUri: 'https://register-api.d.id/v1' }
   }
 }
 ```
@@ -242,12 +243,12 @@ dotbit.serverInfo().then(console.log);
 
 ## reverse(keyInfo)
 To get the .bit alias for a given blockchain address
-> Note: Only when .bit alias is set at https://app.did.id/alias by user, reverse record is valid.
+> Note: Only when .bit alias is set at https://d.id/bit/alias by user, reverse record is valid.
 
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<BitAccount>
 ### Example
@@ -272,11 +273,11 @@ BitAccount {
 The API is the same as [reverse(keyInfo)](#reversekeyinfo).
 
 ## accountsOfOwner(keyInfo)
-List all .bit accounts (including SubDID accounts) of a given blockchain owner address
+List all .bit accounts (including Second-level DID accounts) of a given blockchain owner address
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<BitAccountListItem[]>
 ### Example
@@ -301,11 +302,11 @@ dotbit.accountsOfOwner({
 ```
 
 ## accountsOfManager(keyInfo)
-List all .bit accounts (including SubDID accounts) of a given blockchain manager address
+List all .bit accounts (including Second-level DID accounts) of a given blockchain manager address
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<BitAccountListItem[]>
 ### Example
@@ -394,7 +395,7 @@ BitAccount {
 To get all records of a given account.
 ### Parameters
 - account: `string`
-- (Optional) key: `string`. The key related to a specific record, only the matched record will be displayed.
+- key: `string`. The key related to a specific record, only the matched record will be displayed.
 ### Return Value
 Promise\<BitAccountRecordExtended[]>
 - key: `string`,
@@ -456,7 +457,6 @@ To get the account info of a given account.
 ### Return Value
 Promise\<AccountInfo>
 - account: `string`,
-- account_alias: `string`,
 - account_id_hex: `string`,
 - next_account_id_hex: `string`,
 - create_at_unix: `number`,
@@ -477,16 +477,15 @@ dotbit.accountInfo("imac.bit").then(console.log)
 // The printed result would be like:
 {
   account: 'imac.bit',
-  account_alias: 'imac.bit',
   account_id_hex: '0x5728088435fb8788472a9ca601fbc0b9cbea8be3',
   next_account_id_hex: '0x57280ab92f213d74c7a185e9b9d26d0a795108de',
   create_at_unix: 1671164348,
   expired_at_unix: 1702700348,
   status: 0,
   das_lock_arg_hex: '0x05b2be2887a26f44555835eeacc47d65b88b6b42c205b2be2887a26f44555835eeacc47d65b88b6b42c2',
-  owner_algorithm_id: 5,
+  owner_algorithm_id: 17000,
   owner_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
-  manager_algorithm_id: 5,
+  manager_algorithm_id: 17000,
   manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
   enable_sub_account: 0
 }
@@ -563,7 +562,7 @@ An alias for API [addresses(account, chain)](#addressesaccount-chain).
 Get all DWebs of a given account
 ### Parameters
 - account: `string`
-- (Optional) key: `string`. Only records of matched subtype will be displayed.
+- key: `string`. Only records of matched subtype will be displayed.
 ### Return Value
 Promise\<BitAccountRecordExtended[]>
 - key: `string`,
@@ -649,7 +648,7 @@ null
 Get all profiles of a given account.
 ### Parameters
 - account: `string`
-- (Optional) key: `string`. Only profiles of matched subtype will be displayed.
+- key: `string`. Only profiles of matched subtype will be displayed.
 ### Return Value
 Promise\<`BitAccountRecordExtended[]`>
 - key: `string`,
@@ -711,17 +710,17 @@ Get the avatar of a given account.
 For details, please refer to the documentation of [@dotbit/plugin-avatar](https://github.com/mozwell/dotbit.js/blob/main/packages/plugin-avatar/README.md)
 
 ## verifyAddrsByAccount(address, mainAccount, subAccount, verifyType)
-Verify whether the provided address has associated SubDIDs within the given main account, serving as a gateway for community member participation.
+Verify whether the provided address has associated Second-level DIDs within the given main account, serving as a gateway for community member participation.
 ### Parameters
 - address: `string` Address to be verified.
 - mainAccount: `string` Specified .bit account.
-- (Optional)subAccount: `string` Specified SubDID. `subAccount` is an optional field. If subAccount is empty, it will default to checking if the given address has at least one SubDID under any specified account.
-- (Optional)verifyType: `number` The `verifyType` is an optional field with a default value of 0, where 0 represents that the `address` is the owner address of the SubDID, and 1 represents that the `address` is the manager address of the SubDID.
+- (Optional)subAccount: `string` Specified Second-level DID. `subAccount` is an optional field. If subAccount is empty, it will default to checking if the given address has at least one Second-level DID under any specified account.
+- (Optional)verifyType: `number` The `verifyType` is an optional field with a default value of 0, where 0 represents that the `address` is the owner address of the Second-level DID, and 1 represents that the `address` is the manager address of the Second-level DID.
 ### Return Value
 Promise\<`boolean`>
 ### Example
 ```javascript
-// Check if the owner address has the SubDID 'leon.leonx.bit' under the main account 'leonx.bit'.
+// Check if the owner address has the Second-level DID 'leon.leonx.bit' under the main account 'leonx.bit'.
 dotbit.verifyAddrsByAccount(
   '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
   'leonx.bit',
@@ -731,7 +730,7 @@ dotbit.verifyAddrsByAccount(
 // The printed result would be like:
 true
 
-// Check if the manager address has any SubDID under the main account 'leonx.bit'.
+// Check if the manager address has any Second-level DID under the main account 'leonx.bit'.
 dotbit.verifyAddrsByAccount(
   '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
   'leonx.bit',
@@ -787,3 +786,34 @@ dotbit.batchAccountInfo(['imac.bit', 'imac-1.bit']).then(console.log)
   },
   ...
 ]
+```
+
+## dobList (keyInfo, didType, page, size)
+Get .bit DOB list
+### Parameters
+- keyInfo: `KeyInfo`
+  - key: `string`. The address on a certain blockchain
+  - coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+- (Optional) did_type: `number`. The default value is `1`. 0 - all DOB, 1 - normal DOB, 2 - recyclable DOB.
+- (Optional) page: `number`. The default value is `1`.
+- (Optional) size: `number`. The default value is `100`.
+### Return Value
+Promise\<`DobInfo[]`>
+### Example
+```javascript
+dotbit.dobList({
+  key: 'ckt1qrejnmlar3r452tcg57gvq8patctcgy8acync0hxfnyka35ywafvkqgjqgygrcl4k7pjuafdzmlzwy8ws4dxja7uqqmuv8c5',
+  coin_type: '309'
+}).then(console.log)
+
+// The printed result would be like:
+[
+  {
+    outpoint: '0xf2bc63cc3ea35c472c2625bd31f7c3cd309a3a493e179d6967f8314e231b5754-1',
+    account_id: '0x4f2308abb673d83fbdf4750e34ca84614de07957',
+    account: 'testckb.bit',
+    expired_at: 1725765831
+  },
+  ...
+]
+```

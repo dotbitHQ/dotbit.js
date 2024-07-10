@@ -1,9 +1,9 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
 import { RegisterAPI } from '../fetchers/RegisterAPI'
 import {
-  CreateSubAccountsParams, EditSubAccountParams,
+  CreateSubAccountsParams,
+  EditSubAccountParams,
   SubAccountAPI,
-  TxsSignedOrUnSigned,
 } from '../fetchers/SubAccountAPI'
 import {
   EditAccountManagerParam,
@@ -11,44 +11,28 @@ import {
   EditAccountRecordsParam,
   PayWithDotbitBalanceParam,
   ReturnTrxHashToServiceParam,
+  SignTxListParams,
   SubmitRegisterAccountOrderParam,
   SubmitRegisterAccountOrderRes,
   SubmitRenewAccountOrderParam,
-  SubmitRenewAccountOrderRes,
-  TxsWithMMJsonSignedOrUnSigned
+  SubmitRenewAccountOrderRes
 } from '../fetchers/RegisterAPI.type'
-import {
-  CrossChainAPI,
-  CrossChainReturnTrxHashToServiceParam,
-  LockAccountParam,
-  CrossChainAccountStatusParam,
-  CrossChainAccountStatusRes,
-  MintNftSignInfoParam,
-  MintNftSignInfoRes
-} from '../fetchers/CrossChainAPI'
 
 export interface RemoteTxBuilderConfig {
   subAccountUri: string,
   registerUri: string,
-  crossChainUri: string,
 }
 
 export class RemoteTxBuilder {
   subAccountAPI: SubAccountAPI
   registerAPI: RegisterAPI
-  crossChainAPI: CrossChainAPI
 
   constructor (config: RemoteTxBuilderConfig) {
     this.subAccountAPI = new SubAccountAPI(config.subAccountUri)
     this.registerAPI = new RegisterAPI(config.registerUri)
-    this.crossChainAPI = new CrossChainAPI(config.crossChainUri)
   }
 
-  enableSubAccount (account: string, keyInfo: KeyInfo): Promise<TxsSignedOrUnSigned> {
-    return this.subAccountAPI.initSubAccount(account, keyInfo)
-  }
-
-  mintSubAccounts (params: CreateSubAccountsParams): Promise<TxsSignedOrUnSigned> {
+  mintSubAccounts (params: CreateSubAccountsParams): Promise<SignTxListParams> {
     return this.subAccountAPI.createSubAccounts(params)
   }
 
@@ -76,31 +60,11 @@ export class RemoteTxBuilder {
     return this.registerAPI.submitRenewAccountOrder(params)
   }
 
-  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
+  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<SignTxListParams> {
     return this.registerAPI.payWithDotbitBalance(params)
   }
 
   returnTrxHashToService (params: ReturnTrxHashToServiceParam): Promise<void> {
     return this.registerAPI.returnTrxHashToService(params)
-  }
-
-  crossChainMintNftSignInfo (params: MintNftSignInfoParam): Promise<MintNftSignInfoRes> {
-    return this.crossChainAPI.mintNftSignInfo(params)
-  }
-
-  crossChainLockAccount (params: LockAccountParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
-    return this.crossChainAPI.lockAccount(params)
-  }
-
-  crossChainAccountStatus (params: CrossChainAccountStatusParam): Promise<CrossChainAccountStatusRes> {
-    return this.crossChainAPI.crossChainAccountStatus(params)
-  }
-
-  crossChainReturnTrxHashToService (params: CrossChainReturnTrxHashToServiceParam): Promise<void> {
-    return this.crossChainAPI.returnTrxHashToService(params)
-  }
-
-  crossChainSendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{ hash: string }> {
-    return this.crossChainAPI.sendTransaction(params)
   }
 }

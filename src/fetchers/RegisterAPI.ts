@@ -1,5 +1,4 @@
 import { Networking } from '../tools/Networking'
-import { computeChainTypeByCoinType } from '../tools/common'
 import { graphemesAccount } from '../tools/account'
 import { BitAccountRecord } from './BitIndexer.type'
 import {
@@ -9,11 +8,12 @@ import {
   EditAccountRecordsParam,
   PayWithDotbitBalanceParam,
   ReturnTrxHashToServiceParam,
+  SignTxListParams,
+  SignTxListRes,
   SubmitRegisterAccountOrderParam,
   SubmitRegisterAccountOrderRes,
   SubmitRenewAccountOrderParam,
-  SubmitRenewAccountOrderRes,
-  TxsWithMMJsonSignedOrUnSigned
+  SubmitRenewAccountOrderRes
 } from './RegisterAPI.type'
 
 export function toEditingRecord (record: BitAccountRecord): EditAccountRecord {
@@ -31,16 +31,28 @@ export class RegisterAPI {
     this.net = new Networking(baseUri)
   }
 
-  editAccountManager (params: EditAccountManagerParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
-    return this.net.post('account/edit/manager', params)
+  editAccountManager (params: EditAccountManagerParam): Promise<SignTxListParams> {
+    return this.net.post('account/edit/manager', {
+      type: 'blockchain',
+      ...params,
+      key_info: params.keyInfo,
+    })
   }
 
-  editAccountOwner (params: EditAccountOwnerParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
-    return this.net.post('account/edit/owner', params)
+  editAccountOwner (params: EditAccountOwnerParam): Promise<SignTxListParams> {
+    return this.net.post('account/edit/owner', {
+      type: 'blockchain',
+      ...params,
+      key_info: params.keyInfo,
+    })
   }
 
-  editAccountRecords (params: EditAccountRecordsParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
-    return this.net.post('account/edit/records', params)
+  editAccountRecords (params: EditAccountRecordsParam): Promise<SignTxListParams> {
+    return this.net.post('account/edit/records', {
+      type: 'blockchain',
+      ...params,
+      key_info: params.keyInfo,
+    })
   }
 
   submitRegisterAccountOrder (params: SubmitRegisterAccountOrderParam): Promise<SubmitRegisterAccountOrderRes> {
@@ -49,8 +61,8 @@ export class RegisterAPI {
     const account = params.account
 
     return this.net.post('account/order/register', {
-      chain_type: computeChainTypeByCoinType(coinType),
-      address,
+      type: 'blockchain',
+      key_info: params.keyInfo,
       account,
       pay_token_id: params.paymentMethodID,
       pay_address: address,
@@ -58,19 +70,17 @@ export class RegisterAPI {
       coin_type: coinType,
       inviter_account: params.inviterAccount,
       channel_account: params.channelAccount,
-      account_char_str: graphemesAccount(account.split('.')[0], true),
-      cross_coin_type: params.crossTo
+      account_char_str: graphemesAccount(account.split('.')[0], true)
     })
   }
 
   submitRenewAccountOrder (params: SubmitRenewAccountOrderParam): Promise<SubmitRenewAccountOrderRes> {
     const address = params.keyInfo.key
-    const coinType = params.keyInfo.coin_type
     const account = params.account
 
     return this.net.post('account/order/renew', {
-      chain_type: computeChainTypeByCoinType(coinType),
-      address,
+      type: 'blockchain',
+      key_info: params.keyInfo,
       account,
       pay_token_id: params.paymentMethodID,
       pay_address: address,
@@ -78,13 +88,10 @@ export class RegisterAPI {
     })
   }
 
-  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<TxsWithMMJsonSignedOrUnSigned> {
-    const address = params.keyInfo.key
-    const coinType = params.keyInfo.coin_type
-
+  payWithDotbitBalance (params: PayWithDotbitBalanceParam): Promise<SignTxListParams> {
     return this.net.post('balance/pay', {
-      chain_type: computeChainTypeByCoinType(coinType),
-      address,
+      type: 'blockchain',
+      key_info: params.keyInfo,
       evm_chain_id: params.evmChainId,
       order_id: params.orderId
     })
@@ -95,24 +102,17 @@ export class RegisterAPI {
    * @param params
    */
   returnTrxHashToService (params: ReturnTrxHashToServiceParam): Promise<void> {
-    const address = params.keyInfo.key
-    const coinType = params.keyInfo.coin_type
-
     return this.net.post('account/order/pay/hash', {
-      chain_type: computeChainTypeByCoinType(coinType),
-      address,
+      type: 'blockchain',
+      key_info: params.keyInfo,
       account: params.account,
       order_id: params.orderId,
       pay_hash: params.txHash
     })
   }
 
-  // todo-open: response should have same signature with SubAccountAPI.sendTransaction
-  sendTransaction (params: Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>): Promise<{hash: string}> {
-    return this.net.post('transaction/send', {
-      sign_key: params.sign_key,
-      sign_list: params.sign_list,
-    } as Omit<TxsWithMMJsonSignedOrUnSigned, 'mm_json'>)
+  sendTransaction (params: SignTxListRes): Promise<{hash: string}> {
+    return this.net.post('transaction/send', params)
   }
 }
 

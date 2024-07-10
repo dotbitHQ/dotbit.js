@@ -6,7 +6,6 @@
 - [bitBuilder](#bitbuilder)
 - [signer](#signer)
 - [status](#status)
-- [enableSubAccount()](#enablesubaccount)
 - [subAccounts(params)](#subaccountsparams)
 - [checkSubAccounts(subAccounts)](#checksubaccountssubaccounts)
 - [mintSubAccounts(params)](#mintsubaccountsparams)
@@ -125,15 +124,14 @@ N/A
 `BitSigner`
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-const { createInstance } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { createInstance, EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
@@ -164,36 +162,6 @@ console.log(account.status)
 // ...
 // The printed result would be like:
 6 // AccountStatus
-```
-
-## enableSubAccount()
-To enable sub-accounts of a main account.
-> Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
-### Parameters
-N/A
-### Return Value
-Promise<{ hash?: `string`, hash_list: `string[]` }>
-### Example
-```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-
-const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
-
-const provider = new ethers.providers.InfuraProvider()
-const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
-
-const account = new BitAccount({account: 'imac.bit', signer});
-// To enable sub-accounts of 'imac.bit'.
-const result = await account.enableSubAccount()
-console.log(result)
-
-// ...
-// The printed result would be like:
-{
-  hash: '0xadc19c5a8bd9ce963cbfc876e55a9f11b0518073114ceb967d521e695d8b41a4'
-}
 ```
 
 ## subAccounts(params)
@@ -280,7 +248,7 @@ const result = await account.checkSubAccounts(subAccounts)
 ## mintSubAccounts(params)
 To mint multiple sub-accounts for a BitAccount instance.
 > Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
-> Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email melissa@d.id with a brief description of your project.
+> Note: Currently, Second-level DID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute Second-level DIDs on mainnet, please email melissa@d.id with a brief description of your project.
 ### Parameters
 - params: `SubAccountParams[]`
   - account: `string`,
@@ -291,15 +259,14 @@ To mint multiple sub-accounts for a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-const { createInstance } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { createInstance, EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
@@ -336,7 +303,7 @@ console.log(result);
 ## mintSubAccount(params)
 To mint a sub-account for a BitAccount instance.
 > Note: This is a write API, which means you need to set up a signer before calling it. See example below for how to set up a signer.
-> Note: Currently, SubDID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute SubDIDs on mainnet, please email melissa@d.id with a brief description of your project.
+> Note: Currently, Second-level DID is fully available in testnet, and need whitelist on mainnet. If you would like to distribute Second-level DIDs on mainnet, please email melissa@d.id with a brief description of your project.
 ### Parameters
 - params: `SubAccountParams`
   - account: `string`,
@@ -347,15 +314,14 @@ To mint a sub-account for a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-const { createInstance } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { createInstance, EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
@@ -385,20 +351,19 @@ To change the owner of a BitAccount instance.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-const { createInstance } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { createInstance, EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const dotbit = createInstance({
   signer: signer
@@ -423,20 +388,19 @@ To change the manager of a BitAccount instance.
 ### Parameters
 - keyInfo: `KeyInfo`
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
 ### Return Value
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-const { createInstance } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { createInstance, EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
@@ -468,15 +432,14 @@ To update all records of a BitAccount instance.
 Promise<{ hash?: `string`, hash_list: `string[]` }>
 ### Example
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-const { createInstance } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { createInstance, EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 const dotbit = createInstance({
   signer: signer
 })
@@ -505,15 +468,14 @@ N/A
 ### Return Value
 `RecordsEditor`
 ```javascript
-const { EthersSigner } = require('../../lib/index')
-const { ethers, Wallet } = require('ethers')
-const { createInstance } = require('dotbit')
+const { Wallet, QuickNodeProvider } = require('ethers')
+const { createInstance, EvmSigner } = require('dotbit')
 
 const privateKey = "INPUT_YOUR_PRIVATE_KEY_HERE";
 
-const provider = new ethers.providers.InfuraProvider()
+const provider = new QuickNodeProvider()
 const wallet = new Wallet(privateKey, provider)
-const signer = new EthersSigner(wallet)
+const signer = new EvmSigner(wallet)
 
 const dotbit = createInstance({
   signer: signer,
@@ -548,7 +510,6 @@ N/A
 ### Return Value
 Promise\<AccountInfo>
 - account: `string`,
-- account_alias: `string`,
 - account_id_hex: `string`,
 - next_account_id_hex: `string`,
 - create_at_unix: `number`,
@@ -572,16 +533,15 @@ account.info().then(console.log)
 // The printed result would be like:
 {
   account: 'imac.bit',
-  account_alias: 'imac.bit',
   account_id_hex: '0x5728088435fb8788472a9ca601fbc0b9cbea8be3',
   next_account_id_hex: '0x57280ab92f213d74c7a185e9b9d26d0a795108de',
   create_at_unix: 1671164348,
   expired_at_unix: 1702700348,
   status: 0,
   das_lock_arg_hex: '0x05b2be2887a26f44555835eeacc47d65b88b6b42c205b2be2887a26f44555835eeacc47d65b88b6b42c2',
-  owner_algorithm_id: 5,
+  owner_algorithm_id: 17000,
   owner_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
-  manager_algorithm_id: 5,
+  manager_algorithm_id: 17000,
   manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
   enable_sub_account: 0
 }
@@ -594,7 +554,7 @@ N/A
 ### Return Value
 Promise<`RoleKeyInfo`>
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
   - algorithm_id: `number`
 ### Example
 ```javascript
@@ -609,7 +569,7 @@ account.owner().then(console.log)
 {
   key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
   coin_type: '60',
-  algorithm_id: 5
+  algorithm_id: 17000
 }
 ```
 
@@ -620,7 +580,7 @@ N/A
 ### Return Value
 Promise<`RoleKeyInfo`>
   - key: `string`. The address on a certain blockchain
-  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 714: BNB, 966: Matic). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
+  - (Optional) coin_type: `string`. (60: ETH, 195: TRX, 9006: BNB, 966: Matic, 3: Doge, 309: CKB). See [What is coin_type?](../../README.md#what-is-coin_type) in FAQ for more details.
   - algorithm_id: `number`
 ### Example
 ```javascript
@@ -635,7 +595,7 @@ account.manager().then(console.log)
 {
   key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
   coin_type: '60',
-  algorithm_id: 5
+  algorithm_id: 17000
 }
 ```
 

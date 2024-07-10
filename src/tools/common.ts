@@ -1,8 +1,20 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
-import { ChainType, CoinType, EvmChainId, EvmCoinTypes } from '../const'
-import { utils } from 'ethers'
+import { CoinType } from '../const'
+import { isAddress } from 'ethers'
 import GraphemeSplitter from 'grapheme-splitter'
 import { validate } from 'multicoin-address-validator'
+import { SignTypedDataVersion, TypedDataUtils, TypedMessage } from '@metamask/eth-sig-util'
+
+/**
+ * get mmJson hash and chainId hex
+ * @param typedData
+ * @param chainId
+ */
+export function mmJsonHashAndChainIdHex (typedData: TypedMessage<any>, chainId: number): string {
+  const mmHash = TypedDataUtils.eip712Hash(typedData, SignTypedDataVersion.V4).toString('hex')
+  const chainIdHex = chainId.toString(16).padStart(16, '0')
+  return mmHash + chainIdHex
+}
 
 export function pad0x (str: string): string {
   return str.startsWith('0x') ? str : `0x${str}`
@@ -44,7 +56,7 @@ export function isTronAddress (address: string): boolean {
  */
 export function isEthAddress (address: string): boolean {
   try {
-    return /^(0x|0X)[0-9a-f]{40}$/i.test(address) && utils.isAddress(address)
+    return /^(0x|0X)[0-9a-f]{40}$/i.test(address) && isAddress(address)
   }
   catch (err) {
     console.warn(`invalid ETH address: ${address}`)
@@ -58,10 +70,7 @@ export function isEthAddress (address: string): boolean {
  */
 export function checkKeyInfo (keyInfo: KeyInfo): boolean {
   let ret
-  if (typeof keyInfo.chain_id !== 'undefined') {
-    console.warn('chain_id is deprecated, please use coin_type.')
-  }
-  if ([EvmChainId.ETH, EvmChainId.BSC, EvmChainId.MATIC].includes(Number(keyInfo.chain_id)) || [CoinType.ETH, CoinType.MATIC, CoinType.BSC].includes(keyInfo.coin_type)) {
+  if ([CoinType.ETH, CoinType.MATIC, CoinType.BSC].includes(keyInfo.coin_type)) {
     if (isEthAddress(keyInfo.key)) {
       ret = true
     }
@@ -90,22 +99,6 @@ export function stringVisualLength (str: string): number {
   const splitter = new GraphemeSplitter()
   const split = splitter.splitGraphemes(str)
   return split.length
-}
-
-/**
- * compute the chainType of the evm chain by coinType.
- * categorize all evm chains as ETH chainType.
- * @param coinType
- */
-export function computeChainTypeByCoinType (coinType: CoinType): ChainType {
-  let _chainType
-  if (EvmCoinTypes.includes(coinType)) {
-    _chainType = ChainType.eth
-  }
-  else if (CoinType.TRX === coinType) {
-    _chainType = ChainType.tron
-  }
-  return _chainType
 }
 
 /**
