@@ -1,6 +1,6 @@
 {
   "name": "@dotbit/plugin-avatar",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/index.js",
   "module": "lib.esm/index.js",
   "types": "lib/index.d.ts",
@@ -14,11 +14,7 @@
     "publish": "pnpm publish --access public"
   },
   "dependencies": {
-    "@ethersproject/bignumber": "^5.7.0",
-    "@ethersproject/bytes": "^5.7.0",
-    "@ethersproject/strings": "^5.7.0",
-    "@ethersproject/web": "^5.7.1",
-    "ethers": "^5.6.9"
+    "ethers": "^6.11.1"
   },
   "peerDependencies": {
     "dotbit": "workspace:^"

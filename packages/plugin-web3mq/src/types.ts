@@ -1,17 +1,16 @@
-import { DotBit, BitAccount } from 'dotbit';
-import { Client, PageParams } from 'web3-mq';
+import { Client, PageParams } from 'web3-mq'
 
 declare module 'dotbit' {
   export interface DotBit {
-    web3Mq: Client | null;
-    sendMessageToUser: (message: string, userId: string) => void;
-    onMessage: (callback: any) => void;
-    searchWeb3mqUser: (did: string, didType: DID_TYPE_ENUM) => Promise<any[]>;
-    getMessageList: (page: PageParams, userId: string) => Promise<void>;
+    web3Mq: Client | null,
+    sendMessageToUser: (message: string, userId: string) => void,
+    onMessage: (callback: any) => void,
+    searchWeb3mqUser: (did: string, didType: DID_TYPE_ENUM) => Promise<any[]>,
+    getMessageList: (page: PageParams, userId: string) => Promise<void>,
   }
   export interface BitAccount {
-    web3Mq: any;
-    funcWeb3MQ: () => void;
+    web3Mq: any,
+    funcWeb3MQ: () => void,
   }
 }
 

@@ -3,9 +3,7 @@ import { RemoteTxBuilder } from './builders/RemoteTxBuilder'
 import {
   AccountStatus,
   SignType2CoinType,
-  BitNetwork,
   CheckSubAccountStatus,
-  CoinType,
   PaymentMethodIDs,
   DWebProtocol,
   RecordType
@@ -32,9 +30,8 @@ import {
   toDottedStyle,
   toRecordExtended,
 } from './tools/account'
-import { BitErrorCode, BitIndexerErrorCode, BitSubAccountErrorCode, DotbitError } from './errors/DotbitError'
+import { BitErrorCode, BitIndexerErrorCode, DotbitError } from './errors/DotbitError'
 import { SignTxListParams } from './fetchers/RegisterAPI.type'
-import { CrossChainAccountStatusRes } from './fetchers/CrossChainAPI'
 import { matchDWebProtocol } from './tools/common'
 
 export interface BitAccountOptions {
@@ -59,7 +56,6 @@ export interface RegisterParam {
   keyInfo?: KeyInfo,
   registerYears: number,
   paymentMethodID: PaymentMethodIDs,
-  crossTo?: CoinType,
   inviterAccount?: string,
   channelAccount?: string,
 }
@@ -82,20 +78,6 @@ export interface RegisterRes extends RegisterParam {
   txHash: string,
 }
 
-export interface LockAccountRes {
-  keyInfo: KeyInfo,
-  account: string,
-  txHash: string,
-}
-
-export interface MintEthNftRes {
-  account: string,
-  keyInfo: KeyInfo,
-  txHash: string,
-}
-
-export interface MintBitAccountRes extends MintEthNftRes {}
-
 export class BitAccount {
   account: string
   bitIndexer: BitIndexer
@@ -108,9 +90,18 @@ export class BitAccount {
     }
 
     this.account = options.account
-    this.bitIndexer = options.bitIndexer
-    this.bitBuilder = options.bitBuilder
-    this.signer = options.signer
+
+    if (options.bitIndexer) {
+      this.bitIndexer = options.bitIndexer
+    }
+
+    if (options.bitBuilder) {
+      this.bitBuilder = options.bitBuilder
+    }
+
+    if (options.signer) {
+      this.signer = options.signer
+    }
   }
 
   protected _info: AccountInfo
@@ -134,28 +125,6 @@ export class BitAccount {
   setReverseRecord () {
     this.requireBitBuilder()
     // TODO
-  }
-
-  async enableSubAccount () {
-    this.requireBitBuilder()
-    this.requireSigner()
-
-    const info = await this.info()
-    const coinType = await this.signer.getCoinType()
-    const address = await this.signer.getAddress()
-
-    if (address !== info.owner_key) {
-      throw new DotbitError('Permission Denied: only owner can perform this action', BitSubAccountErrorCode.PermissionDenied)
-    }
-
-    const txs = await this.bitBuilder.enableSubAccount(this.account, {
-      key: info.owner_key, // only owner can enable SubDID
-      coin_type: coinType,
-    })
-
-    const signatureList = await this.signer.signTxList(txs)
-
-    return await this.bitBuilder.subAccountAPI.sendTransaction(signatureList)
   }
 
   /**
@@ -233,7 +202,7 @@ export class BitAccount {
 
     checkResults.result.forEach(result => {
       if (result.status !== CheckSubAccountStatus.ok) {
-        throw new DotbitError(`SubDID ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
+        throw new DotbitError(`Second-level DID ${result.account} can not be registered, reason: ${result.message}, status ${result.status}`, BitErrorCode.SubAccountStatusInvalid)
       }
     })
 
@@ -436,11 +405,11 @@ export class BitAccount {
   /**
    * Resolve a dweb in a specific sequence
    */
-  async dweb (): Promise<BitAccountRecordExtended> {
+  async dweb (): Promise<BitAccountRecordExtended | undefined> {
     const dwebs = await this.dwebs()
 
     if (!dwebs.length) {
-      return null
+      return undefined
     }
     else if (dwebs.length === 1) {
       return dwebs[0]
@@ -464,22 +433,6 @@ export class BitAccount {
   }
 
   register (param: RegisterParam): Promise<RegisterRes> {
-    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
-  }
-
-  lockAccount (): Promise<LockAccountRes> {
-    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
-  }
-
-  crossChainAccountStatus (): Promise<CrossChainAccountStatusRes> {
-    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
-  }
-
-  mintEthNft (network: BitNetwork): Promise<MintEthNftRes> {
-    throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
-  }
-
-  mintBitAccount (network: BitNetwork): Promise<MintBitAccountRes> {
     throw new DotbitError('Please install plugin @dotbit/plugin-register', BitErrorCode.PluginRequired)
   }
 

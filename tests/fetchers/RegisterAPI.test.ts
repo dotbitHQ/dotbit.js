@@ -1,16 +1,16 @@
 import { CoinType, EvmChainId } from '../../src/const'
 import { RegisterAPI } from '../../src/fetchers/RegisterAPI'
 
-const registerAPI = new RegisterAPI('https://test-register-api.did.id/v1')
+const registerAPI = new RegisterAPI('https://test-register-api.d.id/v1')
 
 describe('editAccountManager', function () {
   it('work', async function () {
     const res = await registerAPI.editAccountManager({
       keyInfo: {
         coin_type: CoinType.ETH,
-        key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
       },
-      evm_chain_id: EvmChainId.ETH_GOERILI,
+      evm_chain_id: EvmChainId.ETH_HOLESKY,
       account: 'imac.bit',
       raw_param: {
         manager_address: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
@@ -25,9 +25,9 @@ describe('editAccountManager', function () {
     await expect(registerAPI.editAccountManager({
       keyInfo: {
         coin_type: CoinType.ETH,
-        key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
       },
-      evm_chain_id: EvmChainId.ETH_GOERILI,
+      evm_chain_id: EvmChainId.ETH_HOLESKY,
       account: 'imac.bit',
       raw_param: {
         manager_address: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
@@ -42,9 +42,9 @@ describe('editAccountOwner', function () {
     const res = await registerAPI.editAccountOwner({
       keyInfo: {
         coin_type: CoinType.ETH,
-        key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
       },
-      evm_chain_id: EvmChainId.ETH_GOERILI,
+      evm_chain_id: EvmChainId.ETH_HOLESKY,
       account: 'imac.bit',
       raw_param: {
         receiver_address: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
@@ -59,9 +59,9 @@ describe('editAccountOwner', function () {
     const promise = registerAPI.editAccountOwner({
       keyInfo: {
         coin_type: CoinType.ETH,
-        key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
       },
-      evm_chain_id: EvmChainId.ETH_GOERILI,
+      evm_chain_id: EvmChainId.ETH_HOLESKY,
       account: 'imac.bit',
       raw_param: {
         receiver_address: 'TPzZyfAgkqASrKkkxiMWBRoJ6jgt718SCX',
@@ -76,12 +76,12 @@ describe('editAccountOwner', function () {
     await expect(registerAPI.editAccountOwner({
       keyInfo: {
         coin_type: CoinType.ETH,
-        key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
       },
-      evm_chain_id: EvmChainId.ETH_GOERILI,
+      evm_chain_id: EvmChainId.ETH_HOLESKY,
       account: 'imac.bit',
       raw_param: {
-        receiver_address: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
+        receiver_address: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
         receiver_coin_type: CoinType.ETH,
       }
     })).rejects.toThrow('30011: transfer owner permission denied')
@@ -93,9 +93,9 @@ describe('editAccountRecords', function () {
     const res = await registerAPI.editAccountRecords({
       keyInfo: {
         coin_type: CoinType.ETH,
-        key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38'
+        key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38'
       },
-      evm_chain_id: EvmChainId.ETH_GOERILI,
+      evm_chain_id: EvmChainId.ETH_HOLESKY,
       account: 'imac.bit',
       raw_param: {
         records: [

@@ -35,11 +35,25 @@ export class DotBit {
   plugins: BitPluginBase[] = []
 
   constructor (config: DotBitConfig = {}) {
-    this.network = config.network
-    this.cacheProvider = config.cacheProvider
-    this.bitIndexer = config.bitIndexer
-    this.bitBuilder = config.bitBuilder
-    this.signer = config.signer
+    if (config.network) {
+      this.network = config.network
+    }
+
+    if (config.cacheProvider) {
+      this.cacheProvider = config.cacheProvider
+    }
+
+    if (config.bitIndexer) {
+      this.bitIndexer = config.bitIndexer
+    }
+
+    if (config.bitBuilder) {
+      this.bitBuilder = config.bitBuilder
+    }
+
+    if (config.signer) {
+      this.signer = config.signer
+    }
   }
 
   installPlugin (plugin: BitPluginBase) {
@@ -48,7 +62,7 @@ export class DotBit {
       this.plugins.push(plugin)
     }
     else {
-      console.warn(`Plugin '${plugin.name}' does not have 'onInstall' method, please check your plugin`)
+      console.warn(`Plugin '${plugin?.name ?? ''}' does not have 'onInstall' method, please check your plugin`)
     }
   }
 
@@ -90,7 +104,7 @@ export class DotBit {
     return await this.bitIndexer.serverInfo()
   }
 
-  async reverse (keyInfo: KeyInfo): Promise<BitAccount> {
+  async reverse (keyInfo: KeyInfo): Promise<BitAccount | undefined> {
     const { account } = await this.bitIndexer.reverseRecord(keyInfo)
 
     if (account) {
@@ -98,7 +112,7 @@ export class DotBit {
     }
   }
 
-  alias (keyInfo: KeyInfo): Promise<BitAccount> {
+  alias (keyInfo: KeyInfo): Promise<BitAccount | undefined> {
     return this.reverse(keyInfo)
   }
 
@@ -190,7 +204,7 @@ export class DotBit {
   }
 
   /**
-   * Check if the address has the specified SubDID under the designated account.
+   * Check if the address has the specified Second-level DID under the designated account.
    * @param address
    * @param mainAccount
    * @param subAccount
@@ -214,5 +228,21 @@ export class DotBit {
    */
   async batchAccountInfo (accounts: string[]) {
     return await this.bitIndexer.batchAccountInfo(accounts)
+  }
+
+  /**
+   * Get DOB list
+   * @param keyInfo
+   * @param didType
+   * @param page
+   * @param size
+   */
+  async dobList (keyInfo: KeyInfo, didType = 1, page = 1, size = 100) {
+    return await this.bitIndexer.dobList({
+      keyInfo,
+      didType,
+      page,
+      size
+    })
   }
 }

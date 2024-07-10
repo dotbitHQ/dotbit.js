@@ -18,7 +18,7 @@ export class BitSubAccount extends BitAccount {
   constructor (options: BitAccountOptions) {
     super(options)
     if (!isSubAccount(options.account)) {
-      throw new DotbitError(`${options.account} is not a legit SubDID`, BitErrorCode.InvalidSubAccount)
+      throw new DotbitError(`${options.account} is not a legit Second-level DID`, BitErrorCode.InvalidSubAccount)
     }
     this.mainAccount = this.account.replace(/^.+?\./, '')
   }
@@ -28,24 +28,20 @@ export class BitSubAccount extends BitAccount {
   //   this.requireBitBuilder()
   // }
 
-  enableSubAccount (): null {
-    throw new DotbitError(`'enableSubAccount' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+  subAccounts (params: Omit<SubAccountListParams, 'account'> = { page: 1, size: 100, keyword: '' }): any {
+    throw new DotbitError(`'subAccounts' is not supported by Second-level DID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
-  subAccounts (params: Omit<SubAccountListParams, 'account'> = { page: 1, size: 100, keyword: '' }): null {
-    throw new DotbitError(`'subAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+  checkSubAccounts (subAccounts: SubAccountMintParams[]): any {
+    throw new DotbitError(`'checkSubAccounts' is not supported by Second-level DID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
-  checkSubAccounts (subAccounts: SubAccountMintParams[]): null {
-    throw new DotbitError(`'checkSubAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+  mintSubAccounts (): any {
+    throw new DotbitError(`'mintSubAccounts' is not supported by Second-level DID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
-  mintSubAccounts (): null {
-    throw new DotbitError(`'mintSubAccounts' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
-  }
-
-  mintSubAccount (): null {
-    throw new DotbitError(`'mintSubAccount' is not supported by SubDID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
+  mintSubAccount (): any {
+    throw new DotbitError(`'mintSubAccount' is not supported by Second-level DID ${this.account}`, BitErrorCode.SubAccountDoNotSupportSubAccount)
   }
 
   async #editSubAccount (keyInfo: KeyInfo, editKey: 'manager'|'owner')
@@ -63,7 +59,7 @@ export class BitSubAccount extends BitAccount {
       },
     }
 
-    let mmJsonTxs: SignTxListRes
+    let mmJsonTxs: SignTxListRes = {} as SignTxListRes
     if (editKey === 'owner') {
       value = value as KeyInfo
       mmJsonTxs = await this.bitBuilder.editSubAccount({

@@ -12,7 +12,6 @@ export interface OutPoint {
 
 export interface AccountInfo {
   account: string,
-  account_alias: string,
   account_id_hex: string,
   next_account_id_hex: string,
   create_at_unix: number,
@@ -76,4 +75,23 @@ export interface BitAccountList {
 export interface BatchAccountInfo {
   account: string,
   can_register: boolean,
+}
+
+export interface DobListParams {
+  keyInfo: KeyInfo,
+  page: number,
+  size: number,
+  didType: number,
+}
+
+export interface DobInfo {
+  outpoint: string,
+  account_id: string,
+  account: string,
+  expired_at: number,
+}
+
+export interface DobListRes {
+  did_list: DobInfo[],
+  total: number,
 }

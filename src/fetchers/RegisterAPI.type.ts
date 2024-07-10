@@ -59,7 +59,6 @@ export interface SubmitRegisterAccountOrderParam {
   account: string,
   registerYears: number,
   paymentMethodID: PaymentMethodIDs,
-  crossTo?: CoinType,
   inviterAccount?: string,
   channelAccount?: string,
 }

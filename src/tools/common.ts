@@ -1,8 +1,20 @@
 import { KeyInfo } from '../fetchers/BitIndexer.type'
-import { CoinType, EvmChainId } from '../const'
-import { utils } from 'ethers'
+import { CoinType } from '../const'
+import { isAddress } from 'ethers'
 import GraphemeSplitter from 'grapheme-splitter'
-import TronWeb from 'tronweb'
+import { validate } from 'multicoin-address-validator'
+import { SignTypedDataVersion, TypedDataUtils, TypedMessage } from '@metamask/eth-sig-util'
+
+/**
+ * get mmJson hash and chainId hex
+ * @param typedData
+ * @param chainId
+ */
+export function mmJsonHashAndChainIdHex (typedData: TypedMessage<any>, chainId: number): string {
+  const mmHash = TypedDataUtils.eip712Hash(typedData, SignTypedDataVersion.V4).toString('hex')
+  const chainIdHex = chainId.toString(16).padStart(16, '0')
+  return mmHash + chainIdHex
+}
 
 export function pad0x (str: string): string {
   return str.startsWith('0x') ? str : `0x${str}`
@@ -30,7 +42,7 @@ export function sleep (ms: number) {
  */
 export function isTronAddress (address: string): boolean {
   try {
-    return address.length !== 42 && TronWeb.isAddress(address)
+    return address.length !== 42 && validate(address, 'Tron')
   }
   catch (err) {
     console.warn(`invalid Tron address: ${address}`)
@@ -44,7 +56,7 @@ export function isTronAddress (address: string): boolean {
  */
 export function isEthAddress (address: string): boolean {
   try {
-    return /^(0x|0X)[0-9a-f]{40}$/i.test(address) && utils.isAddress(address)
+    return /^(0x|0X)[0-9a-f]{40}$/i.test(address) && isAddress(address)
   }
   catch (err) {
     console.warn(`invalid ETH address: ${address}`)

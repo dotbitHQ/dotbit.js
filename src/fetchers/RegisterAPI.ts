@@ -70,8 +70,7 @@ export class RegisterAPI {
       coin_type: coinType,
       inviter_account: params.inviterAccount,
       channel_account: params.channelAccount,
-      account_char_str: graphemesAccount(account.split('.')[0], true),
-      cross_coin_type: params.crossTo
+      account_char_str: graphemesAccount(account.split('.')[0], true)
     })
   }
 

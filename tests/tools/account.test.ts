@@ -1,12 +1,10 @@
 import { CHAR_TYPE } from '../../src/const'
 import {
-  accountIdHex,
   digitalEmojiUnifiedHandle,
   getAccountCharsetTypes, graphemesAccount,
   isSubAccount,
   isSupportedAccount,
   toDottedStyle,
-  toHashedStyle,
 } from '../../src/tools/account'
 
 describe('isSupportedAccount', function () {
@@ -22,7 +20,7 @@ describe('isSupportedAccount', function () {
     expect(isSupported).toBe(false)
   })
 
-  it('SubDID', function () {
+  it('Second-level DID', function () {
     const isSupported = isSupportedAccount('a.phone.bit')
 
     expect(isSupported).toBe(true)
@@ -82,46 +80,6 @@ describe('toDottedStyle', function () {
     const dotted = toDottedStyle('vitalik.eth')
 
     expect(dotted).toBe('vitalik.eth')
-  })
-})
-
-describe('toHashedStyle', function () {
-  it('dotted to hashed', function () {
-    const dotted = toHashedStyle('phone.imac.bit')
-
-    expect(dotted).toBe('imac#phone.bit')
-  })
-
-  it('hashed to hashed', function () {
-    const dotted = toHashedStyle('imac#phone.bit')
-
-    expect(dotted).toBe('imac#phone.bit')
-  })
-
-  it('main account', function () {
-    const dotted = toHashedStyle('imac.bit')
-
-    expect(dotted).toBe('imac.bit')
-  })
-
-  it('ENS', function () {
-    const dotted = toHashedStyle('vitalik.eth')
-
-    expect(dotted).toBe('vitalik.eth')
-  })
-})
-
-describe('accountIdHex', function () {
-  it('work', function () {
-    const accountId = accountIdHex('imac.bit')
-
-    expect(accountId).toBe('0x5728088435fb8788472a9ca601fbc0b9cbea8be3')
-  })
-
-  it('SubDID', function () {
-    const accountId = accountIdHex('superdid.2077.bit')
-
-    expect(accountId).toBe('0x85a13eea14c4bc5474e205e136df349b7dbc0442')
   })
 })
 

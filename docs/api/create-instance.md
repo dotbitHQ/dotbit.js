@@ -34,10 +34,10 @@ DotBit {
 // To create a DotBit instance by using customized config
 const dotbit = createInstance({
   network: "testnet",
-  bitIndexerUri: "https://test-indexer.did.id",
+  bitIndexerUri: "https://test-indexer.d.id",
   remoteTxBuilderConfig: {
-    subAccountUri: "https://test-subaccount-api.did.id/v1",
-    registerUri: "https://test-register-api.did.id/v1",
+    subAccountUri: "https://test-subaccount-api.d.id/v1",
+    registerUri: "https://test-register-api.d.id/v1",
   },
 });
 console.log(dotbit);

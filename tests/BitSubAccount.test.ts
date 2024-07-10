@@ -3,21 +3,15 @@ import { subAccountWithSigner } from './common/index'
 import { BitSubAccount } from '../src/BitSubAccount'
 
 describe('constructor', function () {
-  it('should NOT throw error when pass a legit SubDID', () => {
+  it('should NOT throw error when pass a legit Second-level DID', () => {
     return expect(() => new BitSubAccount({
       account: 'what.imac.bit',
     })).not.toThrowError()
   })
-  it('should throw error when pass a non-legit SubDID', () => {
+  it('should throw error when pass a non-legit Second-level DID', () => {
     return expect(() => new BitSubAccount({
       account: 'imac.bit',
-    })).toThrow('1006: imac.bit is not a legit SubDID')
-  })
-})
-
-describe('enableSubAccount', function () {
-  it('throw error', function () {
-    return expect(() => subAccountWithSigner.enableSubAccount()).toThrow(`'enableSubAccount' is not supported by SubDID ${subAccountWithSigner.account}`)
+    })).toThrow('1006: imac.bit is not a legit Second-level DID')
   })
 })
 

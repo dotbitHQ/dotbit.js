@@ -16,7 +16,7 @@ export const EvmCoinTypes = [CoinType.ETH, CoinType.BSC, CoinType.MATIC]
 
 export enum EvmChainId {
   ETH = 1,
-  ETH_GOERILI = 5,
+  ETH_HOLESKY = 17000,
   BSC = 56,
   BSC_TEST = 97,
   MATIC = 137,
@@ -25,7 +25,7 @@ export enum EvmChainId {
 
 export const EvmChainId2CoinType = {
   [EvmChainId.ETH]: CoinType.ETH,
-  [EvmChainId.ETH_GOERILI]: CoinType.ETH,
+  [EvmChainId.ETH_HOLESKY]: CoinType.ETH,
   [EvmChainId.BSC]: CoinType.BSC,
   [EvmChainId.BSC_TEST]: CoinType.BSC,
   [EvmChainId.MATIC]: CoinType.MATIC,
@@ -172,21 +172,4 @@ export enum PaymentMethodIDs {
   trx = 'tron_trx',
   // portalWallet = 'ckb_ckb',
   dotbitBalance = 'ckb_das',
-}
-
-// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#pending-hash
-export enum CrossChainDirection {
-  toETH,
-  toCKB
-}
-
-// source: https://github.com/dotbitHQ/cross-server/blob/main/API.md#lock-mint-status
-export enum CrossChainAccountStatus {
-  lockPending = 0,
-  lockConfirm = 1,
-  lockRejected = 2,
-  mintSign = 3,
-  mintPending = 4,
-  mintConfirm = 5,
-  mintFailed = 6
 }

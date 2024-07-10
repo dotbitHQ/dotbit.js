@@ -12,41 +12,24 @@ import {
   PayWithDotbitBalanceParam,
   ReturnTrxHashToServiceParam,
   SignTxListParams,
-  SignTxListRes,
   SubmitRegisterAccountOrderParam,
   SubmitRegisterAccountOrderRes,
   SubmitRenewAccountOrderParam,
   SubmitRenewAccountOrderRes
 } from '../fetchers/RegisterAPI.type'
-import {
-  CrossChainAPI,
-  CrossChainReturnTrxHashToServiceParam,
-  LockAccountParam,
-  CrossChainAccountStatusParam,
-  CrossChainAccountStatusRes,
-  MintNftSignInfoParam,
-  MintNftSignInfoRes
-} from '../fetchers/CrossChainAPI'
 
 export interface RemoteTxBuilderConfig {
   subAccountUri: string,
   registerUri: string,
-  crossChainUri: string,
 }
 
 export class RemoteTxBuilder {
   subAccountAPI: SubAccountAPI
   registerAPI: RegisterAPI
-  crossChainAPI: CrossChainAPI
 
   constructor (config: RemoteTxBuilderConfig) {
     this.subAccountAPI = new SubAccountAPI(config.subAccountUri)
     this.registerAPI = new RegisterAPI(config.registerUri)
-    this.crossChainAPI = new CrossChainAPI(config.crossChainUri)
-  }
-
-  enableSubAccount (account: string, keyInfo: KeyInfo): Promise<SignTxListParams> {
-    return this.subAccountAPI.initSubAccount(account, keyInfo)
   }
 
   mintSubAccounts (params: CreateSubAccountsParams): Promise<SignTxListParams> {
@@ -83,25 +66,5 @@ export class RemoteTxBuilder {
 
   returnTrxHashToService (params: ReturnTrxHashToServiceParam): Promise<void> {
     return this.registerAPI.returnTrxHashToService(params)
-  }
-
-  crossChainMintNftSignInfo (params: MintNftSignInfoParam): Promise<MintNftSignInfoRes> {
-    return this.crossChainAPI.mintNftSignInfo(params)
-  }
-
-  crossChainLockAccount (params: LockAccountParam): Promise<SignTxListParams> {
-    return this.crossChainAPI.lockAccount(params)
-  }
-
-  crossChainAccountStatus (params: CrossChainAccountStatusParam): Promise<CrossChainAccountStatusRes> {
-    return this.crossChainAPI.crossChainAccountStatus(params)
-  }
-
-  crossChainReturnTrxHashToService (params: CrossChainReturnTrxHashToServiceParam): Promise<void> {
-    return this.crossChainAPI.returnTrxHashToService(params)
-  }
-
-  crossChainSendTransaction (params: SignTxListRes): Promise<{ hash: string }> {
-    return this.crossChainAPI.sendTransaction(params)
   }
 }

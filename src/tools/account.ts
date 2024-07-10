@@ -1,6 +1,4 @@
-import blake2b from 'blake2b'
 import { BitAccountRecord, BitAccountRecordExtended } from '../fetchers/BitIndexer.type'
-import { pad0x } from './common'
 import GraphemeSplitter from 'grapheme-splitter'
 import emojiList from './char_set/emoji_list.json'
 import numberList from './char_set/digit_list.json'
@@ -16,7 +14,7 @@ import { ACCOUNT_SUFFIX, CHAR_TYPE, languageToCharType, languages, DigitalEmojiU
  * @param account in the format of `[xxx.]xxx.bit`
  */
 export function isSupportedAccount (account: string): boolean {
-  return /^([^\.\s]+\.){1,}bit$/.test(account) && account.split(/.#/).every(v => Boolean(v.length))
+  return /^([^.\s]+\.){1,}bit$/.test(account) && account.split(/.#/).every(v => Boolean(v.length))
 }
 
 /**
@@ -38,45 +36,6 @@ export function toDottedStyle (inputAccount: string) {
   return `${sub}.${main}.${suffix}`
 }
 
-/**
- * Transform dot-style account to hash-style account imac#001.bit
- * @Deprecated We currently not support this style
- * @param inputAccount
- */
-export function toHashedStyle (inputAccount: string) {
-  if (!isSupportedAccount(inputAccount)) {
-    return inputAccount
-  }
-
-  if (inputAccount.includes('#')) {
-    return inputAccount
-  }
-
-  const parts = inputAccount.split('.')
-
-  if (parts.length === 3) {
-    const [sub, main, suffix] = parts
-
-    return `${main}#${sub}.${suffix}`
-  }
-
-  return inputAccount
-}
-
-/**
- * generate dotbit accountId
- * @param account
- */
-export function accountIdHex (account: string): string {
-  const personal = Buffer.from('ckb-default-hash')
-  const accountBuf = Buffer.from(account)
-  const hasher = blake2b(32, null, null, personal)
-  hasher.update(accountBuf)
-  const hashBuffer = hasher.digest('binary') as Uint8Array
-  const first20Bytes = Buffer.from(hashBuffer.slice(0, 20))
-  return pad0x(first20Bytes.toString('hex'))
-}
-
 export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExtended {
   return {
     ...record,
@@ -86,13 +45,13 @@ export function toRecordExtended (record: BitAccountRecord): BitAccountRecordExt
 }
 
 /**
- * Check if a given account is SubDID.
- * Multi-level SubDID is supported.
+ * Check if a given account is Second-level DID.
+ * Second-level DID is supported.
  * e.g. 111.imac.bit / 222.333.imac.bit
  * @param account
  */
 export function isSubAccount (account: string): boolean {
-  const subAccountPattern = /^([^\.\s]+\.){2,}bit$/
+  const subAccountPattern = /^([^.\s]+\.){2,}bit$/
   return subAccountPattern.test(account)
 }
 

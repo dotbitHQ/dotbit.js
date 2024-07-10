@@ -1,7 +1,7 @@
 import { CoinType } from '../../src/const'
 import { SubAccountAPI } from '../../src/fetchers/SubAccountAPI'
 
-const subAccountApi = new SubAccountAPI('https://test-subaccount-api.did.id/v1')
+const subAccountApi = new SubAccountAPI('https://test-subaccount-api.d.id/v1')
 
 describe('initSubAccount', function () {
   it('work', async function () {

@@ -160,12 +160,12 @@ describe('stringVisualLength', function () {
 describe('matchDWebProtocol', function () {
   it('ipfs://QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx', function () {
     const matched = matchDWebProtocol('ipfs://QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx')
-    expect(matched[2]).toBe('QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx')
+    expect(matched?.[2]).toBe('QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx')
   })
 
   it('ipns://k51qzi5uqu5dgqjy1i78mz3oumplzt0cye32w9m8ix8hg9chpz5trvj8luwv0c', function () {
     const matched = matchDWebProtocol('ipns://k51qzi5uqu5dgqjy1i78mz3oumplzt0cye32w9m8ix8hg9chpz5trvj8luwv0c')
-    expect(matched[1]).toBe('ipns')
+    expect(matched?.[1]).toBe('ipns')
   })
 
   it('QmaCveU7uyVKUSczmiCc85N7jtdZuBoKMrmcHbnnP26DCx', function () {

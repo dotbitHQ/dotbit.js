@@ -3,6 +3,7 @@ import { DotbitError } from '../errors/DotbitError'
 
 export class JSONRPC {
   id = 0
+
   constructor (
     public url: string,
   ) {}

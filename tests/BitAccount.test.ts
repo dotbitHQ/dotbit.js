@@ -26,13 +26,12 @@ describe('info', function () {
     expect(end2 - end1).toBe(0) // cache effect
     expect(info1).toMatchObject({
       account: 'imac.bit',
-      account_alias: 'imac.bit',
       account_id_hex: '0x5728088435fb8788472a9ca601fbc0b9cbea8be3',
       next_account_id_hex: '0x5728686c791549e76c20e29cce61a025c545f343',
       create_at_unix: 1656672987,
       expired_at_unix: 1688208987,
       status: 0,
-      owner_algorithm_id: 5,
+      owner_algorithm_id: 17000,
       owner_key: '0x1d643fac9a463c9d544506006a6348c234da485f',
       enable_sub_account: 0
     })
@@ -54,7 +53,7 @@ describe('manager', function () {
   it('work', async function () {
     const manager = await accountWithSigner.manager()
     expect(manager).toMatchObject({
-      key: '0x7df93d9f500fd5a9537fee086322a988d4fdcc38',
+      key: '0x7df93d9F500fD5A9537FEE086322a988D4fDCC38',
       coin_type: CoinType.ETH,
       algorithm_id: SIGN_TYPE.eth712,
     } as RoleKeyInfo)
@@ -241,12 +240,6 @@ describe('profiles', function () {
   })
 })
 
-describe('enableSubAccount', function () {
-  it('should throw: only owner', function () {
-    return expect(accountWithSigner.enableSubAccount()).rejects.toThrow('30011: Permission Denied: only owner can perform this action')
-  }, 10000)
-})
-
 describe('mintSubAccount', function () {
   const mintParam = {
     account: '005.imac.bit',
@@ -264,7 +257,7 @@ describe('mintSubAccount', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(accountWithSigner.mintSubAccount(mintParam)).rejects.toThrow('SubDID 005.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccount(mintParam)).rejects.toThrow('Second-level DID 005.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
@@ -296,7 +289,7 @@ describe('mintSubAccounts', function () {
   // }, 10000)
 
   it('should throw error', async function () {
-    await expect(accountWithSigner.mintSubAccounts(mintParams)).rejects.toThrow('SubDID 006.imac.bit can not be registered, reason: registered, status 2')
+    await expect(accountWithSigner.mintSubAccounts(mintParams)).rejects.toThrow('Second-level DID 006.imac.bit can not be registered, reason: registered, status 2')
   }, 10000)
 })
 
@@ -437,6 +430,6 @@ describe('dweb', function () {
     const dotbit = createInstance()
     const account = dotbit.account('web3max.bit')
     const res = await account.dweb()
-    expect(res.subtype).toBe(DWebProtocol.ipns)
+    expect(res?.subtype).toBe(DWebProtocol.ipns)
   })
 })

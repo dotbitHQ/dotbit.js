@@ -29,22 +29,10 @@ export const typedDataFromMetamask = {
   primaryType: 'Mail',
   types: {
     EIP712Domain: [
-      {
-        name: 'name',
-        type: 'string'
-      },
-      {
-        name: 'version',
-        type: 'string'
-      },
-      {
-        name: 'chainId',
-        type: 'uint256'
-      },
-      {
-        name: 'verifyingContract',
-        type: 'address'
-      }
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' }
     ],
     Group: [
       {

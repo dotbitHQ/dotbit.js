@@ -1,10 +1,10 @@
 <p align="center">
-  <a href="https://did.id/">
+  <a href="https://d.id/">
     <img width="1000" src="/docs/dotbit-banner.png">
   </a>
 </p>
 <h1 align="center">Dotbit.js</h2>
-<p align="center">The Official <a href="https://did.id/">.bit</a> JavaScript SDK provided by .bit team.</p>
+<p align="center">The Official <a href="https://d.id/">.bit</a> JavaScript SDK provided by .bit team.</p>
 <div align="center">
 
 ![NPM](https://img.shields.io/npm/l/dotbit) ![npm](https://img.shields.io/npm/v/dotbit)
@@ -26,11 +26,11 @@
 ## Features
 - Query .bit account info (e.g. **owner, manager, status**, etc.)
 - Query .bit account records (e.g. **addresses, profiles, dwebs and custom data**.)
-- Enable .bit [SubDID](https://www.did.id/subdid) for a specific account.
-- **Mint a SubDID** of a .bit main account.
-- Query all the SubDIDs of a .bit main account.
-- Manage the **ownership** of a .bit account(SubDID included).
-- Manage the **records** of a .bit account(SubDID included).
+- Enable .bit [Second-level DID](https://d.id/did-as-a-service) for a specific account.
+- **Mint a Second-level DID** of a .bit main account.
+- Query all the Second-level DIDs of a .bit main account.
+- Manage the **ownership** of a .bit account(Second-level DID included).
+- Manage the **records** of a .bit account(Second-level DID included).
 - **Register a .bit account** with CKB.
 
 ## Getting Started
@@ -66,16 +66,15 @@ A sample result would be like:
 ```javascript
 {
   account: 'imac.bit',
-  account_alias: 'imac.bit',
   account_id_hex: '0x5728088435fb8788472a9ca601fbc0b9cbea8be3',
   next_account_id_hex: '0x57280ab92f213d74c7a185e9b9d26d0a795108de',
   create_at_unix: 1671164348,
   expired_at_unix: 1702700348,
   status: 0,
   das_lock_arg_hex: '0x05b2be2887a26f44555835eeacc47d65b88b6b42c205b2be2887a26f44555835eeacc47d65b88b6b42c2',
-  owner_algorithm_id: 5,
+  owner_algorithm_id: 17000,
   owner_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
-  manager_algorithm_id: 5,
+  manager_algorithm_id: 17000,
   manager_key: '0xb2be2887a26f44555835eeacc47d65b88b6b42c2',
   enable_sub_account: 0
 }

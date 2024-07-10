@@ -2,7 +2,7 @@ import { CoinType } from '../../src/const'
 import { BitIndexer } from '../../src/fetchers/BitIndexer'
 
 const indexer = new BitIndexer({
-  uri: 'https://indexer-v1.did.id'
+  uri: 'https://indexer-v1.d.id'
 })
 
 describe('serverInfo', () => {

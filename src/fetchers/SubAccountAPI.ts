@@ -35,10 +35,10 @@ export interface SubAccountWithStatus extends SubAccount {
 export interface CreateSubAccountsParams extends CheckAccountsParams {}
 
 export interface SubAccountListParams {
-  'account': string,
-  'page': number,
-  'size': number,
-  'keyword': string,
+  account: string,
+  page: number,
+  size: number,
+  keyword: string,
 }
 
 export interface SubAccountListItem {

@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ethers": "^5.7.2",
+    "ethers": "^6.11.1",
     "web3-mq": "^1.2.46"
   },
   "peerDependencies": {

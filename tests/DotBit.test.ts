@@ -8,7 +8,7 @@ import { BitIndexer } from '../src/fetchers/BitIndexer'
 
 const dotbitTest = new DotBit({
   bitIndexer: new BitIndexer({
-    uri: 'https://test-indexer.did.id',
+    uri: 'https://test-indexer.d.id',
   })
 })
 
@@ -87,7 +87,7 @@ describe('reverse', function () {
       coin_type: CoinType.ETH
     })
     expect(account).toBeInstanceOf(BitAccount)
-    expect(account.account).toBe('jeffx.bit')
+    expect(account?.account).toBe('jeffx.bit')
   })
 })
 
@@ -247,7 +247,7 @@ describe('verifyAddrsByAccount', function () {
     const isValid = await dotbitTest.verifyAddrsByAccount(
       '0xC72B6f66017246d6A7f159F5C2BF358188AD9ECa',
       'leonx.bit',
-      null,
+      undefined,
       1
     )
     expect(isValid).toBe(true)
@@ -267,5 +267,15 @@ describe('batchAccountInfo', function () {
     const list = await dotbitProd.batchAccountInfo(['imac.bit', 'imac-1.bit'])
     expect(list).toBeInstanceOf(Array)
     expect(list.length).toBe(2)
+  })
+})
+
+describe('dobList', function () {
+  it('should work', async function () {
+    const list = await dotbitTest.dobList({
+      key: 'ckt1qrejnmlar3r452tcg57gvq8patctcgy8acync0hxfnyka35ywafvkqgynga5sh3qlq7fp0gvat4xpt53zn6gjm67qq5kaq6v',
+      coin_type: CoinType.CKB
+    })
+    expect(list).toBeInstanceOf(Array)
   })
 })

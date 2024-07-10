@@ -45,7 +45,7 @@ describe('bitAccount.avatar()', function () {
 describe('dotbit.avatar()', () => {
   it('should work', async () => {
     const avatar = await dotbitProd.avatar('imac.bit')
-    expect(avatar.url).toBe('https://thiscatdoesnotexist.com')
+    expect(avatar?.url).toBe('https://thiscatdoesnotexist.com')
   })
 })
 
